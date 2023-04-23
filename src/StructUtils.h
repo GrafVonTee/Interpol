@@ -99,7 +99,6 @@ namespace Utils {
             void setBC(const Edge& BC);
             void setAC(const Edge& AC);
 
-            new_t area();
         };
     }
 

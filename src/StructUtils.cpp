@@ -213,9 +213,4 @@ namespace Utils::Geometry {
             m_edgeAB.setLeft(m_pointA);
             m_edgeAC.setRight(m_pointC);
         }
-
-        new_t Triangle::area() {
-            new_t s = (m_edgeAB.length() + m_edgeBC.length() + m_edgeAC.length()) / 2.0;
-            return std::sqrt(s * (s - m_edgeAB.length()) * (s - m_edgeBC.length()) * (s - m_edgeAC.length()));
-        }
-    }
+}
