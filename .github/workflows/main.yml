@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     branches:
-      - debug
+      - developer
       - main
 
 jobs:
