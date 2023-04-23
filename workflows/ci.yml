@@ -17,7 +17,7 @@ jobs:
         ref: ${{ github.event.pull_request.head.ref }}
 
     - name: Set up CMake
-      uses: docker://kitware/cmake:latest
+      run: sudo apt-get -y install cmake
 
     - name: Build
       run: |
@@ -29,4 +29,4 @@ jobs:
     - name: Run tests
       run: |
         cd build
-        ctest
+        ctest --verbose
