@@ -4,4 +4,5 @@ project(triangle_intersections)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(triangle_intersections
-        src/main.cpp)
+        src/main.cpp
+        src/StructUtils.h src/StructUtils.cpp)
