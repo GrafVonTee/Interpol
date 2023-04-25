@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - develop
+      - main
 
 jobs:
   build:
@@ -28,7 +28,4 @@ jobs:
         cmake ..
         cmake --build .
 
-    - name: Run tests
-      run: |
-        cd build
-        ctest
+

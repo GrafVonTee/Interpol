@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../include/Point.h"
-#include "../include/Edge.h"
+#include "../include/GeometryUtils.h"
+#include "../include/StatesUtils.h"
 
 
 // Tests for the Point class
