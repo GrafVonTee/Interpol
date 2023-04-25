@@ -3,8 +3,10 @@ name: CI
 on:
   push:
     branches:
-      - debug
-      - main
+      - develop
+  pull_request:
+    branches:
+      - develop
 
 jobs:
   build:
@@ -13,20 +15,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.ref }}
-
-    - name: Set up CMake
-      run: sudo apt-get -y install cmake
-
-    - name: Build
-      run: |
-        mkdir build
-        cd build
-        cmake ..
-        cmake --build .
-
+    - name: Install dependencies
+      run: sudo apt-get install -y libgtest-dev cmake
+    - name: Build tests
+      run: cmake -S . -B build -DBUILD_TESTS=ON && cmake --build build
     - name: Run tests
-      run: |
-        cd build
-        ctest --verbose
+      run: ./build/test/unit_tests
