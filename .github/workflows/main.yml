@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - developer
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+
+    - name: Set up CMake
+      run: sudo apt-get -y install cmake
+
+    - name: Build
+      run: |
+        mkdir build
+        cd build
+        cmake ..
+        cmake --build .
+
+    - name: Run tests
+      run: |
+        cd build
+        ctest
