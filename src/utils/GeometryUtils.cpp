@@ -1,4 +1,5 @@
 #include "GeometryUtils.h"
+#include <cassert>
 
 namespace Geometry {
     Point::Point(const coord_t &x, const coord_t &y)
