@@ -76,7 +76,7 @@ Icon
 ._*
 
 # main.cpp
-/src/main.cpp
+src/main.cpp
 
 
 # Files that might appear in the root of a volume
