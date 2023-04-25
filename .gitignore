@@ -75,10 +75,6 @@ Icon
 # Thumbnails
 ._*
 
-# main.cpp
-src/main.cpp
-
-
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100
 .fseventsd
