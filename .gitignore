@@ -119,4 +119,4 @@ $RECYCLE.BIN/
 *.msp
 
 # Windows shortcuts
-*.lnk
+*.lnk!/src/main.cpp

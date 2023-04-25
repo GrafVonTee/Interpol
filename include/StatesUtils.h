@@ -5,14 +5,16 @@ namespace States {
     enum class InputState {
         IncorrectInput,
         IncorrectFormat,
-        NegativeNumbers
+        NegativeNumbers,
+        Correct
     };
 
     enum class IntersectionState {
         Point,
         Edge,
-        Triangle,
         Polygon,
+        Matched,
+        Nested,
         NoIntersection
     };
 
