@@ -101,5 +101,11 @@ namespace Geometry {
         Point& operator[](size_t index);
         const Point& operator[](size_t index) const;
     };
+
+    struct Intersection {
+        States::IntersectionState state = States::IntersectionState::NoIntersection;
+        Polygon polygon;
+    };
 }
+
 #endif //TRIANGLE_INTERSECTIONS_GEOMETRYUTILS_H
