@@ -91,7 +91,8 @@ namespace Geometry {
 
         // Getters
         [[nodiscard]] States::PolygonState getState() const;
-        [[nodiscard]] std::vector<Point> getPoints() const;
+        [[nodiscard]] std::vector<Point>& getPointsRef();
+        [[nodiscard]] std::vector<Point> getPointsCopy();
 
         [[nodiscard]] size_t size() const;
 

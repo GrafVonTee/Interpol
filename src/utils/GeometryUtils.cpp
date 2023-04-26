@@ -178,7 +178,7 @@ namespace Geometry {
         return m_state;
     }
 
-    std::vector<Point> Polygon::getPoints() const {
+    std::vector<Point>& Polygon::getPointsRef() {
         return m_pointList;
     }
 
@@ -209,5 +209,9 @@ namespace Geometry {
 
     size_t Polygon::size() const {
         return m_pointList.size();
+    }
+
+    std::vector<Point> Polygon::getPointsCopy() {
+        return m_pointList;
     }
 }

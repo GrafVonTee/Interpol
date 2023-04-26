@@ -20,12 +20,10 @@ namespace States {
     };
 
     enum class IntersectionState {
-        Point,
-        Edge,
-        Polygon,
-        Matched,
+        NoIntersection,
         Nested,
-        NoIntersection
+        Matched,
+        Polygon
     };
 
     enum class UnitTestState {
