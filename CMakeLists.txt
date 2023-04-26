@@ -20,22 +20,24 @@ target_include_directories(gtest PUBLIC googletest-main/googletest)
 # set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 # FetchContent_MakeAvailable(googletest)
 
-add_executable(triangle_intersections
-        src/main.cpp
-        src/utils/GeometryUtils.cpp src/utils/StatesUtils.cpp)
+# add_executable(triangle_intersections
+#         src/main.cpp
+#         src/utils/GeometryUtils.cpp src/utils/StatesUtils.cpp)
 
 add_executable(
         unit_tests
         tests/unit_tests.cpp
+        src/utils/GeometryUtils.cpp src/utils/StatesUtils.cpp
 )
 
-target_include_directories(triangle_intersections PUBLIC include)
+# target_include_directories(triangle_intersections PUBLIC include)
 
-target_include_directories(unit_tests PUBLIC googletest-main include)
+target_include_directories(unit_tests PUBLIC googletest-main/include)
+target_include_directories(unit_tests PUBLIC include)
 
 target_link_libraries(
         unit_tests    
         gtest
 )
 
-include(GoogleTest)
+# include(GoogleTest)

@@ -144,11 +144,6 @@
 			"isCMake" : true,
 			"isExternal" : true,
 			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/CMakeCommonLanguageInclude.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "C:/Program Files/CMake/share/cmake-3.26/Modules/GoogleTest.cmake"
 		}
 	],
 	"kind" : "cmakeFiles",
