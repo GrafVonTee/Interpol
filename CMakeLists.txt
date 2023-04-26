@@ -23,6 +23,6 @@ target_include_directories(unit_tests PUBLIC googletest-main/include)
 target_include_directories(unit_tests PUBLIC include)
 
 target_link_libraries(
-        unit_tests    
+        unit_tests
         gtest
 )
