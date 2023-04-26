@@ -1,6 +1,5 @@
-#include <iostream>
+#include "GeometryUtils.h"
 
 int main() {
-    std::cout << "Hello world!" << std::endl;
     return 0;
 }
