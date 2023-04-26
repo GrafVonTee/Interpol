@@ -1,8 +1,5 @@
-//
-// Created by Maksim on 26.04.2023.
-//
-
 #include <iostream>
+#include <string>
 #include "GeometryUtils.h"
 #include "ConsoleInteraction.h"
 

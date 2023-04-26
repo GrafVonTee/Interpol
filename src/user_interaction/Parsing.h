@@ -1,7 +1,3 @@
-//
-// Created by Maksim on 26.04.2023.
-//
-
 #ifndef TRIANGLE_INTERSECTIONS_PARSING_H
 #define TRIANGLE_INTERSECTIONS_PARSING_H
 
