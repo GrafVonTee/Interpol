@@ -11,7 +11,6 @@ add_library(gtest STATIC googletest-main/googletest/src/gtest-all.cc googletest-
 target_include_directories(gtest PUBLIC googletest-main/googletest/include)
 target_include_directories(gtest PUBLIC googletest-main/googletest)
 
-
 add_executable(
         unit_tests
         tests/unit_tests.cpp
