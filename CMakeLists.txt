@@ -17,6 +17,7 @@ add_executable(
         src/utils/StatesUtils.cpp
         src/user_interaction/ConsoleInteraction.cpp
         src/user_interaction/Parsing.cpp
+        src/CalculateIntersections.cpp
 )
 
 target_include_directories(unit_tests PUBLIC googletest-main/include)
