@@ -15,9 +15,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-    - name: Install dependencies
-      run: sudo apt-get install -y libgtest-dev cmake
-    - name: Build tests
-      run: cmake -S . -B build -DBUILD_TESTS=ON && cmake --build build
+    - name: Configure CMake
+      run: cmake -B build -S .
+    - name: Build
+      run: cmake --build build
     - name: Run tests
-      run: ./build/test/unit_tests
+      run: ./build/unit_tests
