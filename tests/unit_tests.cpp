@@ -1,7 +1,9 @@
 #include "gtest/gtest.h"
 #include "GeometryUtils.h"
 #include "StatesUtils.h"
+
  using namespace Geometry;
+
 // Tests for the Point class
 TEST(PointTest, DefaultConstructor) {
     Point p;

@@ -1,5 +1,4 @@
 #include "GeometryUtils.h"
-#include <cassert>
 
 namespace Geometry {
     Point::Point(const coord_t &x, const coord_t &y)
@@ -64,7 +63,7 @@ namespace Geometry {
     }
 
     bool Point::operator==(const Point &other) const {
-        return m_x == other.m_x && m_y == other.m_y;
+        return (m_x == other.m_x) && (m_y == other.m_y);
     }
 
     bool Point::operator!=(const Point &other) const {
@@ -76,14 +75,30 @@ namespace Geometry {
         return out;
     }
 
+    bool Point::operator==(Point &&other) const noexcept {
+        return (m_x == other.m_x) && (m_y == other.m_y);
+    }
+
+    bool Point::operator!=(Point &&other) const noexcept {
+        return !(*this != other);
+    }
+
     // Edge Implementation
     Edge::Edge(const Point &left, const Point &right)
-            : m_left(left), m_right(right) {
-        assert(left != right);
+    {
+        if (left == right)
+            throw std::runtime_error("Points must be different!");
+        m_left = left;
+        m_right = right;
     }
 
     Edge::Edge(Point &&left, Point &&right)
-            : m_left(std::move(left)), m_right(std::move(right)) {
+    {
+        if (left == right)
+            throw std::runtime_error("Points must be different!");
+
+        m_left = std::move(left);
+        m_right = std::move(right);
     }
 
     Edge::Edge(Edge &&other) noexcept
@@ -98,12 +113,14 @@ namespace Geometry {
     }
 
     void Edge::setLeft(const Point &left) {
-        assert(left != this->m_right);
+        if (left == m_right)
+            throw std::runtime_error("Points must be different!");
         m_left = left;
     }
 
     void Edge::setRight(const Point &right) {
-        assert(right != this->m_left);
+        if (right == m_left)
+            throw std::runtime_error("Points must be different!");
         m_right = right;
     }
 
@@ -135,5 +152,66 @@ namespace Geometry {
 
     bool Edge::operator!=(const Edge &other) const {
         return !(*this == other);
+    }
+
+    bool Edge::operator==(Edge &&other) const noexcept {
+        return (m_left == other.m_left) && (m_right == other.m_right);
+    }
+    bool Edge::operator!=(Edge &&other) const noexcept {
+        return !(*this == other);
+    }
+
+    Polygon::Polygon(const std::vector<Point> &points) {
+        if (points.size() > 6)
+            throw std::runtime_error("Invalid number of points!");
+
+        m_pointList = points;
+        m_state = States::PolygonState(points.size());
+    }
+
+    Polygon::Polygon(Polygon &&other) noexcept {
+        m_state = other.m_state;
+        m_pointList = std::move(other.m_pointList);
+    }
+
+    States::PolygonState Polygon::getState() const {
+        return m_state;
+    }
+
+    std::vector<Point>& Polygon::getPointsRef() {
+        return m_pointList;
+    }
+
+    std::ostream& operator<<(std::ostream &out, const Polygon &polygon) {
+        out << "Polygon[";
+        for (auto i = 0; i < polygon.size(); ++i) {
+            if (i == polygon.size() - 1) {
+                out << polygon[i];
+                continue;
+            }
+            out << polygon[i] << ", ";
+        }
+        out << "]";
+        return out;
+    }
+
+    Point& Polygon::operator[](size_t index) {
+        if (index >= this->size())
+            throw std::runtime_error("Invalid index!");
+        return m_pointList[index];
+    }
+
+    const Point& Polygon::operator[](size_t index) const {
+        if (index >= this->size())
+            throw std::runtime_error("Invalid index!");
+        return m_pointList[index];
+    }
+
+    size_t Polygon::size() const {
+        return m_pointList.size();
+    }
+
+    std::vector<Point> Polygon::getPointsCopy() {
+        return m_pointList;
     }
 }

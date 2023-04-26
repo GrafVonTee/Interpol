@@ -9,13 +9,21 @@ namespace States {
         Correct
     };
 
+    enum class PolygonState {
+        NotPolygon = 0,
+        Point = 1,
+        Edge = 2,
+        Triangle = 3,
+        Quadrilateral = 4,
+        Pentagon = 5,
+        Hexagon = 6,
+    };
+
     enum class IntersectionState {
-        Point,
-        Edge,
-        Polygon,
-        Matched,
+        NoIntersection,
         Nested,
-        NoIntersection
+        Matched,
+        Polygon
     };
 
     enum class UnitTestState {
