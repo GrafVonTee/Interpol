@@ -106,5 +106,15 @@ namespace Geometry {
         States::IntersectionState state = States::IntersectionState::NoIntersection;
         Polygon polygon;
     };
+
+    enum Letters {
+        A,
+        B,
+        C,
+        D,
+        E,
+        F,
+        AllLetters,
+    };
 }
 #endif //TRIANGLE_INTERSECTIONS_GEOMETRYUTILS_H
