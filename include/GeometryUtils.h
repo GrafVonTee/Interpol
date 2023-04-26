@@ -107,4 +107,5 @@ namespace Geometry {
         Polygon polygon;
     };
 }
+
 #endif //TRIANGLE_INTERSECTIONS_GEOMETRYUTILS_H
