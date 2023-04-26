@@ -13,7 +13,10 @@ target_include_directories(gtest PUBLIC googletest-main/googletest)
 add_executable(
         unit_tests
         tests/unit_tests.cpp
-        src/utils/GeometryUtils.cpp src/utils/StatesUtils.cpp
+        src/utils/GeometryUtils.cpp
+        src/utils/StatesUtils.cpp
+        src/user_interaction/ConsoleInteraction.cpp
+        src/user_interaction/Parsing.cpp
 )
 
 target_include_directories(unit_tests PUBLIC googletest-main/include)
