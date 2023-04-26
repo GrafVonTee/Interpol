@@ -114,6 +114,12 @@ namespace Geometry {
         D,
         E,
         F,
+        G,
+        H,
+        K,
+        L,
+        M,
+        N,
         AllLetters,
     };
 }
