@@ -14,10 +14,10 @@
     std::string result("(1.0 2.0)");
 
     // Parse the input
-    Point actualPoint = get<0>(Parsing::parsePoint(input));
+    std::string parsed = get<0>(Parsing::parsePoint(input));
 
     // Check if the parsed points match the expected points
-    ASSERT_EQ(actualPoint, result);
+    ASSERT_EQ(parsed, result);
 }
 
 // Test the parser with invalid input (missing comma)
