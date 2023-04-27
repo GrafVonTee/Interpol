@@ -4,8 +4,9 @@
 namespace States {
     enum class InputState {
         IncorrectInput,
+        EmptyString,
         IncorrectFormat,
-        NegativeNumbers,
+        EqualPoints,
         Correct
     };
 

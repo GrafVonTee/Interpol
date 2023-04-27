@@ -3,9 +3,11 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include "StatesUtils.h"
 
 using coord_t = long double;
+#define COORD_T_IS_LONG_DOUBLE
 
 namespace Geometry {
     class Point {
@@ -99,6 +101,10 @@ namespace Geometry {
         // operators
         friend std::ostream& operator<<(std::ostream &out, const Polygon &polygon);
         Point& operator[](size_t index);
+
+        Polygon& operator=(const Polygon &other);
+        Polygon& operator=(Polygon&& other) noexcept;
+
         const Point& operator[](size_t index) const;
     };
 
