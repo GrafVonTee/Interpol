@@ -10,29 +10,20 @@ using namespace Geometry;
 
 namespace Math{
 
-    enum class SectionsState{
-        NoIntersection,
-        Dot,
-        FirstFullInSecond,
-        SecondFullInFirst,
-        StartInEndOut,
-        StartOutEndIn
-    };
-
     coord_t det(coord_t a1, coord_t a2 ,coord_t b1, coord_t b2);
-
-    coord_t d(Point& first,Point& second);
 
     void push_back_unique(std::vector<Point>& list, Point& point);
 
-    void smartSwap(std::vector<Point>& list);
-
     bool isPointInside(Point& point, Polygon& figure);
 
-    Point findLinesInter(Point& firstStart, Point& firstEnd,\
-        Point& secondStart,Point& secondEnd, SectionsState& state);
+    void addInsideVertex(std::vector<Point>& list, Polygon& internal, Polygon& external);
 
-    Polygon findTriangleInter(Polygon& first, Polygon& second);
+    std::vector<Point> sortPoints(std::vector<Point> list);
+
+    Point findLinesInter(Point& firstStart, Point& firstEnd,\
+        Point& secondStart,Point& secondEnd, bool& isImportantCase);
+
+    Intersection findTriangleInter(Polygon& first, Polygon& second);
 
 }
 #endif //TRIANGLE_INTERSECTIONS_CALCULATEINTERSECTIONS_H
