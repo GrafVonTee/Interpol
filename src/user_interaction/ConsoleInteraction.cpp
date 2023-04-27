@@ -159,7 +159,7 @@ namespace Interaction {
             printPoint(polygon[i], Geometry::Letters(i + skipToIntersection));
     }
 
-    std::string getTypeNameOfPolygon(const States::PolygonState state) {
+    std::string getTypeNameOfPolygon(const States::PolygonState &state) {
         std::string polygonTypes[] {
             "not a polygon",
             "point",

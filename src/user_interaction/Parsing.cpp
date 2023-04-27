@@ -6,7 +6,7 @@
 #include <sstream>
 
 namespace Parsing {
-    std::string parseStringFromIndent(std::string input) {
+    std::string& parseStringFromIndent(std::string &input) {
         auto iter = input.find('\t');
         while (((iter = input.find('\t')) != std::string::npos)) {
             input.replace(iter, 1, " ");
@@ -19,7 +19,7 @@ namespace Parsing {
         return input;
     }
 
-    States::InputState checkStringIsEmpty(const std::string input) {
+    States::InputState checkStringIsEmpty(const std::string &input) {
         return (input.empty()) ? States::InputState::EmptyString : States::InputState::Correct;
     }
 
@@ -28,7 +28,7 @@ namespace Parsing {
         return (std::istringstream(s) >> newVariable >> std::ws).eof();
     }
 
-    input_result_t parsePoint(std::string input) {
+    input_result_t parsePoint(std::string &input) {
         std::stringstream parser;
         std::string result;
 

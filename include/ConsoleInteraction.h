@@ -22,7 +22,7 @@ namespace Interaction {
     void printIntersection(const Geometry::Intersection &intersection);
     void printPolygon(const Geometry::Polygon &polygon);
 
-    std::string getTypeNameOfPolygon(const States::PolygonState state);
+    std::string getTypeNameOfPolygon(const States::PolygonState &state);
 }
 
 #endif //TRIANGLE_INTERSECTIONS_CONSOLE_INTERACTION_H
