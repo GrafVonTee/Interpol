@@ -10,6 +10,7 @@ namespace Geometry {
         other.m_y = 0;
     }
 
+
     coord_t Point::getX() const {
         return m_x;
     }
