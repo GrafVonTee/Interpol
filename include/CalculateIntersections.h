@@ -2,7 +2,7 @@
 #define TRIANGLE_INTERSECTIONS_CALCULATEINTERSECTIONS_H
 
 #include <vector>
-#include <math.h>
+#include <algorithm>
 #include "GeometryUtils.h"
 #include "StatesUtils.h"
 
