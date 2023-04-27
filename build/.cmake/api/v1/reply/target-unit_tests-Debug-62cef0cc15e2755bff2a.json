@@ -29,25 +29,25 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 27,
+				"line" : 13,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 38,
+				"line" : 26,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 35,
+				"line" : 23,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 36,
+				"line" : 24,
 				"parent" : 0
 			}
 		]
@@ -93,7 +93,10 @@
 			[
 				0,
 				1,
-				2
+				2,
+				3,
+				4,
+				5
 			]
 		}
 	],
@@ -144,7 +147,10 @@
 			[
 				0,
 				1,
-				2
+				2,
+				3,
+				4,
+				5
 			]
 		}
 	],
@@ -166,6 +172,24 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/utils/StatesUtils.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/user_interaction/ConsoleInteraction.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/user_interaction/Parsing.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "src/CalculateIntersections.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],

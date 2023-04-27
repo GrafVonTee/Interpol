@@ -1,8 +1,94 @@
 #include "gtest/gtest.h"
 #include "GeometryUtils.h"
 #include "StatesUtils.h"
+#include "CalculateIntersections.h"
+#include "Parsing.h"
+#include "ConsoleInteraction.h"
 
  using namespace Geometry;
+ using namespace Math;
+ using namespace Interaction;
+
+ TEST(ParserTest, ValidInput) {
+    std::stringstream input("(1.0, 2.0)\n");
+
+    // Create expected points
+    Point p1(1.0, 2.0);
+
+    // Parse the input
+    Point actualPoint = parsePoint(input)(0);
+
+    // Check if the parsed points match the expected points
+    ASSERT_EQ(actualPoint, p1);
+}
+
+// Test the parser with invalid input (missing comma)
+TEST(ParserTest, InvalidInputMissingComma) {
+    std::stringstream input("(1.0 2.0)\n");
+
+    // Parse the input
+    ASSERT_EQ(parsePoint(input)(1), States::InputState::IncorrectInput);
+}
+
+// Test the parser with invalid input (missing parenthesis)
+TEST(ParserTest, InvalidInputMissingParenthesis) {
+    std::stringstream input("1.0, 2.0)\n");
+
+    ASSERT_EQ(parsePoint(input)(1), States::InputState::IncorrectFormat);
+}
+
+TEST(IntersectionTest, NoIntersection) {
+    // Create two triangles that do not intersect
+    Polygon triangle1{{Point(0, 0), Point(1, 0), Point(0, 1)}};
+    Polygon triangle2{{Point(2, 0), Point(3, 0), Point(2, 1)}};
+
+    // Compute the intersection of the triangles
+    Polygon intersection = findTriangleInter(triangle1, triangle2);
+
+    // Check that the intersection is empty
+    ASSERT_EQ(intersection.size(), 0);
+}
+
+TEST(IntersectionTest, SinglePointIntersection) {
+    // Create two triangles that intersect at a single point
+    Polygon triangle1{{Point(0, 0), Point(1, 0), Point(0, 1)}};
+    Polygon triangle2{{Point(0.5, 0.5), Point(1.5, 0.5), Point(0.5, 1.5)}};
+
+    // Compute the intersection of the triangles
+    Polygon intersection = findTriangleInter(triangle1, triangle2);
+
+    // Check that the intersection contains a single point
+    ASSERT_EQ(intersection.size(), 1);
+    EXPECT_EQ(intersection[0], Point(0.5, 0.5));
+}
+
+TEST(IntersectionTest, SingleLineIntersection) {
+    // Create two triangles that intersect along a single edge
+    Polygon triangle1{{Point(0, 0), Point(1, 0), Point(0, 1)}};
+    Polygon triangle2{{Point(0, 0), Point(1, 0), Point(1, 1)}};
+
+    // Compute the intersection of the triangles
+    Polygon intersection = findTriangleInter(triangle1, triangle2);
+
+    // Check that the intersection contains a single edge
+    ASSERT_EQ(intersection.size(), 2);
+    EXPECT_EQ(intersection[0], Point(0, 0));
+    EXPECT_EQ(intersection[1], Point(1, 0));
+}
+
+TEST(IntersectionTest, OverlappingTriangle) {
+    // Create two triangles where one is completely contained in the other
+    Polygon triangle1{{Point(0, 0), Point(2, 0), Point(0, 2)}};
+    Polygon triangle2{{Point(1, 1), Point(3, 1), Point(1, 3)}};
+
+    // Compute the intersection of the triangles
+    Polygon intersection = findTriangleInter(triangle1, triangle2);
+
+    // Check that the intersection is the same as the smaller triangle
+    ASSERT_EQ(intersection.size(), 3);
+    EXPECT_EQ(intersection, triangle2);
+}
+
 
 // Tests for the Point class
 TEST(PointTest, DefaultConstructor) {
