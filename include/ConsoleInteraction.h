@@ -10,7 +10,7 @@ namespace Interaction {
               skipToTriangle2(Geometry::Letters::D),
               skipToIntersection(Geometry::Letters::G);
 
-    void greeting(std::string userName);
+    void greeting();
     std::string getUserName();
     triangle_result_t getTriangle(int numberOfTriangle);
     point_result_t getPoint(Geometry::Letters letter);

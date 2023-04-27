@@ -11,7 +11,8 @@ using std::string;
 const string g_letters = "ABCDEFGHKLMN";
 
 namespace Interaction {
-    void greeting(string userName) {
+    void greeting() {
+        string userName = getUserName();
         userName = Parsing::parseStringFromIndent(userName);
         auto inputState = Parsing::checkStringIsEmpty(userName);
         if (inputState == States::InputState::EmptyString)
