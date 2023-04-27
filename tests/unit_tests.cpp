@@ -10,21 +10,19 @@
  using namespace Interaction;
 
  TEST(ParserTest, ValidInput) {
-    std::string input("(1.0, 2.0)\n");
-
-    // Create expected points
-    Point p1(1.0, 2.0);
+    std::string input("(1.0, 2.0)");
+    std::string result("(1.0 2.0)");
 
     // Parse the input
     Point actualPoint = get<0>(Parsing::parsePoint(input));
 
     // Check if the parsed points match the expected points
-    ASSERT_EQ(actualPoint, p1);
+    ASSERT_EQ(actualPoint, result);
 }
 
 // Test the parser with invalid input (missing comma)
 TEST(ParserTest, InvalidInputMissingComma) {
-    std::string input("(1.0 2.0)\n");
+    std::string input("(1.0 2.0)");
 
     // Parse the input
     ASSERT_EQ(get<1>(Parsing::parsePoint(input)), States::InputState::IncorrectInput);
@@ -32,7 +30,7 @@ TEST(ParserTest, InvalidInputMissingComma) {
 
 // Test the parser with invalid input (missing parenthesis)
 TEST(ParserTest, InvalidInputMissingParenthesis) {
-    std::string input("1.0, 2.0)\n");
+    std::string input("1.0, 2.0)");
 
     ASSERT_EQ(get<1>(Parsing::parsePoint(input)), States::InputState::IncorrectFormat);
 }
