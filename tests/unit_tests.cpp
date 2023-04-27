@@ -16,7 +16,7 @@
     Point p1(1.0, 2.0);
 
     // Parse the input
-    Point actualPoint = parsePoint(input)(0);
+    Point actualPoint = Parsing::parsePoint(input)(0);
 
     // Check if the parsed points match the expected points
     ASSERT_EQ(actualPoint, p1);
@@ -27,14 +27,14 @@ TEST(ParserTest, InvalidInputMissingComma) {
     std::stringstream input("(1.0 2.0)\n");
 
     // Parse the input
-    ASSERT_EQ(parsePoint(input)(1), States::InputState::IncorrectInput);
+    ASSERT_EQ(Parsing::parsePoint(input)(1), States::InputState::IncorrectInput);
 }
 
 // Test the parser with invalid input (missing parenthesis)
 TEST(ParserTest, InvalidInputMissingParenthesis) {
     std::stringstream input("1.0, 2.0)\n");
 
-    ASSERT_EQ(parsePoint(input)(1), States::InputState::IncorrectFormat);
+    ASSERT_EQ(Parsing::parsePoint(input)(1), States::InputState::IncorrectFormat);
 }
 
 TEST(IntersectionTest, NoIntersection) {
