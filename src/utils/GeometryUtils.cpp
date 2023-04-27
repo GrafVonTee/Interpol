@@ -161,6 +161,7 @@ namespace Geometry {
         return !(*this == other);
     }
 
+    // Polygon Implementation
     Polygon::Polygon(const std::vector<Point> &points) {
         if (points.size() > 6)
             throw std::runtime_error("Invalid number of points!");
@@ -230,5 +231,33 @@ namespace Geometry {
             other.m_state = States::PolygonState::NotPolygon;
         }
         return *this;
+    }
+
+    bool Polygon::operator==(const Polygon &other) const {
+        if (this->size() != other.size())
+            return false;
+
+        for (size_t i = 0; i < this->size(); ++i)
+            if (this->m_pointList[i] != other[i])
+                return false;
+        return true;
+    }
+
+    bool Polygon::operator==(Polygon &&other) const noexcept {
+        if (this->size() != other.size())
+            return false;
+
+        for (size_t i = 0; i < this->size(); ++i)
+            if (this->m_pointList[i] != other[i])
+                return false;
+        return true;
+    }
+
+    bool Polygon::operator!=(const Polygon &other) const {
+        return !(*this == other);
+    }
+
+    bool Polygon::operator!=(Polygon &&other) const noexcept {
+        return !(*this == other);
     }
 }

@@ -100,11 +100,14 @@ namespace Geometry {
         // operators
         friend std::ostream& operator<<(std::ostream &out, const Polygon &polygon);
         Point& operator[](size_t index);
-
-        Polygon& operator=(const Polygon &other);
+        Polygon& operator=(const Polygon& other);
         Polygon& operator=(Polygon&& other) noexcept;
-
         const Point& operator[](size_t index) const;
+
+        bool operator==(const Polygon& other) const;
+        bool operator==(Polygon&& other) const noexcept;
+        bool operator!=(const Polygon &other) const;
+        bool operator!=(Polygon&& other) const noexcept;
     };
 
     struct Intersection {
