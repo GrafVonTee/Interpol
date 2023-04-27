@@ -7,7 +7,6 @@
 #include "StatesUtils.h"
 
 using coord_t = long double;
-#define COORD_T_IS_LONG_DOUBLE
 
 namespace Geometry {
     class Point {
