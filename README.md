@@ -5,4 +5,4 @@ Developed by:
 - Nikolay Krasilnikov (@Kitsumetri)
 - Ilya Kuznetsov (@Ilya-Kuznetsov2)
 - Daniil Yeryomenko (@DanTimson)
-- Alexander Yulin
+- Alexander Yulin (@Alxyll)
