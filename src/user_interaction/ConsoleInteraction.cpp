@@ -160,22 +160,15 @@ namespace Interaction {
     }
 
     std::string getTypeNameOfPolygon(const States::PolygonState state) {
-        using PState = States::PolygonState;
-        switch (state) {
-            case PState::NotPolygon:
-                return "not a polygon";
-            case PState::Point:
-                return "point";
-            case PState::Edge:
-                return "edge";
-            case PState::Triangle:
-                return "triangle";
-            case PState::Quadrilateral:
-                return "quadrilateral";
-            case PState::Pentagon:
-                return "pentagon";
-            case PState::Hexagon:
-                return "hexagon";
-        }
+        std::string polygonTypes[] {
+            "not a polygon",
+            "point",
+            "edge",
+            "triangle",
+            "quadrilateral",
+            "pentagon",
+            "hexagon",
+        };
+        return polygonTypes[(unsigned int)state];
     }
 }
