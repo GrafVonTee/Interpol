@@ -1,4 +1,5 @@
 #include <string>
+#include <algorithm>
 #include <tuple>
 #include "GeometryUtils.h"
 #include "Parsing.h"
