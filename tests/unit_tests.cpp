@@ -1,5 +1,3 @@
-#include <tuple>
-#include <string>
 #include "gtest/gtest.h"
 #include "GeometryUtils.h"
 #include "StatesUtils.h"
@@ -18,7 +16,7 @@
     Point p1(1.0, 2.0);
 
     // Parse the input
-    Point actualPoint = Parsing::parsePoint(input)(0);
+    Point actualPoint = get<0>(Parsing::parsePoint(input));
 
     // Check if the parsed points match the expected points
     ASSERT_EQ(actualPoint, p1);
@@ -29,14 +27,14 @@ TEST(ParserTest, InvalidInputMissingComma) {
     std::string input("(1.0 2.0)\n");
 
     // Parse the input
-    ASSERT_EQ(Parsing::parsePoint(input)(1), States::InputState::IncorrectInput);
+    ASSERT_EQ(get<1>(Parsing::parsePoint(input)), States::InputState::IncorrectInput);
 }
 
 // Test the parser with invalid input (missing parenthesis)
 TEST(ParserTest, InvalidInputMissingParenthesis) {
     std::string input("1.0, 2.0)\n");
 
-    ASSERT_EQ(Parsing::parsePoint(input)(1), States::InputState::IncorrectFormat);
+    ASSERT_EQ(get<1>(Parsing::parsePoint(input)), States::InputState::IncorrectFormat);
 }
 
 TEST(IntersectionTest, NoIntersection) {
