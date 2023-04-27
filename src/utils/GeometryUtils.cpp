@@ -214,4 +214,21 @@ namespace Geometry {
     std::vector<Point> Polygon::getPointsCopy() {
         return m_pointList;
     }
+
+    Polygon& Polygon::operator=(const Polygon &other) {
+        if (this != &other) {
+            m_pointList = other.m_pointList;
+            m_state = other.m_state;
+        }
+        return *this;
+    }
+
+    Polygon& Polygon::operator=(Polygon &&other) noexcept {
+        if (this != &other) {
+            m_pointList = std::move(other.m_pointList);
+            m_state = other.m_state;
+            other.m_state = States::PolygonState::NotPolygon;
+        }
+        return *this;
+    }
 }
