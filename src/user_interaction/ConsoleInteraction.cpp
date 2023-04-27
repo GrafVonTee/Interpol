@@ -1,19 +1,16 @@
 #include <iostream>
-#include <string>
 #include <sstream>
-#include <tuple>
 #include "GeometryUtils.h"
 #include "ConsoleInteraction.h"
 #include "Parsing.h"
 
 using std::cout, std::cin, std::endl, std::cerr;
-using std::string;
 
-const string g_letters = "ABCDEFGHKLMN";
+const std::string g_letters = "ABCDEFGHKLMN";
 
 namespace Interaction {
     void greeting() {
-        string userName = getUserName();
+        std::string userName = getUserName();
         userName = Parsing::parseStringFromIndent(userName);
         auto inputState = Parsing::checkStringIsEmpty(userName);
         if (inputState == States::InputState::EmptyString)
@@ -26,9 +23,9 @@ namespace Interaction {
         cout << endl;
     }
 
-    string getUserName() {
+    std::string getUserName() {
         cout << "Please, enter your name if you wish (otherwise just press Enter): ";
-        string userName;
+        std::string userName;
         std::getline(cin, userName);
         cout << endl;
         return userName;
@@ -75,7 +72,7 @@ namespace Interaction {
             throw std::out_of_range("Unexpected letter!");
 
         cout << "Please, enter new point " << g_letters[letter] << " in \'(x, y)\' format: ";
-        string inputStr;
+        std::string inputStr;
         std::getline(cin, inputStr);
         // cin.ignore();
 

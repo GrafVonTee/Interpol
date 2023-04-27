@@ -1,6 +1,9 @@
 #ifndef TRIANGLE_INTERSECTIONS_CONSOLE_INTERACTION_H
 #define TRIANGLE_INTERSECTIONS_CONSOLE_INTERACTION_H
 
+#include <tuple>
+#include <string>
+
 namespace Interaction {
     using point_result_t = std::tuple<Geometry::Point, States::InputState>;
     using triangle_result_t = std::tuple<Geometry::Polygon, States::InputState>;
