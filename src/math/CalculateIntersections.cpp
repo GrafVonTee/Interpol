@@ -2,6 +2,7 @@
 
 namespace Math {
 
+    using namespace Geometry;
 
     coord_t det(coord_t a1, coord_t a2, coord_t b1, coord_t b2) {
         return a1 * b2 - a2 * b1;
@@ -23,20 +24,13 @@ namespace Math {
 
         for (size_t edge = 0; edge < figure.size(); edge++) {
 
-            if (figure[edge].getY() == point.getY() && figure[(edge + 1) % figure.size()].getY() == point.getY()) {
-                return false;
-            }
-
             if (min(figure[edge].getY(), figure[(edge + 1) % figure.size()].getY()) <= point.getY() && \
             max(figure[edge].getY(), figure[(edge + 1) % figure.size()].getY()) >= point.getY()) {
 
-                if (figure[edge].getX() - figure[(edge + 1) % figure.size()].getX() == 0) {
+                if (figure[edge].getY() - figure[(edge + 1) % figure.size()].getY() == 0) {
 
-                    if (figure[edge].getX() <= point.getX()) {
-                        left = true;
-                    } else if (figure[edge].getX() >= point.getX()) {
-                        right = true;
-                    }
+                    return (figure[edge].getX() - point.getX()) *
+                           (figure[(edge + 1) % figure.size()].getX() - point.getX()) == (-1);
 
                 } else {
 
@@ -51,6 +45,9 @@ namespace Math {
                         dY = point.getY() - figure[(edge + 1) % figure.size()].getY();
                     }
                     interX = X0 + k * dY;
+                    if (interX == point.getX()){
+                        return true;
+                    }
                     if (interX <= point.getX()) {
                         left = true;
                     } else if (interX >= point.getX()) {
