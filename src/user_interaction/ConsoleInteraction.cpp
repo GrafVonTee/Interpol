@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
-#include <regex>
+#include <sstream>
+#include <tuple>
 #include "GeometryUtils.h"
 #include "ConsoleInteraction.h"
 #include "Parsing.h"
