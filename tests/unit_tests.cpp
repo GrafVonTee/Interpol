@@ -70,7 +70,7 @@ TEST(IntersectionTest, SingleLineIntersection) {
     Intersection intersection = findTriangleInter(triangle1, triangle2);
 
     // Check that the intersection contains a single edge
-    ASSERT_EQ(intersection.size(), 2);
+    ASSERT_EQ(intersection.polygon.size(), 2);
     ASSERT_EQ(intersection.state, States::IntersectionState::Polygon);
     EXPECT_EQ(intersection.polygon[1], Point(1, 0));
 }
@@ -84,7 +84,7 @@ TEST(IntersectionTest, OverlappingTriangle) {
     Intersection intersection = findTriangleInter(triangle1, triangle2);
 
     // Check that the intersection is the same as the smaller triangle
-    ASSERT_EQ(intersection.size(), 3);
+    ASSERT_EQ(intersection.polygon.size(), 3);
     ASSERT_EQ(intersection.state, States::IntersectionState::Nested);
     EXPECT_EQ(intersection.polygon, triangle2);
 }
