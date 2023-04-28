@@ -1,5 +1,6 @@
 #include "GeometryUtils.h"
 #include <cmath>
+#include <algorithm>
 
 namespace Geometry {
     Point::Point(const coord_t &x, const coord_t &y)
@@ -164,9 +165,11 @@ namespace Geometry {
 
     // Polygon Implementation
     Polygon::Polygon(const std::vector<Point> &points) {
-        checkPolygon(points);
+        if (!points.empty())
+            checkPolygon(points);
         m_pointList = points;
-        sortPoints();
+        if (!points.empty())
+            sortPoints();
         m_state = States::PolygonState(points.size());
     }
 

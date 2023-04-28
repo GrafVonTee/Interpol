@@ -78,60 +78,6 @@ namespace Math {
         }
     }
 
-    /*std::vector<Point> sortPoints(std::vector<Point> list) {
-
-        std::vector<Point> result;
-        std::vector<Point> remnant = list;
-        result.push_back(remnant[0]);
-        remnant.erase(remnant.begin());
-        size_t n = remnant.size();
-        bool rightEdge;
-        bool notARightPoint = false;
-
-        for (size_t iter = 0; iter < n; iter++) {
-
-            for (size_t checkingPoint = 0; checkingPoint < n - iter; checkingPoint++) {
-
-                rightEdge = true;
-
-                for (size_t startEdge = 0; startEdge < list.size(); startEdge++) {
-
-                    if (!rightEdge) {
-                        break;
-                    }
-
-                    for (size_t endEdge = 0; endEdge < list.size(); endEdge++) {
-
-                        if (startEdge != endEdge && list[startEdge] != result[iter] &&
-                            list[startEdge] != remnant[checkingPoint] && \
-                        list[endEdge] != result[iter] && list[endEdge] != remnant[checkingPoint]) {
-
-                            findLinesInter(result[iter], remnant[checkingPoint], list[startEdge], list[endEdge],
-                                           notARightPoint);
-
-                            if (notARightPoint) {
-                                notARightPoint = false;
-                                rightEdge = false;
-                                break;
-
-                            }
-
-                        }
-
-                    }
-
-                }
-
-                if (rightEdge) {
-                    result.push_back(remnant[checkingPoint]);
-                    remnant.erase(remnant.begin() + checkingPoint);
-                    break;
-
-                }
-            }
-        }
-        return result;
-    }*/
 
     bool MinKey(Point& first, Point& second){
 
@@ -248,10 +194,6 @@ namespace Math {
 
         if (listOfInterPoints.empty()) {
             return Intersection{States::IntersectionState::NoIntersection, Polygon(listOfInterPoints)};
-        }
-
-        if (listOfInterPoints.size() > 3) {
-            sortPoints(listOfInterPoints);
         }
 
         return Intersection{States::IntersectionState::Polygon, Polygon(listOfInterPoints)};
