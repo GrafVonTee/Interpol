@@ -113,7 +113,7 @@ namespace Geometry {
         bool operator==(Polygon &&other) const noexcept;
         bool operator!=(const Polygon &other) const;
         bool operator!=(Polygon &&other) const noexcept;
-    }
+    };
 
 
     struct Intersection {
