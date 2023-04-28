@@ -3,5 +3,32 @@ project(triangle_intersections)
 
 set(CMAKE_CXX_STANDARD 20)
 
+<<<<<<< Updated upstream
 add_executable(triangle_intersections
         src/main.cpp)
+=======
+# Define Google Test library
+add_library(gtest STATIC googletest-main/googletest/src/gtest-all.cc googletest-main/googletest/src/gtest_main.cc)
+
+# Add include directories for Google Test library
+target_include_directories(gtest PUBLIC googletest-main/googletest/include)
+target_include_directories(gtest PUBLIC googletest-main/googletest)
+
+add_executable(
+        unit_tests
+        tests/unit_tests.cpp
+        src/utils/GeometryUtils.cpp
+        src/utils/StatesUtils.cpp
+        src/user_interaction/ConsoleInteraction.cpp
+        src/user_interaction/Parsing.cpp
+        src/CalculateIntersections.cpp
+        src/build_image.cpp)
+
+target_include_directories(unit_tests PUBLIC googletest-main/include)
+target_include_directories(unit_tests PUBLIC include)
+
+target_link_libraries(
+        unit_tests
+        gtest
+)
+>>>>>>> Stashed changes
