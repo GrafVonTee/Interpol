@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <cmath>
 #include "GeometryUtils.h"
 #include "StatesUtils.h"
 
@@ -21,8 +22,9 @@ namespace Math{
     //Adding into vector all vertex of "internal" polygon which is locating into "external polygon"
     void addInsideVertex(std::vector<Geometry::Point>& list, Geometry::Polygon& internal, Geometry::Polygon& external);
 
+    bool MixKey(Geometry::Point& first, Geometry::Point& second);
     //Called when we already know all points of intersection, we sort their in right to output order
-    std::vector<Geometry::Point> sortPoints(std::vector<Geometry::Point> list);
+    void sortPoints(std::vector<Geometry::Point>& list);
 
     //Important case - it is when 2 lines not parallel and sections have intersection. If case is important, we get coords of intersection point, else we get (0,0) point
     Geometry::Point findLinesInter(Geometry::Point& firstStart, Geometry::Point& firstEnd,\

@@ -17,7 +17,7 @@ add_executable(
         src/utils/StatesUtils.cpp
         src/user_interaction/ConsoleInteraction.cpp
         src/user_interaction/Parsing.cpp
-        src/CalculateIntersections.cpp
+        src/math/CalculateIntersections.cpp
 )
 
 target_include_directories(unit_tests PUBLIC googletest-main/include)
@@ -27,3 +27,11 @@ target_link_libraries(
         unit_tests
         gtest
 )
+add_executable(
+        triangle_intersection
+        src/main.cpp
+        src/utils/GeometryUtils.cpp
+        src/utils/StatesUtils.cpp
+        src/math/CalculateIntersections.cpp
+)
+target_include_directories(triangle_intersection PUBLIC include)

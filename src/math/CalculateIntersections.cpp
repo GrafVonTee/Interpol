@@ -36,6 +36,7 @@ namespace Math {
 
                     k = (figure[(edge + 1) % figure.size()].getX() - figure[edge].getX()) /
                         (figure[(edge + 1) % figure.size()].getY() - figure[edge].getY());
+
                     if (figure[edge].getY() ==
                         min(figure[edge].getY(), figure[(edge + 1) % figure.size()].getY())) {
                         X0 = figure[edge].getX();
@@ -44,17 +45,22 @@ namespace Math {
                         X0 = figure[(edge + 1) % figure.size()].getX();
                         dY = point.getY() - figure[(edge + 1) % figure.size()].getY();
                     }
+
                     interX = X0 + k * dY;
+
                     if (interX == point.getX()){
                         return true;
                     }
+
                     if (interX <= point.getX()) {
                         left = true;
                     } else if (interX >= point.getX()) {
                         right = true;
                     }
+
                 }
             }
+
             if (left && right) {
                 return true;
             }
@@ -72,7 +78,7 @@ namespace Math {
         }
     }
 
-    std::vector<Point> sortPoints(std::vector<Point> list) {
+    /*std::vector<Point> sortPoints(std::vector<Point> list) {
 
         std::vector<Point> result;
         std::vector<Point> remnant = list;
@@ -125,6 +131,30 @@ namespace Math {
             }
         }
         return result;
+    }*/
+
+    bool MinKey(Point& first, Point& second){
+
+        if (first.getY()<second.getY()){
+            return true;
+        }
+        else if (first.getY()==second.getY()){
+            if (first.getX()<second.getX())
+                return true;
+        }
+
+        return false;
+    }
+
+    void sortPoints(std::vector<Point>& list){
+
+        auto iterator =std::min_element(list.begin(),list.end(),MinKey);
+        Point center=*iterator;
+        list.erase(iterator);
+        std::sort(list.begin(), list.end(),[center](Point& first, Point& second)\
+        {return atan2(first.getY()-center.getY(),first.getX()-center.getX())>atan2(second.getY()-center.getY(),second.getX()-center.getX());});
+        list.insert(list.begin(), center);
+
     }
 
     Point findLinesInter(Point &firstStart, Point &firstEnd, \
@@ -221,7 +251,7 @@ namespace Math {
         }
 
         if (listOfInterPoints.size() > 3) {
-            listOfInterPoints = sortPoints(listOfInterPoints);
+            sortPoints(listOfInterPoints);
         }
 
         return Intersection{States::IntersectionState::Polygon, Polygon(listOfInterPoints)};
