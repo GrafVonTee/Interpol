@@ -172,7 +172,6 @@ namespace Math {
         if (listOfInterPoints.empty()) {
             return Intersection{States::IntersectionState::NoIntersection, Polygon(listOfInterPoints)};
         }
-
         return Intersection{States::IntersectionState::Polygon, Polygon(listOfInterPoints)};
     }
 
