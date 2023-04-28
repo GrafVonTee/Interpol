@@ -44,7 +44,7 @@ TEST(IntersectionTest, NoIntersection) {
     Intersection intersection = findTriangleInter(triangle1, triangle2);
 
     // Check that the intersection is empty
-    ASSERT_EQ(intersection.size(), 0);
+    ASSERT_EQ(intersection.polygon.size(), 0);
 }
 
 TEST(IntersectionTest, SinglePointIntersection) {
