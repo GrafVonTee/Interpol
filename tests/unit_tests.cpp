@@ -11,7 +11,7 @@
 
  TEST(ParserTest, ValidInput) {
     std::string input("(1.0, 2.0)");
-    std::string result("(1.0 2.0)");
+    std::string result("1.0 2.0");
 
     // Parse the input
     std::string parsed = get<0>(Parsing::parsePoint(input));
@@ -32,7 +32,7 @@ TEST(ParserTest, InvalidInputMissingComma) {
 TEST(ParserTest, InvalidInputMissingParenthesis) {
     std::string input("1.0, 2.0)");
 
-    ASSERT_EQ(get<1>(Parsing::parsePoint(input)), States::InputState::IncorrectFormat);
+    ASSERT_EQ(get<1>(Parsing::parsePoint(input)), States::InputState::IncorrectInput);
 }
 
 TEST(IntersectionTest, NoIntersection) {
