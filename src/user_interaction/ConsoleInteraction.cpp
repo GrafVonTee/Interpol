@@ -50,21 +50,17 @@ namespace Interaction {
             points.push_back(point);
         }
 
-        if (!checkPointsAreUnique(points)) {
-            cerr << "You entered some equal points!\nPlease, reenter with unique ones!" << endl;
-            return std::make_tuple(Geometry::Polygon(), States::InputState::EqualPoints);
+        Geometry::Polygon polygon;
+        States::InputState state = States::InputState::Correct;
+        try {
+            polygon = Geometry::Polygon(points);
+        } catch (const std::logic_error& e) {
+            cerr << e.what() << endl;
+            polygon = Geometry::Polygon();
+            state = States::InputState::IncorrectInput;
         }
 
-        return std::make_tuple(Geometry::Polygon(points), States::InputState::Correct);
-    }
-
-    bool checkPointsAreUnique(const std::vector<Geometry::Point> &vec) {
-        for (auto i = 0; i < vec.size(); ++i)
-            for (auto j = i + 1; j < vec.size(); ++j) {
-                if (vec[i] == vec[j])
-                    return false;
-            }
-        return true;
+        return std::make_tuple(polygon, state);
     }
 
     point_result_t getPoint(Geometry::Letters letter) {
@@ -80,7 +76,6 @@ namespace Interaction {
 
         switch (state) {
             case States::InputState::IncorrectInput:
-            case States::InputState::IncorrectFormat:
                 cerr << "Incorrect input! Please, enter values in CORRECT foramt \'(x, y)\'!" << endl;
                 return std::make_tuple(Geometry::Point(), state);
             case States::InputState::EmptyString:
