@@ -41,7 +41,7 @@ TEST(IntersectionTest, NoIntersection) {
     Polygon triangle2{{Point(2, 0), Point(3, 0), Point(2, 1)}};
 
     // Compute the intersection of the triangles
-    Polygon intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findTriangleInter(triangle1, triangle2);
 
     // Check that the intersection is empty
     ASSERT_EQ(intersection.size(), 0);
@@ -53,11 +53,12 @@ TEST(IntersectionTest, SinglePointIntersection) {
     Polygon triangle2{{Point(0.5, 0.5), Point(1.5, 0.5), Point(0.5, 1.5)}};
 
     // Compute the intersection of the triangles
-    Polygon intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findTriangleInter(triangle1, triangle2);
 
     // Check that the intersection contains a single point
-    ASSERT_EQ(intersection.size(), 1);
-    EXPECT_EQ(intersection[0], Point(0.5, 0.5));
+    ASSERT_EQ(intersection.polygon.size(), 1);
+    ASSERT_EQ(intersection.state, States::IntersectionState::Polygon);
+    EXPECT_EQ(intersection.polygon[0], Point(0.5, 0.5));
 }
 
 TEST(IntersectionTest, SingleLineIntersection) {
@@ -66,12 +67,12 @@ TEST(IntersectionTest, SingleLineIntersection) {
     Polygon triangle2{{Point(0, 0), Point(1, 0), Point(1, 1)}};
 
     // Compute the intersection of the triangles
-    Polygon intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findTriangleInter(triangle1, triangle2);
 
     // Check that the intersection contains a single edge
     ASSERT_EQ(intersection.size(), 2);
-    EXPECT_EQ(intersection[0], Point(0, 0));
-    EXPECT_EQ(intersection[1], Point(1, 0));
+    ASSERT_EQ(intersection.state, States::IntersectionState::Polygon);
+    EXPECT_EQ(intersection.polygon[1], Point(1, 0));
 }
 
 TEST(IntersectionTest, OverlappingTriangle) {
@@ -80,11 +81,12 @@ TEST(IntersectionTest, OverlappingTriangle) {
     Polygon triangle2{{Point(1, 1), Point(3, 1), Point(1, 3)}};
 
     // Compute the intersection of the triangles
-    Polygon intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findTriangleInter(triangle1, triangle2);
 
     // Check that the intersection is the same as the smaller triangle
     ASSERT_EQ(intersection.size(), 3);
-    EXPECT_EQ(intersection, triangle2);
+    ASSERT_EQ(intersection.state, States::IntersectionState::Nested);
+    EXPECT_EQ(intersection.polygon, triangle2);
 }
 
 
