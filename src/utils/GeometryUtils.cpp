@@ -165,7 +165,7 @@ namespace Geometry {
 
     // Polygon Implementation
     Polygon::Polygon(const std::vector<Point> &points) {
-        if (points.size()>1)
+        if (points.size()>1 && !(points.size()==2 && points[0]!=points[1]))
             checkPolygon(points);
         m_pointList = points;
         if (!points.empty())
