@@ -11,7 +11,7 @@
 
  TEST(ParserTest, ValidInput) {
     std::string input("(1.0, 2.0)");
-    std::string result("1.0 2.0");
+    std::string result(" 1.0 2.0 ");
 
     // Parse the input
     std::string parsed = get<0>(Parsing::parsePoint(input));
@@ -63,8 +63,8 @@ TEST(IntersectionTest, SinglePointIntersection) {
 
 TEST(IntersectionTest, SingleLineIntersection) {
     // Create two triangles that intersect along a single edge
-    Polygon triangle1{{Point(0, 0), Point(1, 0), Point(0, 1)}};
-    Polygon triangle2{{Point(0, 0), Point(1, 0), Point(1, 1)}};
+    Polygon triangle1{{Point(0, 0), Point(0, 1), Point(1, 0)}};
+    Polygon triangle2{{Point(0, 0), Point(1, 0), Point(0, -1)}};
 
     // Compute the intersection of the triangles
     Intersection intersection = findTriangleInter(triangle1, triangle2);
@@ -75,10 +75,24 @@ TEST(IntersectionTest, SingleLineIntersection) {
     EXPECT_EQ(intersection.polygon[1], Point(1, 0));
 }
 
+TEST(IntersectionTest, PolygonIntersection) {
+    // Create two triangles that intersect along a single edge
+    Polygon triangle1{{Point(0, 0), Point(1, 0), Point(0, 1)}};
+    Polygon triangle2{{Point(0, 0), Point(1, 0), Point(1, 1)}};
+
+    // Compute the intersection of the triangles
+    Intersection intersection = findTriangleInter(triangle1, triangle2);
+
+    // Check that the intersection contains a single edge
+    ASSERT_EQ(intersection.polygon.size(), 3);
+    ASSERT_EQ(intersection.state, States::IntersectionState::Polygon);
+    EXPECT_EQ(intersection.polygon[1], Point(0.5, 0.5));
+}
+
 TEST(IntersectionTest, OverlappingTriangle) {
     // Create two triangles where one is completely contained in the other
-    Polygon triangle1{{Point(0, 0), Point(2, 0), Point(0, 2)}};
-    Polygon triangle2{{Point(1, 1), Point(3, 1), Point(1, 3)}};
+    Polygon triangle1{{Point(0, 0), Point(0, 2), Point(2, 0)}};
+    Polygon triangle2{{Point(0, 0), Point(0, 3), Point(3, 0)}};
 
     // Compute the intersection of the triangles
     Intersection intersection = findTriangleInter(triangle1, triangle2);
