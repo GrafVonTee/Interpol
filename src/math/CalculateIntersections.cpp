@@ -79,29 +79,6 @@ namespace Math {
     }
 
 
-    bool MinKey(Point& first, Point& second){
-
-        if (first.getY()<second.getY()){
-            return true;
-        }
-        else if (first.getY()==second.getY()){
-            if (first.getX()<second.getX())
-                return true;
-        }
-
-        return false;
-    }
-
-    void sortPoints(std::vector<Point>& list){
-
-        auto iterator =std::min_element(list.begin(),list.end(),MinKey);
-        Point center=*iterator;
-        list.erase(iterator);
-        std::sort(list.begin(), list.end(),[center](Point& first, Point& second)\
-        {return atan2(first.getY()-center.getY(),first.getX()-center.getX())>atan2(second.getY()-center.getY(),second.getX()-center.getX());});
-        list.insert(list.begin(), center);
-
-    }
 
     Point findLinesInter(Point &firstStart, Point &firstEnd, \
          Point &secondStart, Point &secondEnd, bool &isImportantCase) {
