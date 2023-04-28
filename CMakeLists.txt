@@ -10,6 +10,7 @@ add_library(gtest STATIC googletest-main/googletest/src/gtest-all.cc googletest-
 target_include_directories(gtest PUBLIC googletest-main/googletest/include)
 target_include_directories(gtest PUBLIC googletest-main/googletest)
 
+# Define Unit Tests
 add_executable(
         unit_tests
         tests/unit_tests.cpp
@@ -27,11 +28,15 @@ target_link_libraries(
         unit_tests
         gtest
 )
+
+# Define main Program
 add_executable(
         triangle_intersection
         src/main.cpp
         src/utils/GeometryUtils.cpp
         src/utils/StatesUtils.cpp
-        src/math/CalculateIntersections.cpp
+        src/user_interaction/ConsoleInteraction.cpp
+        src/user_interaction/Parsing.cpp
 )
+
 target_include_directories(triangle_intersection PUBLIC include)
