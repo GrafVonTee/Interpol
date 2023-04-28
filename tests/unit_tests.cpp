@@ -100,7 +100,7 @@ TEST(IntersectionTest, OverlappingTriangle) {
     // Check that the intersection is the same as the smaller triangle
     ASSERT_EQ(intersection.polygon.size(), 3);
     ASSERT_EQ(intersection.state, States::IntersectionState::Nested);
-    EXPECT_EQ(intersection.polygon, triangle2);
+    EXPECT_EQ(intersection.polygon, triangle1);
 }
 
 
