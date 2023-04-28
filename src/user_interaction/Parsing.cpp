@@ -34,12 +34,12 @@ namespace Parsing {
 
         auto pointer_to_comma = std::find(input.begin(), input.end(), ',');
         if (pointer_to_comma == input.end())
-            return std::make_tuple(input, States::InputState::IncorrectFormat);
+            return std::make_tuple(input, States::InputState::IncorrectInput);
 
         parser << input;
         std::getline(parser, input, ',');
         if (input[0] != '(')
-            return std::make_tuple(input, States::InputState::IncorrectFormat);
+            return std::make_tuple(input, States::InputState::IncorrectInput);
 
         input[0] = ' ';
         if (!isNumber(input))
@@ -49,7 +49,7 @@ namespace Parsing {
 
         std::getline(parser, input, ',');
         if (!input.ends_with(')'))
-            return std::make_tuple(input, States::InputState::IncorrectFormat);
+            return std::make_tuple(input, States::InputState::IncorrectInput);
 
         input.back() = ' ';
         if (!isNumber(input))
