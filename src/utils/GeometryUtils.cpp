@@ -95,7 +95,7 @@ namespace Geometry {
     Edge::Edge(Point &&left, Point &&right)
     {
         if (left == right)
-            throw std::runtime_error("Points must be different!");
+            throw std::logic_error("Points must be different!");
 
         m_left = std::move(left);
         m_right = std::move(right);
@@ -114,13 +114,13 @@ namespace Geometry {
 
     void Edge::setLeft(const Point &left) {
         if (left == m_right)
-            throw std::runtime_error("Points must be different!");
+            throw std::logic_error("Points must be different!");
         m_left = left;
     }
 
     void Edge::setRight(const Point &right) {
         if (right == m_left)
-            throw std::runtime_error("Points must be different!");
+            throw std::logic_error("Points must be different!");
         m_right = right;
     }
 
@@ -163,9 +163,7 @@ namespace Geometry {
 
     // Polygon Implementation
     Polygon::Polygon(const std::vector<Point> &points) {
-        if (points.size() > 6)
-            throw std::runtime_error("Invalid number of points!");
-
+        checkPolygon(points);
         m_pointList = points;
         m_state = States::PolygonState(points.size());
     }
@@ -198,13 +196,13 @@ namespace Geometry {
 
     Point& Polygon::operator[](size_t index) {
         if (index >= this->size())
-            throw std::runtime_error("Invalid index!");
+            throw std::range_error("Invalid index!");
         return m_pointList[index];
     }
 
     const Point& Polygon::operator[](size_t index) const {
         if (index >= this->size())
-            throw std::runtime_error("Invalid index!");
+            throw std::range_error("Invalid index!");
         return m_pointList[index];
     }
 
@@ -259,5 +257,28 @@ namespace Geometry {
 
     bool Polygon::operator!=(Polygon &&other) const noexcept {
         return !(*this == other);
+    }
+
+    void Polygon::checkPolygon(const std::vector<Point>& points) {
+        if (points.size() > 6)
+            throw std::length_error("Invalid number of points!");
+
+        for (size_t i = 0; i < points.size(); ++i)
+            for (size_t j = i + 1; j < points.size(); ++j)
+                if (points[i] == points[j])
+                    throw std::logic_error("Points must be different!");
+
+        for (size_t i = 0; i < points.size() - 3; ++i)
+            checkPointsForPolygon(points[i], points[i+1], points[i+2]);
+
+        checkPointsForPolygon(points[points.size() - 1], points[0], points[1]); // FAB
+        checkPointsForPolygon(points[points.size() - 2], points[points.size() - 1], points[0]); // EFA
+    }
+
+    void Polygon::checkPointsForPolygon(const Point &p1, const Point &p2, const Point &p3) {
+        long double eps = 1e-20;
+        if (std::pow((p3.getX() - p1.getX()) / (p2.getX() - p1.getX())
+                     - (p3.getY() - p1.getY()) / (p2.getY() - p1.getY()), 2) <= eps)
+            throw std::logic_error("Points are located in one line!");
     }
 }

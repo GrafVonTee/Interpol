@@ -83,6 +83,9 @@ namespace Geometry {
         std::vector<Point> m_pointList {};
         States::PolygonState m_state = States::PolygonState::NotPolygon;
 
+        static void checkPolygon(const std::vector<Point>& points);
+        static void checkPointsForPolygon(const Point& p1, const Point& p2, const Point& p3);
+
     public:
         // Constructors
         Polygon() = default;
