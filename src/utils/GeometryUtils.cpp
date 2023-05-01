@@ -166,6 +166,7 @@ namespace Geometry {
     Polygon::Polygon(const std::vector<Point> &points) {
         checkPolygon(points);
         m_pointList = points;
+        sortPoints();
         m_state = States::PolygonState(points.size());
     }
 
@@ -281,5 +282,31 @@ namespace Geometry {
         if (std::pow((p3.getX() - p1.getX()) / (p2.getX() - p1.getX())
                      - (p3.getY() - p1.getY()) / (p2.getY() - p1.getY()), 2) <= eps)
             throw std::logic_error("Points are located in one line!");
+    }
+
+    bool MinKey(const Point& first, const Point& second) {
+        if (first.getY() < second.getY())
+            return true;
+        if ((first.getY() == second.getY()) && (first.getX() < second.getX()))
+            return true;
+        return false;
+    }
+
+
+    void Polygon::sortPoints() {
+        auto iterator = std::min_element(m_pointList.begin(),
+                                                        m_pointList.end(),
+                                                        MinKey);
+        Point center = *iterator;
+        m_pointList.erase(iterator);
+
+        std::sort(m_pointList.begin(),
+                  m_pointList.end(),
+                  [center](const Point &first, const Point &second)\
+ {
+                      return atan2(first.getY() - center.getY(), first.getX() - center.getX()) >
+                             atan2(second.getY() - center.getY(), second.getX() - center.getX());
+                  });
+        m_pointList.insert(m_pointList.begin(), center);
     }
 }
