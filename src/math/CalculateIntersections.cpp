@@ -8,7 +8,7 @@ namespace Math {
         return a1 * b2 - a2 * b1;
     }
 
-    void push_back_unique(std::vector<Point> &list, Point &point) {
+    void pushBackUnique(std::vector<Point> &list, Point &point) {
         if (std::find(list.begin(), list.end(), point) == list.end()) {
             list.push_back(point);
         }
@@ -22,28 +22,34 @@ namespace Math {
         coord_t k;
         coord_t X0, dY, interX;
 
-        for (size_t edge = 0; edge < figure.size(); edge++) {
+        for (size_t numberOfPoint = 0; numberOfPoint < figure.size(); numberOfPoint++) {
 
-            if (min(figure[edge].getY(), figure[(edge + 1) % figure.size()].getY()) <= point.getY() && \
-            max(figure[edge].getY(), figure[(edge + 1) % figure.size()].getY()) >= point.getY()) {
+            if (min(figure[numberOfPoint].getY(), figure[(numberOfPoint + 1) % figure.size()].getY()) <= point.getY() &&
+                max(figure[numberOfPoint].getY(), figure[(numberOfPoint + 1) % figure.size()].getY()) >= point.getY()) {
 
-                if (figure[edge].getY() - figure[(edge + 1) % figure.size()].getY() == 0) {
+                if (figure[numberOfPoint].getY() - figure[(numberOfPoint + 1) % figure.size()].getY() == 0) {
 
-                    return (figure[edge].getX() - point.getX()) *
-                           (figure[(edge + 1) % figure.size()].getX() - point.getX()) == (-1);
+                    //If our point and one edge of polygon are located in one horizontal line, we return true.
+                    //(if point is locating between vertex, that are bounding this edge)
 
-                } else {
+                    //In another case we return true, because the point not belong to the edge
 
-                    k = (figure[(edge + 1) % figure.size()].getX() - figure[edge].getX()) /
-                        (figure[(edge + 1) % figure.size()].getY() - figure[edge].getY());
+                    return (figure[numberOfPoint].getX() - point.getX()) *
+                           (figure[(numberOfPoint + 1) % figure.size()].getX() - point.getX()) == (-1);
 
-                    if (figure[edge].getY() ==
-                        min(figure[edge].getY(), figure[(edge + 1) % figure.size()].getY())) {
-                        X0 = figure[edge].getX();
-                        dY = point.getY() - figure[edge].getY();
+                }
+                else {
+
+                    k = (figure[(numberOfPoint + 1) % figure.size()].getX() - figure[numberOfPoint].getX()) /
+                        (figure[(numberOfPoint + 1) % figure.size()].getY() - figure[numberOfPoint].getY());
+
+                    if (figure[numberOfPoint].getY() ==
+                        min(figure[numberOfPoint].getY(), figure[(numberOfPoint + 1) % figure.size()].getY())) {
+                        X0 = figure[numberOfPoint].getX();
+                        dY = point.getY() - figure[numberOfPoint].getY();
                     } else {
-                        X0 = figure[(edge + 1) % figure.size()].getX();
-                        dY = point.getY() - figure[(edge + 1) % figure.size()].getY();
+                        X0 = figure[(numberOfPoint + 1) % figure.size()].getX();
+                        dY = point.getY() - figure[(numberOfPoint + 1) % figure.size()].getY();
                     }
 
                     interX = X0 + k * dY;
@@ -72,7 +78,7 @@ namespace Math {
         for (size_t vertex = 0; vertex < internal.size(); vertex++) {
 
             if (isPointInside(internal[vertex], external)) {
-                push_back_unique(list, internal[vertex]);
+                pushBackUnique(list, internal[vertex]);
             }
 
         }
@@ -161,7 +167,7 @@ namespace Math {
                                           second[(secondEdge + 1) % 3], isImportantCase);
 
                 if (isImportantCase) {
-                    push_back_unique(listOfInterPoints, newPoint);
+                    pushBackUnique(listOfInterPoints, newPoint);
                     isImportantCase = false;
                 }
 

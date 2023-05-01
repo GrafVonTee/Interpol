@@ -165,7 +165,7 @@ namespace Geometry {
 
     // Polygon Implementation
     Polygon::Polygon(const std::vector<Point> &points) {
-        if (points.size()>1 && !(points.size()==2 && points[0]!=points[1]))
+        if (points.size() > 1 && !(points.size() == 2 && points[0] != points[1]))
             checkPolygon(points);
         m_pointList = points;
         if (!points.empty())
@@ -287,7 +287,7 @@ namespace Geometry {
             throw std::logic_error("Points are located in one line!");
     }
 
-    bool MinKey(const Point& first, const Point& second) {
+    bool minKey(const Point& first, const Point& second) {
         if (first.getY() < second.getY())
             return true;
         if ((first.getY() == second.getY()) && (first.getX() < second.getX()))
@@ -297,19 +297,14 @@ namespace Geometry {
 
 
     void Polygon::sortPoints() {
-        auto iterator = std::min_element(m_pointList.begin(),
-                                                        m_pointList.end(),
-                                                        MinKey);
+        auto iterator = std::min_element(m_pointList.begin(),m_pointList.end(), minKey);
         Point center = *iterator;
         m_pointList.erase(iterator);
 
-        std::sort(m_pointList.begin(),
-                  m_pointList.end(),
-                  [center](const Point &first, const Point &second)\
- {
-                      return atan2(first.getY() - center.getY(), first.getX() - center.getX()) >
-                             atan2(second.getY() - center.getY(), second.getX() - center.getX());
-                  });
+        std::sort(m_pointList.begin(),m_pointList.end(),[center](const Point &first, const Point &second) {
+            return atan2(first.getY() - center.getY(), first.getX() - center.getX()) >
+                    atan2(second.getY() - center.getY(), second.getX() - center.getX());});
+
         m_pointList.insert(m_pointList.begin(), center);
     }
 }
