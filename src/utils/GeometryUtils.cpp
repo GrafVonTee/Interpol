@@ -287,7 +287,10 @@ namespace Geometry {
             throw std::logic_error("Points are located in one line!");
     }
 
-    bool minKey(const Point& first, const Point& second) {
+    // We decide, that the minimal point is the point, that located below than another (has minimal Y coord).
+    // If we had point with the same Y coord, we take the point, that located left than another (has minimal X coord).
+
+    bool isMinPoint(const Point& first, const Point& second) {
         if (first.getY() < second.getY())
             return true;
         if ((first.getY() == second.getY()) && (first.getX() < second.getX()))
@@ -296,12 +299,19 @@ namespace Geometry {
     }
 
 
+    // We sort point so, that we can build a convex polygon when we iterate by points in sorted order.
+    // (we believe that it is possible to create a convex polygon with these points as vertex of this polygon)
     void Polygon::sortPoints() {
-        auto iterator = std::min_element(m_pointList.begin(),m_pointList.end(), minKey);
+
+        //At the beginning we choose the starting point as a minimal point.
+
+        auto iterator = std::min_element(m_pointList.begin(),m_pointList.end(), isMinPoint);
         Point center = *iterator;
         m_pointList.erase(iterator);
 
-        std::sort(m_pointList.begin(),m_pointList.end(),[center](const Point &first, const Point &second) {
+        //We use atan function as monotone function, that shows us the order of point relative to the starting point.
+
+        std::sort(m_pointList.begin(), m_pointList.end(), [center](const Point &first, const Point &second) {
             return atan2(first.getY() - center.getY(), first.getX() - center.getX()) >
                    atan2(second.getY() - center.getY(), second.getX() - center.getX());});
 
