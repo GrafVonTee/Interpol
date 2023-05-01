@@ -47,7 +47,6 @@ namespace Math {
                     return (figure[numP].getX() - point.getX()) *
                            (figure[(numP + 1) % figure.size()].getX() - point.getX()) == (-1);
                 }
-
                 else {
 
                     // In this block we find the point of horizontal line and one of the edge intersection.
@@ -81,7 +80,7 @@ namespace Math {
                 }
             }
 
-            //If we find all sides, we return true
+            // If we find all sides, we return true
 
             if (left && right) {
                 return true;

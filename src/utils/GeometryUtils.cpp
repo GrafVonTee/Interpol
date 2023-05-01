@@ -303,13 +303,13 @@ namespace Geometry {
     // (we believe that it is possible to create a convex polygon with these points as vertex of this polygon)
     void Polygon::sortPoints() {
 
-        //At the beginning we choose the starting point as a minimal point.
+        // At the beginning we choose the starting point as a minimal point.
 
         auto iterator = std::min_element(m_pointList.begin(),m_pointList.end(), isMinPoint);
         Point center = *iterator;
         m_pointList.erase(iterator);
 
-        //We use atan function as monotone function, that shows us the order of point relative to the starting point.
+        // We use atan function as monotone function, that shows us the order of point relative to the starting point.
 
         std::sort(m_pointList.begin(), m_pointList.end(), [center](const Point &first, const Point &second) {
             return atan2(first.getY() - center.getY(), first.getX() - center.getX()) >
