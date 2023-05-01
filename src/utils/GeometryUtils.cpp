@@ -303,7 +303,7 @@ namespace Geometry {
 
         std::sort(m_pointList.begin(),m_pointList.end(),[center](const Point &first, const Point &second) {
             return atan2(first.getY() - center.getY(), first.getX() - center.getX()) >
-                    atan2(second.getY() - center.getY(), second.getX() - center.getX());});
+                   atan2(second.getY() - center.getY(), second.getX() - center.getX());});
 
         m_pointList.insert(m_pointList.begin(), center);
     }
