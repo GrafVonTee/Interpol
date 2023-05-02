@@ -2,37 +2,32 @@
 #define TRIANGLE_INTERSECTIONS_CALCULATEINTERSECTIONS_H
 
 #include <vector>
-#include <math.h>
+#include <algorithm>
+#include <cmath>
 #include "GeometryUtils.h"
 #include "StatesUtils.h"
 
-using namespace Geometry;
 
 namespace Math{
 
-    enum class SectionsState{
-        NoIntersection,
-        Dot,
-        FirstFullInSecond,
-        SecondFullInFirst,
-        StartInEndOut,
-        StartOutEndIn
-    };
-
+    // Determinant of the 2-dimensional matrix
     coord_t det(coord_t a1, coord_t a2 ,coord_t b1, coord_t b2);
 
-    coord_t d(Point& first,Point& second);
+    // Pushing point into vector only if it is a new point of intersection
+    void pushBackUnique(std::vector<Geometry::Point>& list, Geometry::Point& point);
 
-    void push_back_unique(std::vector<Point>& list, Point& point);
+    // Checking that point is locating into polygon (inside of on the border)
+    bool isPointInside(Geometry::Point& point, Geometry::Polygon& figure);
 
-    void smartSwap(std::vector<Point>& list);
+    // Adding into vector all vertex of "internal" polygon which is locating into "external polygon"
+    void addInsideVertex(std::vector<Geometry::Point>& list, Geometry::Polygon& internal, Geometry::Polygon& external);
 
-    bool isPointInside(Point& point, Polygon& figure);
+    // Important case - it is when 2 lines not parallel and sections have intersection. If case is important, we get coords of intersection point, else we get (0,0) point
+    Geometry::Point findLinesInter(Geometry::Point& firstStart, Geometry::Point& firstEnd,
+        Geometry::Point& secondStart,Geometry::Point& secondEnd, bool& isImportantCase);
 
-    Point findLinesInter(Point& firstStart, Point& firstEnd,\
-        Point& secondStart,Point& secondEnd, SectionsState& state);
-
-    Polygon findTriangleInter(Polygon& first, Polygon& second);
+    // Main function of math module, find intersection area
+    Geometry::Intersection findTriangleInter(Geometry::Polygon& first, Geometry::Polygon& second);
 
 }
 #endif //TRIANGLE_INTERSECTIONS_CALCULATEINTERSECTIONS_H

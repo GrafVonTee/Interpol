@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <string>
 #include "StatesUtils.h"
 
 using coord_t = long double;
@@ -79,28 +80,41 @@ namespace Geometry {
 
     class Polygon {
     private:
-        std::vector<Point> m_pointList {};
+        std::vector<Point> m_pointList{};
         States::PolygonState m_state = States::PolygonState::NotPolygon;
+
+        static void checkPolygon(const std::vector<Point> &points);
+
+        static void checkPointsForPolygon(const Point &p1, const Point &p2, const Point &p3);
 
     public:
         // Constructors
         Polygon() = default;
-        explicit Polygon(const std::vector<Point>& points);
-        Polygon(const Polygon& other) = default;
-        Polygon(Polygon&& other) noexcept;
+        explicit Polygon(const std::vector<Point> &points);
+        Polygon(const Polygon &other) = default;
+        Polygon(Polygon &&other) noexcept;
 
         // Getters
         [[nodiscard]] States::PolygonState getState() const;
-        [[nodiscard]] std::vector<Point>& getPointsRef();
+        [[nodiscard]] std::vector<Point> &getPointsRef();
         [[nodiscard]] std::vector<Point> getPointsCopy();
 
         [[nodiscard]] size_t size() const;
+        void sortPoints();
 
         // operators
-        friend std::ostream& operator<<(std::ostream &out, const Polygon &polygon);
-        Point& operator[](size_t index);
-        const Point& operator[](size_t index) const;
+        friend std::ostream &operator<<(std::ostream &out, const Polygon &polygon);
+
+        Point &operator[](size_t index);
+        Polygon &operator=(const Polygon &other);
+        Polygon &operator=(Polygon &&other) noexcept;
+        const Point &operator[](size_t index) const;
+        bool operator==(const Polygon &other) const;
+        bool operator==(Polygon &&other) const noexcept;
+        bool operator!=(const Polygon &other) const;
+        bool operator!=(Polygon &&other) const noexcept;
     };
+
 
     struct Intersection {
         States::IntersectionState state = States::IntersectionState::NoIntersection;
@@ -123,4 +137,5 @@ namespace Geometry {
         AllLetters,
     };
 }
+
 #endif //TRIANGLE_INTERSECTIONS_GEOMETRYUTILS_H
