@@ -32,9 +32,11 @@ namespace Interaction {
     }
 
     triangle_result_t getTriangle(int numberOfTriangle) {
+        // Just for developers checking
         if ((numberOfTriangle > 2) or (numberOfTriangle < 1))
             throw std::out_of_range("Variable \'numberOfTriangle\' should equal either 1 or 2!");
 
+        // Get points until both of them become correct
         cout << "Let\'s enter your " << numberOfTriangle << " triangle!" << endl;
         std::vector<Geometry::Point> points;
         for (auto i = 0; i < Geometry::Letters::D; i++) {
@@ -50,6 +52,7 @@ namespace Interaction {
             points.push_back(point);
         }
 
+        // Check entered points can actually form triangle
         Geometry::Polygon polygon;
         States::InputState state = States::InputState::Correct;
         try {
@@ -64,6 +67,7 @@ namespace Interaction {
     }
 
     point_result_t getPoint(Geometry::Letters letter) {
+        // Just for developers checking
         if (letter >= Geometry::Letters::AllLetters)
             throw std::out_of_range("Unexpected letter!");
 
@@ -90,6 +94,8 @@ namespace Interaction {
     }
 
     triangle_pair_t getBothTriangles() {
+        // Get triangles until both of them become correct
+
         cout << "The first thing you need is defining your two triangles (1 and 2)!" << endl;
         Geometry::Polygon triangle1, triangle2;
         States::InputState state;

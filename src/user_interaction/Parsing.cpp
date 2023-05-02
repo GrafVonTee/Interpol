@@ -5,6 +5,9 @@
 
 namespace Parsing {
     std::string& parseStringFromIndent(std::string &input) {
+        // Replace all tabulations and delete all indent spaces from the beginning
+        // Then just return the same string without indent
+
         auto iter = input.find('\t');
         while (((iter = input.find('\t')) != std::string::npos)) {
             input.replace(iter, 1, " ");
@@ -30,12 +33,15 @@ namespace Parsing {
         std::stringstream parser;
         std::string result;
 
+        // Just erase all spaces for better checking the format "(x,y)"
         std::erase_if(input, [](char x) { return (x == ' ') or (x == '\t') or (x == '\n'); });
 
+        // Separate coordinates by comma for breaking string on "(x" and "y)"
         auto pointer_to_comma = std::find(input.begin(), input.end(), ',');
         if (pointer_to_comma == input.end())
             return std::make_tuple(input, States::InputState::IncorrectInput);
 
+        // Just check the first template "(x"
         parser << input;
         std::getline(parser, input, ',');
         if (input[0] != '(')
@@ -47,6 +53,7 @@ namespace Parsing {
 
         result = input + " ";
 
+        // Then check the second template "y)"
         std::getline(parser, input, ',');
         if (!input.ends_with(')'))
             return std::make_tuple(input, States::InputState::IncorrectInput);
