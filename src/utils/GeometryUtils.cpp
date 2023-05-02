@@ -1,6 +1,8 @@
 #include "GeometryUtils.h"
 #include <cmath>
 #include <algorithm>
+#include <limits>
+#include <iomanip>
 
 namespace Geometry {
     Point::Point(const coord_t &x, const coord_t &y)
@@ -65,7 +67,10 @@ namespace Geometry {
     }
 
     bool Point::operator==(const Point &other) const {
-        return (m_x == other.m_x) && (m_y == other.m_y);
+        return (
+                std::abs(m_x - other.m_x) < std::numeric_limits<coord_t>::epsilon() and
+                std::abs(m_y - other.m_y) < std::numeric_limits<coord_t>::epsilon()
+        );
     }
 
     bool Point::operator!=(const Point &other) const {
@@ -78,7 +83,10 @@ namespace Geometry {
     }
 
     bool Point::operator==(Point &&other) const noexcept {
-        return (m_x == other.m_x) && (m_y == other.m_y);
+        return (
+                std::abs(m_x - other.m_x) < std::numeric_limits<coord_t>::epsilon() and
+                std::abs(m_y - other.m_y) < std::numeric_limits<coord_t>::epsilon()
+        );
     }
 
     bool Point::operator!=(Point &&other) const noexcept {
@@ -165,11 +173,14 @@ namespace Geometry {
 
     // Polygon Implementation
     Polygon::Polygon(const std::vector<Point> &points) {
+
         if (points.size() > 1 && !(points.size() == 2 && points[0] != points[1]))
             checkPolygon(points);
+
         m_pointList = points;
         if (!points.empty())
             sortPoints();
+
         m_state = States::PolygonState(points.size());
     }
 
