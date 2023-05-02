@@ -23,7 +23,7 @@ namespace Math{
     void addInsideVertex(std::vector<Geometry::Point>& list, Geometry::Polygon& internal, Geometry::Polygon& external);
 
     // Important case - it is when 2 lines not parallel and sections have intersection. If case is important, we get coords of intersection point, else we get (0,0) point
-    Geometry::Point findLinesInter(Geometry::Point& firstStart, Geometry::Point& firstEnd,\
+    Geometry::Point findLinesInter(Geometry::Point& firstStart, Geometry::Point& firstEnd,
         Geometry::Point& secondStart,Geometry::Point& secondEnd, bool& isImportantCase);
 
     // Main function of math module, find intersection area
