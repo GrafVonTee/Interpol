@@ -15,10 +15,10 @@ namespace Interaction {
 
     void greeting();
     std::string getUserName();
-    triangle_result_t getTriangle(int numberOfTriangle);
-    point_result_t getPoint(Geometry::Letters letter);
+    triangle_result_t getTriangle(int numberOfTriangle, std::istream& inputStream = std::cin);
+    point_result_t getPoint(Geometry::Letters letter, std::istream& inputStream = std::cin);
     bool checkPointsAreUnique(const std::vector<Geometry::Point> &vec);
-    triangle_pair_t getBothTriangles();
+    triangle_pair_t getBothTriangles(std::istream& inputStream = std::cin);
 
     void printPoint(const Geometry::Point &point, Geometry::Letters letter);
     void printTriangle(const Geometry::Polygon &triangle, int triangleNumber);

@@ -31,7 +31,7 @@ namespace Interaction {
         return userName;
     }
 
-    triangle_result_t getTriangle(int numberOfTriangle) {
+    triangle_result_t getTriangle(int numberOfTriangle, std::istream& inputStream) {
         // Just for developers checking
         if ((numberOfTriangle > 2) or (numberOfTriangle < 1))
             throw std::out_of_range("Variable \'numberOfTriangle\' should equal either 1 or 2!");
@@ -44,8 +44,8 @@ namespace Interaction {
             States::InputState state;
             do {
                 auto [tuple_point, tuple_state] = getPoint(
-                        Geometry::Letters(i + ((numberOfTriangle == 1) ? skipToTriangle1 : skipToTriangle2))
-                        );
+                        Geometry::Letters(i + ((numberOfTriangle == 1) ? skipToTriangle1 : skipToTriangle2)),
+                        inputStream);
                 point = tuple_point;
                 state = tuple_state;
             } while (state != States::InputState::Correct);
@@ -66,14 +66,14 @@ namespace Interaction {
         return std::make_tuple(polygon, state);
     }
 
-    point_result_t getPoint(Geometry::Letters letter) {
+    point_result_t getPoint(Geometry::Letters letter, std::istream &inputStream) {
         // Just for developers checking
         if (letter >= Geometry::Letters::AllLetters)
             throw std::out_of_range("Unexpected letter!");
 
         cout << "Please, enter new point " << g_letters[letter] << " in \'(x, y)\' format: ";
         std::string inputStr;
-        std::getline(cin, inputStr);
+        std::getline(inputStream, inputStr);
         // cin.ignore();
 
         auto [resulted, state] = Parsing::parsePoint(inputStr);
@@ -93,7 +93,7 @@ namespace Interaction {
         }
     }
 
-    triangle_pair_t getBothTriangles() {
+    triangle_pair_t getBothTriangles(std::istream &inputStream) {
         // Get triangles until both of them become correct
 
         cout << "The first thing you need is defining your two triangles (1 and 2)!" << endl;
@@ -102,7 +102,7 @@ namespace Interaction {
         for (int i = 1; i <= 2; ++i) {
             do {
                 cout << endl;
-                auto [tuple_triangle, tuple_state] = getTriangle(i);
+                auto [tuple_triangle, tuple_state] = getTriangle(i, inputStream);
                 if (i == 1)
                     triangle1 = tuple_triangle;
                 else
