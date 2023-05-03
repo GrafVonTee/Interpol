@@ -29,12 +29,14 @@ add_executable(
         src/user_interaction/Parsing.cpp
 )
 
+
 target_include_directories(unit_tests PUBLIC googletest)
 target_include_directories(unit_tests PUBLIC include)
 
 target_link_libraries(
         unit_tests
         gtest
+        gtest_main
 )
 
 # triangle_intersection configuration
