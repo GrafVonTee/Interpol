@@ -4,12 +4,11 @@
 #include "CalculateIntersections.h"
 #include "Parsing.h"
 #include "ConsoleInteraction.h"
+#include "DrawImage.h"
 
 using namespace Geometry;
 using namespace Math;
 using namespace Interaction;
-
-auto epsilon = std::numeric_limits<long double>::epsilon();
 
 TEST(ConsoleInteraction, ValidInputFormat) {
     std::istringstream input("(1.0, 2.0)\n");

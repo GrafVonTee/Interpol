@@ -8,9 +8,23 @@ FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
 )
-# For Windows: Prevent overriding the parent project's compiler/linker settings
+
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
+find_package(OpenGL REQUIRED)
+
+add_library(
+  imgui_lib STATIC
+  imgui/imgui.cpp
+  imgui/imgui_draw.cpp
+  imgui/imgui_demo.cpp
+  imgui/imgui_tables.cpp
+  imgui/imgui_widgets.cpp
+
+  imgui/imgui_impl_glfw.cpp
+  imgui/imgui_impl_opengl3.cpp
+)
+
 
 # unit_test configuration
 add_executable(
@@ -19,6 +33,8 @@ add_executable(
 
         src/utils/GeometryUtils.cpp
         src/utils/StatesUtils.cpp
+
+        src/drawing/DrawImage.cpp
 
         src/user_interaction/ConsoleInteraction.cpp
         src/user_interaction/Parsing.cpp
@@ -32,9 +48,11 @@ add_executable(
 
 target_include_directories(unit_tests PUBLIC googletest)
 target_include_directories(unit_tests PUBLIC include)
+target_include_directories(unit_tests PUBLIC imgui)
 
 target_link_libraries(
         unit_tests
+        imgui_lib
         gtest
         gtest_main
 )
