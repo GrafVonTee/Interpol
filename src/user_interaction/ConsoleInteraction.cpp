@@ -80,7 +80,7 @@ namespace Interaction {
 
         switch (state) {
             case States::InputState::IncorrectInput:
-                cerr << "Incorrect input! Please, enter values in CORRECT foramt \'(x, y)\'!" << endl;
+                cerr << "Incorrect input! Please, enter values in CORRECT format \'(x, y)\'!" << endl;
                 return std::make_tuple(Geometry::Point(), state);
             case States::InputState::EmptyString:
                 cerr << "String is empty! Please, enter values in format \'(x, y)\'!" << endl;
