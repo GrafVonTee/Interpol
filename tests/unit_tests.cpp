@@ -31,7 +31,7 @@ TEST(ConsoleInteraction, EmptyString) {
     testing::internal::CaptureStderr();    
     Point point = get<0>(getPoint(Geometry::Letters::A, input));     
     std::string output = testing::internal::GetCapturedStderr();
-    EXPECT_EQ(output, "Incorrect input! Please, enter values in CORRECT format '(x, y)'!\n");
+    EXPECT_EQ(output, "String is empty! Please, enter values in format '(x, y)'!\n");
     ASSERT_EQ(point, Point(0.0, 0.0));
 }
 
