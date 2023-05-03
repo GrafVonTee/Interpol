@@ -36,6 +36,10 @@ namespace Parsing {
         // Just erase all spaces for better checking the format "(x,y)"
         std::erase_if(input, [](char x) { return (x == ' ') or (x == '\t') or (x == '\n'); });
 
+        // Check string is empty
+        if (checkStringIsEmpty(input) == States::InputState::EmptyString)
+            return std::make_tuple(input, States::InputState::EmptyString);
+
         // Separate coordinates by comma for breaking string on "(x" and "y)"
         auto pointer_to_comma = std::find(input.begin(), input.end(), ',');
         if (pointer_to_comma == input.end())
