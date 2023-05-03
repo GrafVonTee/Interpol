@@ -1,0 +1,4 @@
+# ninja log v5
+37	1476	7043953182878930	CMakeFiles/unit_tests.dir/src/utils/GeometryUtils.cpp.obj	11823db9eb117b2a
+13	2642	7043953194762973	CMakeFiles/gtest.dir/googletest-main/googletest/src/gtest_main.cc.obj	5f2d378ae32ea0f2
+1	9643	7043953264633206	CMakeFiles/gtest.dir/googletest-main/googletest/src/gtest-all.cc.obj	f76b481ce79a4ef3
