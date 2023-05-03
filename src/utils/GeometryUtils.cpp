@@ -292,14 +292,16 @@ namespace Geometry {
     }
 
     void Polygon::checkPointsForPolygon(const Point &p1, const Point &p2, const Point &p3) {
-        long double eps = 1e-20;
-        if (std::pow((p3.getX() - p1.getX()) / (p2.getX() - p1.getX())
-                     - (p3.getY() - p1.getY()) / (p2.getY() - p1.getY()), 2) <= eps)
+        if (std::pow(
+                (p3.getX() - p1.getX() * (p2.getY() - p1.getY())) -
+                        (p3.getY() - p1.getY()) * (p2.getX() - p1.getX()), 2)
+                <= std::numeric_limits<coord_t>::epsilon())
+
             throw std::logic_error("Points are located in one line!");
     }
 
     // We decide, that the minimal point is the point, that located below than another (has minimal Y coord).
-    // If we had point with the same Y coord, we take the point, that located left than another (has minimal X coord).
+    // If we had point with the same Y coord, we take the point, that located lefter than another (has minimal X coord).
 
     bool isMinPoint(const Point& first, const Point& second) {
         if (first.getY() < second.getY())
