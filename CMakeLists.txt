@@ -12,14 +12,21 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+# unit_test configuration
 add_executable(
         unit_tests
         tests/unit_tests.cpp
+
         src/utils/GeometryUtils.cpp
         src/utils/StatesUtils.cpp
+
         src/user_interaction/ConsoleInteraction.cpp
         src/user_interaction/Parsing.cpp
+
         src/math/CalculateIntersections.cpp
+
+        src/user_interaction/ConsoleInteraction.cpp
+        src/user_interaction/Parsing.cpp
 )
 
 target_include_directories(unit_tests PUBLIC googletest)
@@ -30,12 +37,18 @@ target_link_libraries(
         gtest
 )
 
+# triangle_intersection configuration
 add_executable(
         triangle_intersection
         src/main.cpp
+
         src/utils/GeometryUtils.cpp
         src/utils/StatesUtils.cpp
+
         src/math/CalculateIntersections.cpp
+        src/user_interaction/ConsoleInteraction.cpp
+
+        src/user_interaction/Parsing.cpp
 )
 
 target_include_directories(triangle_intersection PUBLIC include)

@@ -25,9 +25,5 @@ namespace States {
         Matched,
         Polygon
     };
-
-    enum class UnitTestState {
-        // TODO
-    };
 }
 #endif // TRIANGLE_INTERSECTIONS_STATESUTILS_H
