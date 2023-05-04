@@ -11,14 +11,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void draw_triangles_and_intersection(const ImVec2& a1, const ImVec2& a2, const ImVec2& a3, const ImVec2& b1, const ImVec2& b2, const ImVec2& b3, const std::vector<ImVec2>& intersection_points) {
     // create a new image
-    auto* img = new unsigned char[512 * 512 * 3];
-    memset(img, 255, 512 * 512 * 3); // fill with white pixels
+    auto* img = new unsigned char[1024 * 1024 * 3];
+    memset(img, 255, 1024 * 1024 * 3); // fill with white pixels
 
         // Initialize GLFW
     glfwInit();
 
     // Create a GLFW window
-    GLFWwindow* window = glfwCreateWindow(800, 600, "ImGui GLFW Window", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1024, 768, "ImGui GLFW Window", NULL, NULL);
 
     // Make the OpenGL context current
     glfwMakeContextCurrent(window);
@@ -31,7 +31,7 @@ void draw_triangles_and_intersection(const ImVec2& a1, const ImVec2& a2, const I
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.DisplaySize = ImVec2(1024, 1024);
-    // io.DisplayFramebufferScale = ImVec2(1, 1);
+    io.DisplayFramebufferScale = ImVec2(1, 1);
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
@@ -59,7 +59,7 @@ void draw_triangles_and_intersection(const ImVec2& a1, const ImVec2& a2, const I
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
         
-        ImGui::Begin("My Window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        ImGui::Begin("My Window", NULL);
         ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
         // draw the first triangle
@@ -69,7 +69,7 @@ void draw_triangles_and_intersection(const ImVec2& a1, const ImVec2& a2, const I
         draw_list->AddTriangle(b1, b2, b3, IM_COL32(0, 255, 0, 255), 2.0f);
 
         // draw the intersection
-        draw_list->AddPolyline(&intersection_points[0], intersection_points.size(), IM_COL32(255, 255, 0, 255), true, 2.0f);
+        draw_list->AddPolyline(&intersection_points[0], intersection_points.size(), IM_COL32(255, 255, 0, 255), true, 4.0f);
     
         // end the window
         ImGui::End();
