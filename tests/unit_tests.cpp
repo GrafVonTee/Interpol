@@ -89,16 +89,16 @@ TEST(ParserTest, InvalidInputMissingParenthesis) {
     ASSERT_EQ(get<1>(Parsing::parsePoint(input)), States::InputState::IncorrectInput);
 }
 
-TEST(IntersectionTest, NoIntersection) {
+TEST(IntersectionTest, FourPointIntersection) {
     // Create two triangles that do not intersect
-    Polygon triangle1{{Point(0, 0), Point(1, 0), Point(0, 1)}};
-    Polygon triangle2{{Point(2, 0), Point(3, 0), Point(2, 1)}};
+    Polygon triangle1{{Point(100.0, 200.0), Point(100.0, 400.0), Point(300.0, 400.0)}};
+    Polygon triangle2{{Point(100.0, 100.0), Point(100.0, 500.0), Point(500.0, 100.0)}};
 
     // Compute the intersection of the triangles
     Intersection intersection = findTriangleInter(triangle1, triangle2);
 
     // Check that the intersection is empty
-    ASSERT_EQ(intersection.polygon.size(), 0);
+    ASSERT_EQ(intersection.polygon.size(), 4);
 }
 
 TEST(IntersectionTest, SinglePointIntersection) {

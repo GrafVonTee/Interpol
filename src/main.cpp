@@ -6,11 +6,11 @@
 #include "Parsing.h"
 #include "ConsoleInteraction.h"
 
-std::vector<Geometry::Point> vec1 {Geometry::Point(1.0, 2.0), Geometry::Point(1.0, 4.0), Geometry::Point(3.0, 4.0)};
+std::vector<Geometry::Point> vec1 {Geometry::Point(100.0, 200.0), Geometry::Point(100.0, 400.0), Geometry::Point(300.0, 400.0)};
 
 Geometry::Polygon tria1(vec1);
 
-std::vector<Geometry::Point> vec2 {Geometry::Point(0.0, 0.0), Geometry::Point(0.0, 7.0), Geometry::Point(7.0, 0.0)};
+std::vector<Geometry::Point> vec2 {Geometry::Point(100.0, 100.0), Geometry::Point(100.0, 500.0), Geometry::Point(500.0, 100.0)};
 
 Geometry::Polygon tria2(vec2);
 
@@ -31,6 +31,7 @@ std::vector<ImVec2> fromPoints(std::vector<Geometry::Point> input){
 
 
 int main() {
-    draw_triangles_and_intersection(ImVec2(1.0, 2.0), ImVec2(1.0, 4.0), ImVec2(3.0, 4.0), ImVec2(0.0, 0.0), ImVec2(0.0, 7.0), ImVec2(7.0, 0.0), fromPoints(result));
+    draw_triangles_and_intersection(ImVec2(100.0, 200.0), ImVec2(100.0, 400.0), ImVec2(300.0, 400.0), ImVec2(100.0, 100.0), ImVec2(100.0, 500.0), ImVec2(500.0, 100.0), fromPoints(result));
+    
     return 0;
 }

@@ -30,6 +30,8 @@ void draw_triangles_and_intersection(const ImVec2& a1, const ImVec2& a2, const I
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.DisplaySize = ImVec2(1024, 1024);
+    // io.DisplayFramebufferScale = ImVec2(1, 1);
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
