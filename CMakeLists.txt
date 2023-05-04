@@ -74,26 +74,6 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 find_package(OpenGL REQUIRED)
 
-# unit_test configuration
-add_executable(
-        unit_tests
-        tests/unit_tests.cpp
-
-        src/utils/GeometryUtils.cpp
-        src/utils/StatesUtils.cpp
-
-        src/drawing/DrawImage.cpp
-
-        src/user_interaction/ConsoleInteraction.cpp
-        src/user_interaction/Parsing.cpp
-
-        src/math/CalculateIntersections.cpp
-
-        src/user_interaction/ConsoleInteraction.cpp
-        src/user_interaction/Parsing.cpp
-)
-
-
 # Dear ImGui library configuration
 add_library(
     imgui
@@ -125,6 +105,25 @@ target_link_libraries(
     ${OPENGL_LIBRARY}
 )
 
+# unit_test configuration
+add_executable(
+        unit_tests
+        tests/unit_tests.cpp
+
+        src/utils/GeometryUtils.cpp
+        src/utils/StatesUtils.cpp
+
+        src/drawing/DrawImage.cpp
+
+        src/user_interaction/ConsoleInteraction.cpp
+        src/user_interaction/Parsing.cpp
+
+        src/math/CalculateIntersections.cpp
+
+        src/user_interaction/ConsoleInteraction.cpp
+        src/user_interaction/Parsing.cpp
+)
+
 target_include_directories(unit_tests PUBLIC googletest)
 target_include_directories(unit_tests PUBLIC include)
 target_include_directories(unit_tests PUBLIC imgui)
@@ -132,6 +131,8 @@ target_include_directories(unit_tests PUBLIC imgui)
 target_link_libraries(
         unit_tests
         imgui
+        glfw
+        glad
         gtest
         gtest_main
 )
@@ -160,5 +161,7 @@ target_include_directories(triangle_intersection PUBLIC imgui)
 
 target_link_libraries(
     triangle_intersection
-        imgui
+    imgui
+    glfw
+    glad
 )
