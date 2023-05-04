@@ -100,6 +100,7 @@ add_library(
     ${imgui_SOURCE_DIR}/imgui.cpp
     ${imgui_SOURCE_DIR}/imgui_draw.cpp
     ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
     ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
     ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
 )
@@ -124,8 +125,6 @@ target_link_libraries(
     ${OPENGL_LIBRARY}
 )
 
-
-
 target_include_directories(unit_tests PUBLIC googletest)
 target_include_directories(unit_tests PUBLIC include)
 target_include_directories(unit_tests PUBLIC imgui)
@@ -145,10 +144,21 @@ add_executable(
         src/utils/GeometryUtils.cpp
         src/utils/StatesUtils.cpp
 
-        src/math/CalculateIntersections.cpp
-        src/user_interaction/ConsoleInteraction.cpp
+        src/drawing/DrawImage.cpp
 
+        src/user_interaction/ConsoleInteraction.cpp
+        src/user_interaction/Parsing.cpp
+
+        src/math/CalculateIntersections.cpp
+
+        src/user_interaction/ConsoleInteraction.cpp
         src/user_interaction/Parsing.cpp
 )
 
 target_include_directories(triangle_intersection PUBLIC include)
+target_include_directories(triangle_intersection PUBLIC imgui)
+
+target_link_libraries(
+    triangle_intersection
+        imgui
+)
