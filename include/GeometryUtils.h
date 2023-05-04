@@ -1,6 +1,7 @@
 #ifndef TRIANGLE_INTERSECTIONS_GEOMETRYUTILS_H
 #define TRIANGLE_INTERSECTIONS_GEOMETRYUTILS_H
 
+
 #include <iostream>
 #include <vector>
 #include <string>
@@ -34,6 +35,8 @@ namespace Geometry {
         Point operator-(const Point &other) const;
         Point& operator+=(const Point &other);
         Point& operator-=(const Point &other);
+
+
 
         bool operator==(const Point &other) const;
         bool operator!=(const Point &other) const;

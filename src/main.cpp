@@ -21,11 +21,12 @@ Geometry::Polygon poly = intersect.polygon;
 std::vector<Geometry::Point> result = poly.getPointsCopy();
 
 
-std::vector<ImVec2> fromPoints(std::vector<Geometry::Point> input){
-    std::vector<ImVec2> result;
-    for (int i = 0; i < input.size(); i++){
-        result.push_back(ImVec2(input[i].getX(), input[i].getY()));
-    }
+std::vector<ImVec2> fromPoints(const std::vector<Geometry::Point>& input){
+    std::vector<ImVec2> res;
+    res.reserve(input.size());
+for (const auto & i : input)
+        res.emplace_back(i.getX(), i.getY());
+    return res;
 }
 
 

@@ -3,7 +3,7 @@
 
 void draw_triangles_and_intersection(const ImVec2& a1, const ImVec2& a2, const ImVec2& a3, const ImVec2& b1, const ImVec2& b2, const ImVec2& b3, const std::vector<ImVec2>& intersection_points) {
     // create a new image
-    unsigned char* img = new unsigned char[512 * 512 * 3];
+    auto* img = new unsigned char[512 * 512 * 3];
     memset(img, 255, 512 * 512 * 3); // fill with white pixels
 
     // initialize ImGui
@@ -16,7 +16,8 @@ void draw_triangles_and_intersection(const ImVec2& a1, const ImVec2& a2, const I
     // create a new window
     ImGui::SetNextWindowSize(io.DisplaySize);
     ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGui::Begin("My Window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+    ImGui::NewFrame();
+    ImGui::Begin("My Window", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
     // draw the first triangle
