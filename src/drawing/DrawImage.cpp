@@ -44,19 +44,17 @@ void draw_triangles_and_intersection(const ImVec2& a1, const ImVec2& a2, const I
     ImGui::Begin("My Window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
-        // draw the first triangle
-        draw_list->AddTriangle(a1, a2, a3, IM_COL32(255, 0, 0, 255), 2.0f);
+    // draw the first triangle
+    draw_list->AddTriangle(a1, a2, a3, IM_COL32(255, 0, 0, 255), 2.0f);
 
-        // draw the second triangle
-        draw_list->AddTriangle(b1, b2, b3, IM_COL32(0, 255, 0, 255), 2.0f);
+    // draw the second triangle
+    draw_list->AddTriangle(b1, b2, b3, IM_COL32(0, 255, 0, 255), 2.0f);
 
-        // draw the intersection
-        draw_list->AddPolyline(&intersection_points[0], intersection_points.size(), IM_COL32(255, 255, 0, 255), true, 2.0f);
-        
-        // end the window
-        ImGui::End();
-
-    }
+    // draw the intersection
+    draw_list->AddPolyline(&intersection_points[0], intersection_points.size(), IM_COL32(255, 255, 0, 255), true, 2.0f);
+    
+    // end the window
+    ImGui::End();
 
     // Rendering
     ImGui::Render();
@@ -66,8 +64,6 @@ void draw_triangles_and_intersection(const ImVec2& a1, const ImVec2& a2, const I
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    // cleanup
-    delete[] img;
     ImGui::DestroyContext();
 
     // Shutdown GLFW
