@@ -158,6 +158,8 @@ add_executable(
 
 target_include_directories(triangle_intersection PUBLIC include)
 target_include_directories(triangle_intersection PUBLIC imgui)
+target_include_directories(triangle_intersection PUBLIC glad)
+target_include_directories(triangle_intersection PUBLIC glfw)
 
 target_link_libraries(
     triangle_intersection
