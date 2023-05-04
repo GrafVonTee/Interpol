@@ -11,7 +11,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void draw_triangles_and_intersection(const ImVec2& a1, const ImVec2& a2, const ImVec2& a3, const ImVec2& b1, const ImVec2& b2, const ImVec2& b3, const std::vector<ImVec2>& intersection_points) {
     // create a new image
-    unsigned char* img = new unsigned char[512 * 512 * 3];
+    auto* img = new unsigned char[512 * 512 * 3];
     memset(img, 255, 512 * 512 * 3); // fill with white pixels
 
         // Initialize GLFW
@@ -41,17 +41,8 @@ void draw_triangles_and_intersection(const ImVec2& a1, const ImVec2& a2, const I
     // create a new window
     ImGui::SetNextWindowSize(io.DisplaySize);
     ImGui::SetNextWindowPos(ImVec2(0, 0));
-    // Main loop
-    while (!glfwWindowShouldClose(window))
-    {
-        glfwPollEvents();
-        // Start the Dear ImGui frame
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
-        
-        ImGui::Begin("My Window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-        ImDrawList* draw_list = ImGui::GetWindowDrawList();
+    ImGui::Begin("My Window", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
         // draw the first triangle
         draw_list->AddTriangle(a1, a2, a3, IM_COL32(255, 0, 0, 255), 2.0f);
