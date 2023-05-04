@@ -21,17 +21,19 @@ Geometry::Polygon poly = intersect.polygon;
 std::vector<Geometry::Point> result = poly.getPointsCopy();
 
 
-std::vector<ImVec2> fromPoints(std::vector<Geometry::Point> input){
+std::vector<ImVec2> fromPoints(const std::vector<Geometry::Point>& input) {
     std::vector<ImVec2> res;
-    for (const auto i: input){
-        res.push_back(ImVec2(i.getX(), i.getY()));
-    }
+    res.reserve(input.size());
+    for (const auto i: input)
+        res.emplace_back(i.getX(), i.getY());
     return res;
 }
 
 
 int main() {
-    draw_triangles_and_intersection(ImVec2(100.0, 200.0), ImVec2(100.0, 400.0), ImVec2(300.0, 400.0), ImVec2(100.0, 100.0), ImVec2(100.0, 500.0), ImVec2(500.0, 100.0), fromPoints(result));
-    
+    draw_triangles_and_intersection(
+            ImVec2(100.0, 200.0),ImVec2(100.0, 400.0),ImVec2(300.0, 400.0),
+            ImVec2(100.0, 100.0),ImVec2(100.0, 500.0), ImVec2(500.0, 100.0),
+            fromPoints(result));
     return 0;
 }
