@@ -1,7 +1,6 @@
 #include "CalculateIntersections.h"
 
 namespace Math {
-
     using namespace Geometry;
 
     // Determinant of 2*2 matrix
@@ -38,16 +37,17 @@ namespace Math {
                 if (figure[numP].getY() - figure[(numP + 1) % figure.size()].getY() == 0)
 
                     // If our point and one edge of polygon are located in one horizontal line, we return true.
-                    // (if point is locating between vertex, that are bounding this edge).
+                    // (If point is located between vertex, that are bounding this edge).
 
-                    // In another case we return true, because the point not belong to the edge.
+                    // In another case, we return true, because the point not belongs to the edge.
 
                     return (figure[numP].getX() - point.getX()) *
                            (figure[(numP + 1) % figure.size()].getX() - point.getX()) == (-1);
                 else {
 
-                    // In this block we find the point of horizontal line and one of the edge intersection.
-                    // If this point on the left side from point, we establish, that we have left intersection. Also with right side.
+                    // In this block, we find the point of horizontal line and one of the edge intersections.
+                    // If this point on the left side from point, we establish that we have left intersection.
+                    // Also with the right side.
 
                     k = (figure[(numP + 1) % figure.size()].getX() - figure[numP].getX()) /
                         (figure[(numP + 1) % figure.size()].getY() - figure[numP].getY());
@@ -80,7 +80,7 @@ namespace Math {
         return false;
     }
 
-    // We take first triangle (internal) and add into vector all vertex, that located into second triangle (external)
+    // We take first triangle (internal) and add into vector all vertexes, that located into second triangle (external)
 
     void addInsideVertex(std::vector<Point> &list, Polygon &internal, Polygon &external) {
         for (size_t vertex = 0; vertex < internal.size(); vertex++)
@@ -114,7 +114,7 @@ namespace Math {
         else {
 
             // If determinant doesn't equal zero, the lines intersect.
-            // In this case we are finding the point of intersection and checking, that this point belong to our sections of these lines.
+            // In this case, we are finding the point of intersection and checking, that this point belongs to our sections of these lines.
 
             interX = (tSecondY * b1 - tSecondX * b2) / determinant;
             interY = (tFirstX * b2 - tFirstY * b1) / determinant;
@@ -136,12 +136,12 @@ namespace Math {
         // We add the point only if this point is new in vector (we must avoid the duplication of intersection polygon vertexes).
 
         // The set of such points consists of two types of points:
-        // 1. Points, that are the points of edges intersections.
-        // 2. Points, that are vertexes in one of the triangle and contain in another triangle.
+        // 1. Points, that are the points of edge intersections.
+        // 2. Points, that are vertexes in one of the triangles and contain in another triangle.
 
-        // At the beginning we find the second type of points and return, if one triangle is nested into another or triangles are matching.
+        // At the beginning, we find the second type of points and return, if one triangle is nested into another or triangles are matching.
 
-        // Then we find all point of edges intersections and if <listOfInterPoints> vector is empty, return that there isn't any intersection.
+        // Then we find all point of edges intersections, and if <listOfInterPoints> vector is empty, return that there isn't any intersection.
         // If this vector isn't empty, we return that the intersection is a polygon (it is the most general case of intersection).
 
         std::vector<Point> listOfInterPoints;
@@ -167,7 +167,7 @@ namespace Math {
                     }
                 }
 
-                // In this case we have that all vertex of the one triangle located into another triangle and triangles are not matching.
+                // In this case, we have that all vertexes of the one triangle located into another triangle and triangles are not matching.
                 // So one triangle is nested into another.
 
                 if (!match)

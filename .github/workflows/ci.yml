@@ -8,7 +8,9 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v2      
+    - name: Configure RandR
+      run: sudo apt-get install xorg-dev libglu1-mesa-dev
     - name: Configure CMake
       run: cmake -B build -S .
     - name: Build
