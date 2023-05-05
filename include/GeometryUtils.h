@@ -103,8 +103,8 @@ namespace Geometry {
 
     class Polygon {
     /*
-     2D Edge
-     Low-level class for other Geometric Structures
+     2D Polygon with N points (1 < n <= 6)
+     High-level class for Intersection between 2 triangles
      Private fields: m_pointList, m_state
 
      @param m_pointList: Vector of polygon's points
