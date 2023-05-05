@@ -158,6 +158,7 @@ TEST(IntersectionTest, OverlappingTriangle) {
 }
 
 
+
 // Tests for the Point class
 TEST(PointTest, DefaultConstructor) {
     Point p;
@@ -247,16 +248,3 @@ TEST(EdgeTest, MoveConstructor) {
     EXPECT_EQ(e2.getRight().getY(), 4);
 }
 
-// TEST(EdgeTest, AssignmentOperator) {
-//     Point p1(1, 2);
-//     Point p2(3, 4);
-//     Edge e1(p1, p2);
-//     Edge e2;
-//     e2 = e1;
-//     EXPECT_EQ(e2.getLeft().getX(), 1);
-//     EXPECT_EQ(e2.getLeft().getY(), 2);
-//     EXPECT_EQ(e2.getRight().getX(), 3);
-//     EXPECT_EQ(e2.getRight().getY(), 4);
-//     EXPECT_NE(&e1.getLeft(), &e2.getLeft());
-//     EXPECT_NE(&e1.getRight(), &e2.getRight());
-// }
