@@ -1,6 +1,6 @@
 name: CI
 
-on:
+on: 
   push:
     branches:
       - main
@@ -14,18 +14,12 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.ref }}
-
-    - name: Set up CMake
-      run: sudo apt-get -y install cmake
-
+      uses: actions/checkout@v2      
+    - name: Configure RandR
+      run: sudo apt-get install xorg-dev libglu1-mesa-dev
+    - name: Configure CMake
+      run: cmake -B build -S .
     - name: Build
-      run: |
-        mkdir build
-        cd build
-        cmake ..
-        cmake --build .
-
-
+      run: cmake --build build
+    - name: Run tests
+      run: ./build/unit_tests
