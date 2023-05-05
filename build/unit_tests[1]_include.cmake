@@ -1,5 +1,0 @@
-if(EXISTS "C:/Users/user/tria_project/triangle_intersections/build/unit_tests[1]_tests.cmake")
-  include("C:/Users/user/tria_project/triangle_intersections/build/unit_tests[1]_tests.cmake")
-else()
-  add_test(unit_tests_NOT_BUILT unit_tests_NOT_BUILT)
-endif()
