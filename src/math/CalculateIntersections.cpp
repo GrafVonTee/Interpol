@@ -11,12 +11,12 @@ namespace Math {
 
     // Add the element into vector if this element is unique in vector
 
-    void pushBackUnique(std::vector<Point> &list, Point &point) {
+    void pushBackUnique(std::vector<Point> &list, const Point &point) {
         if (std::find(list.begin(), list.end(), point) == list.end())
             list.push_back(point);
     }
 
-    bool isPointInside(Point &point, Polygon &figure) {
+    bool isPointInside(const Point &point, const Polygon &figure) {
 
         using std::min, std::max;
 
@@ -82,7 +82,7 @@ namespace Math {
 
     // We take first triangle (internal) and add into vector all vertexes, that located into second triangle (external)
 
-    void addInsideVertex(std::vector<Point> &list, Polygon &internal, Polygon &external) {
+    void addInsideVertex(std::vector<Point> &list, const Polygon &internal, const Polygon &external) {
         for (size_t vertex = 0; vertex < internal.size(); vertex++)
             if (isPointInside(internal[vertex], external))
                 pushBackUnique(list, internal[vertex]);
@@ -95,18 +95,19 @@ namespace Math {
 
         // We define a lot of variables, that are used a linear algebra's part of code (we solve the system linear equations).
 
-        coord_t tFirstX, tFirstY, tSecondX, tSecondY, b1, b2;
+        const coord_t
+            tFirstX {firstEnd.getX() - firstStart.getX()},
+            tFirstY {firstEnd.getY() - firstStart.getY()},
+            tSecondX {-(secondEnd.getX() - secondStart.getX())},
+            tSecondY {-(secondEnd.getY() - secondStart.getY())},
+            b1 {secondStart.getX() - firstStart.getX()},
+            b2 {secondStart.getY() - firstStart.getY()};
+
+        const coord_t determinant = det(tFirstX, tSecondX, tFirstY, tSecondY);
+
         coord_t interX, interY;
-        tFirstX = firstEnd.getX() - firstStart.getX();
-        tFirstY = firstEnd.getY() - firstStart.getY();
-        tSecondX = -(secondEnd.getX() - secondStart.getX());
-        tSecondY = -(secondEnd.getY() - secondStart.getY());
-        b1 = secondStart.getX() - firstStart.getX();
-        b2 = secondStart.getY() - firstStart.getY();
-        coord_t determinant = det(tFirstX, tSecondX, tFirstY, tSecondY);
 
         // The case, when the determinant is zero, doesn't interest us
-
         if (determinant == 0) {
             isImportantCase = false;
             return Point{0, 0};
@@ -163,7 +164,7 @@ namespace Math {
                 for (size_t vertexOfSecond = 0; vertexOfSecond < 3; vertexOfSecond++) {
                     if (first[vertexOfSecond] == second[pointNumber]) {
                         match = true;
-                        continue;
+                        break;
                     }
                 }
 
@@ -181,7 +182,7 @@ namespace Math {
         addInsideVertex(listOfInterPoints, second, first);
 
         if (nestedFlag && listOfInterPoints.size() == 3)
-            return Intersection{States::IntersectionState::Nested, first};
+            return Intersection{States::IntersectionState::Nested, Polygon(listOfInterPoints)};
 
         bool isImportantCase = false;
 

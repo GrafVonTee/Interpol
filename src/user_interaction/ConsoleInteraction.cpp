@@ -9,18 +9,23 @@ using std::cout, std::cin, std::endl, std::cerr;
 const std::string g_letters = "ABCDEFGHKLMN";
 
 namespace Interaction {
-    void greeting() {
-        std::string userName = getUserName();
-        userName = Parsing::parseStringFromIndent(userName);
-        auto inputState = Parsing::checkStringIsEmpty(userName);
-        if (inputState == States::InputState::EmptyString)
-            userName = "Traveler";
-
-        cout << "Greetings, " << userName << "!" << endl;
+    void greeting(const std::string &userName) {
+        cout << "Greetings, " << (userName.empty() ? "Traveller" : userName) << "!" << endl;
         cout << "This program will immerse you in the wonderful world of\n\tTriangle Intersections!" << endl;
         cout << "All you need is entering the values of your two triangles..." << endl;
         cout << "...and take resulted polygon!" << endl;
         cout << endl;
+    }
+
+    void welcomeToGui() {
+        cout << "Well, let's take a look on your triangles and intersection between them!" << endl;
+        cout << "Another window has opened now, just click on the blue angle, hold and pull it to down-right side" << endl;
+        cout << "You will see what you wrote" << endl;
+        cout << endl;
+    }
+
+    void goodbye(const std::string &userName) {
+        cout << "Goodbye, " << (userName.empty() ? "Traveller" : userName) << "!" << endl;
     }
 
     std::string getUserName() {
@@ -28,6 +33,10 @@ namespace Interaction {
         std::string userName;
         std::getline(cin, userName);
         cout << endl;
+
+        userName = Parsing::parseStringFromIndent(userName);
+        auto inputState = Parsing::checkStringIsEmpty(userName);
+
         return userName;
     }
 
