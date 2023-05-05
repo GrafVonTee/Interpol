@@ -300,8 +300,8 @@ namespace Geometry {
             throw std::logic_error("Points are located in one line!");
     }
 
-    // We decide, that the minimal point is the point, that located below than another (has minimal Y coord).
-    // If we had point with the same Y coord, we take the point, that located lefter than another (has minimal X coord).
+    // We decide that the minimal point is the point, that located below than another (has minimal Y coord).
+    // If we had a point with the same Y coord, we take the point that located lefter than another (has minimal X coord).
 
     bool isMinPoint(const Point& first, const Point& second) {
         if (first.getY() < second.getY())
@@ -313,10 +313,10 @@ namespace Geometry {
 
 
     // We sort point so, that we can build a convex polygon when we iterate by points in sorted order.
-    // (we believe that it is possible to create a convex polygon with these points as vertex of this polygon)
+    // (We believe that it is possible to create a convex polygon with these points as vertex of this polygon)
     void Polygon::sortPoints() {
 
-        // At the beginning we choose the starting point as a minimal point.
+        // At the beginning, we choose the starting point as a minimal point.
 
         auto iterator = std::min_element(m_pointList.begin(),m_pointList.end(), isMinPoint);
         Point center = *iterator;
