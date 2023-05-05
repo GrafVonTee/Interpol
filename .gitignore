@@ -1,4 +1,7 @@
-### C++ ###
+# Build folders
+/build
+/.vscode
+
 # Prerequisites
 *.d
 
@@ -73,7 +76,6 @@ _deps
 # Icon must end with two \r
 Icon
 
-
 # Thumbnails
 ._*
 
@@ -121,4 +123,4 @@ $RECYCLE.BIN/
 *.msp
 
 # Windows shortcuts
-*.lnk
+*.lnk!/src/main.cpp
