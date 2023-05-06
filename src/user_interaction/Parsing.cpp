@@ -29,6 +29,7 @@ namespace Parsing {
         return (std::istringstream(s) >> newVariable >> std::ws).eof();
     }
 
+    // Returns a string in format " x y "
     input_result_t parsePoint(std::string &input) {
         std::stringstream parser;
         std::string result;
@@ -51,10 +52,12 @@ namespace Parsing {
         if (input[0] != '(')
             return std::make_tuple(input, States::InputState::IncorrectInput);
 
+        // Add space in the beginning of string
         input[0] = ' ';
         if (!isNumber(input))
             return std::make_tuple(input, States::InputState::IncorrectInput);
 
+        // Result is " input "
         result = input + " ";
 
         // Then check the second template "y)"
@@ -62,10 +65,12 @@ namespace Parsing {
         if (!input.ends_with(')'))
             return std::make_tuple(input, States::InputState::IncorrectInput);
 
+        // Add space in the end of string
         input.back() = ' ';
         if (!isNumber(input))
             return std::make_tuple(input, States::InputState::IncorrectInput);
 
+        // Result become " x y "
         result += input;
 
         return std::make_tuple(result, States::InputState::Correct);
