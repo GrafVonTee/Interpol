@@ -1,4 +1,5 @@
 #include <sstream>
+#include <cstdlib>
 #include "DrawImage.h"
 #include "CalculateIntersections.h"
 #include "Parsing.h"
@@ -35,6 +36,7 @@ int main() {
     );
 
     Interaction::goodbye(userName);
+    system("pause");
 
     return 0;
 }
