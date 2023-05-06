@@ -11,5 +11,16 @@ namespace DrawUtils {
 
     im_vec_triangle_t getTupleFromPolygon(const Geometry::Polygon &triangle);
     std::vector<ImVec2> getVectorFromPolygon(Geometry::Polygon& polygon);
+
+    void FindParameters(const ImVec2& a1, const ImVec2& a2, const ImVec2& a3,
+                        const ImVec2& b1, const ImVec2& b2, const ImVec2& b3,
+                        double a,
+                        double& scale_x, double& scale_y, double& delta_x, double& delta_y, double& min_x, double& min_y);
+
+    void ScaleAndTranslate(ImVec2& a1, ImVec2& a2, ImVec2& a3,
+                           ImVec2& b1, ImVec2& b2, ImVec2& b3,
+                           std::vector<ImVec2>& intersection_points,
+                           double& scale_x, double& scale_y, double& delta_x, double& delta_y,
+                           double& min_x, double& min_y);
 }
 #endif //TRIANGLE_INTERSECTIONS_GETIMVECFROMPOLYGON_H
