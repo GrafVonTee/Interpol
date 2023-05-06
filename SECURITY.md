@@ -8,7 +8,7 @@
 | CMake version 3.16  | :white_check_mark: |
 | OpenGL < 2.0        | :x:                |
 
-## Suported Operatin Systems
+## Suported Operating Systems
 
 |  OS            | Supported          |
 | -------------- | ------------------ |
