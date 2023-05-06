@@ -10,7 +10,6 @@ namespace DrawUtils {
     using im_vec_triangle_t = std::tuple<ImVec2, ImVec2, ImVec2>;
 
     im_vec_triangle_t getTupleFromPolygon(const Geometry::Polygon &triangle);
-    std::vector<ImVec2> getVectorFromPolygon(const Geometry::Polygon &polygon);
+    std::vector<ImVec2> getVectorFromPolygon(Geometry::Polygon& polygon);
 }
-
 #endif //TRIANGLE_INTERSECTIONS_GETIMVECFROMPOLYGON_H

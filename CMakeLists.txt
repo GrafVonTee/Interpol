@@ -122,7 +122,8 @@ add_executable(
 
         src/user_interaction/ConsoleInteraction.cpp
         src/user_interaction/Parsing.cpp
-        src/drawing/GetImVecFromPolygon.cpp include/GetImVecFromPolygon.h)
+        src/drawing/GetImVecFromPolygon.cpp
+)
 
 target_include_directories(unit_tests PUBLIC googletest)
 target_include_directories(unit_tests PUBLIC include)
@@ -154,7 +155,8 @@ add_executable(
 
         src/user_interaction/ConsoleInteraction.cpp
         src/user_interaction/Parsing.cpp
-        src/drawing/GetImVecFromPolygon.cpp include/GetImVecFromPolygon.h)
+        src/drawing/GetImVecFromPolygon.cpp
+)
 
 target_include_directories(triangle_intersection PUBLIC include)
 target_include_directories(triangle_intersection PUBLIC imgui)

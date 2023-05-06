@@ -16,10 +16,11 @@ namespace DrawUtils {
         );
     }
 
-    std::vector<ImVec2> getVectorFromPolygon(const Geometry::Polygon &polygon) {
+    std::vector<ImVec2> getVectorFromPolygon(Geometry::Polygon& polygon) {
         std::vector<ImVec2> pointsVector;
-        for (size_t i = 0; i < polygon.size(); ++i)
-            pointsVector.push_back(getImVec2(polygon[i]));
+        pointsVector.reserve(polygon.size());
+        for (auto point : polygon.getPointsCopy())
+            pointsVector.emplace_back(getImVec2(point));
         return pointsVector;
     }
 }
