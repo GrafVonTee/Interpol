@@ -94,7 +94,6 @@ namespace Math {
 
         // We define a lot of variables, that are used a linear algebra's part of code (we solve the system linear equations).
 
-        bool isImportantCase;
         const coord_t
             tFirstX {firstEnd.getX() - firstStart.getX()},
             tFirstY {firstEnd.getY() - firstStart.getY()},
@@ -109,8 +108,7 @@ namespace Math {
 
         // The case, when the determinant is zero, doesn't interest us
         if (determinant == 0) {
-            isImportantCase = false;
-            return LineIntersection{Point{0, 0},isImportantCase};
+            return LineIntersection{Point{0, 0}, false};
         }
         else {
 
@@ -121,12 +119,10 @@ namespace Math {
             interY = (tFirstX * b2 - tFirstY * b1) / determinant;
 
             if (interX >= 0 && interX <= 1 && interY >= 0 && interY <= 1) {
-                isImportantCase = true;
-                return LineIntersection{Point{tFirstX * interX + firstStart.getX(), tFirstY * interX + firstStart.getY()}, isImportantCase};
+                return LineIntersection{Point{tFirstX * interX + firstStart.getX(), tFirstY * interX + firstStart.getY()}, true};
             }
             else {
-                isImportantCase = false;
-                return LineIntersection{Point{0, 0},isImportantCase};
+                return LineIntersection{Point{0, 0}, true};
             }
         }
     }
