@@ -89,12 +89,12 @@ namespace Math {
     }
 
 
-    Point findLinesInter(Point &firstStart, Point &firstEnd,
-                        Point &secondStart, Point &secondEnd,
-                        bool &isImportantCase) {
+    LineIntersection findLinesInter(Point &firstStart, Point &firstEnd,
+                        Point &secondStart, Point &secondEnd) {
 
         // We define a lot of variables, that are used a linear algebra's part of code (we solve the system linear equations).
 
+        bool isImportantCase;
         const coord_t
             tFirstX {firstEnd.getX() - firstStart.getX()},
             tFirstY {firstEnd.getY() - firstStart.getY()},
@@ -110,7 +110,7 @@ namespace Math {
         // The case, when the determinant is zero, doesn't interest us
         if (determinant == 0) {
             isImportantCase = false;
-            return Point{0, 0};
+            return LineIntersection{Point{0, 0},isImportantCase};
         }
         else {
 
@@ -122,11 +122,11 @@ namespace Math {
 
             if (interX >= 0 && interX <= 1 && interY >= 0 && interY <= 1) {
                 isImportantCase = true;
-                return Point{tFirstX * interX + firstStart.getX(), tFirstY * interX + firstStart.getY()};
+                return LineIntersection{Point{tFirstX * interX + firstStart.getX(), tFirstY * interX + firstStart.getY()}, isImportantCase};
             }
             else {
                 isImportantCase = false;
-                return Point{0, 0};
+                return LineIntersection{Point{0, 0},isImportantCase};
             }
         }
     }
@@ -146,7 +146,6 @@ namespace Math {
         // If this vector isn't empty, we return that the intersection is a polygon (it is the most general case of intersection).
 
         std::vector<Point> listOfInterPoints;
-        Point newPoint;
 
         addInsideVertex(listOfInterPoints, first, second);
 
@@ -184,20 +183,17 @@ namespace Math {
         if (nestedFlag && listOfInterPoints.size() == 3)
             return Intersection{States::IntersectionState::Nested, Polygon(listOfInterPoints)};
 
-        bool isImportantCase = false;
-
         // Find all point of edges intersections
+        LineIntersection inter;
 
         for (size_t firstEdge = 0; firstEdge <= 2; firstEdge++) {
             for (size_t secondEdge = 0; secondEdge <= 2; secondEdge++) {
 
-                newPoint = findLinesInter(first[firstEdge], first[(firstEdge + 1) % 3],
-                                          second[secondEdge],second[(secondEdge + 1) % 3],
-                                          isImportantCase);
+                inter = findLinesInter(first[firstEdge], first[(firstEdge + 1) % 3],
+                                          second[secondEdge],second[(secondEdge + 1) % 3]);
 
-                if (isImportantCase) {
-                    pushBackUnique(listOfInterPoints, newPoint);
-                    isImportantCase = false;
+                if (inter.isImportantCase) {
+                    pushBackUnique(listOfInterPoints, inter.point);
                 }
             }
         }
