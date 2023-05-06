@@ -122,7 +122,7 @@ namespace Math {
                 return LineIntersection{Point{tFirstX * interX + firstStart.getX(), tFirstY * interX + firstStart.getY()}, true};
             }
             else {
-                return LineIntersection{Point{0, 0}, true};
+                return LineIntersection{Point{0, 0}, false};
             }
         }
     }
