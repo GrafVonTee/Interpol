@@ -23,4 +23,52 @@ namespace DrawUtils {
             pointsVector.emplace_back(getImVec2(point));
         return pointsVector;
     }
+
+    void FindParameters(const ImVec2& a1, const ImVec2& a2, const ImVec2& a3,
+                        const ImVec2& b1, const ImVec2& b2, const ImVec2& b3,
+                        double a,
+                        double& scale_x, double& scale_y, double& delta_x, double& delta_y, double& min_x, double& min_y){
+        min_x = std::min({a1.x, a2.x, a3.x, b1.x, b2.x, b3.x});
+        double max_x = std::max({a1.x, a2.x, a3.x, b1.x, b2.x, b3.x});
+        min_y = std::min({a1.y, a2.y, a3.y, b1.y, b2.y, b3.y});
+        double max_y = std::max({a1.y, a2.y, a3.y, b1.y, b2.y, b3.y});
+
+        scale_x = a / (max_x - min_x);
+        scale_y = a / (max_y - min_y);
+
+        delta_x = (a - (max_x - min_x) * scale_x) / 2;
+        delta_y = (a - (max_y - min_y) * scale_y) / 2;
+    }
+
+    void ScaleAndTranslate(ImVec2& a1, ImVec2& a2, ImVec2& a3,
+                           ImVec2& b1, ImVec2& b2, ImVec2& b3,
+                           std::vector<ImVec2>& intersection_points,
+                           double& scale_x, double& scale_y, double& delta_x, double& delta_y,
+                           double& min_x, double& min_y){
+
+        for(ImVec2 point : intersection_points){
+            point.x = (point.x - min_x) * scale_x + delta_x;
+            point.y = (point.y - min_y) * scale_y + delta_y;
+        }
+
+        a1.x = (a1.x - min_x) * scale_x + delta_x;
+        a1.y = (a1.y - min_y) * scale_y + delta_y;
+        a1.x += delta_x;
+        a1.y += + delta_y;
+
+        a2.x = (a2.x - min_x) * scale_x + delta_x;
+        a2.y = (a2.y - min_y) * scale_y + delta_y;
+
+        a3.x = (a3.x - min_x) * scale_x + delta_x;
+        a3.y = (a3.y - min_y) * scale_y + delta_y;
+
+        b1.x = (b1.x - min_x) * scale_x + delta_x;
+        b1.y = (b1.y - min_y) * scale_y + delta_y;
+
+        b2.x = (b2.x - min_x) * scale_x + delta_x;
+        b2.y = (b2.y - min_y) * scale_y + delta_y;
+
+        b3.x = (b3.x - min_x) * scale_x + delta_x;
+        b3.y = (b3.y - min_y) * scale_y + delta_y;
+    }
 }
