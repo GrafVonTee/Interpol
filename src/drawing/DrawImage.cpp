@@ -1,5 +1,14 @@
 #include "DrawImage.h"
 
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+    {
+        // Set the window to close when the Escape key is pressed
+        glfwSetWindowShouldClose(window, true);
+    }
+}
+
 namespace DrawOutput {
     #define WIDTH 1024
     #define HEIGHT 768
@@ -27,8 +36,8 @@ namespace DrawOutput {
         #endif
 
         // create a new image
-        auto *img = new unsigned char[1024 * 1024 * 3];
-        memset(img, 255, 1024 * 1024 * 3);
+        // auto *img = new unsigned char[1024 * 1024 * 3];
+        // memset(img, 255, 1024 * 1024 * 3);
 
         // Initialize GLFW
         glfwInit();
@@ -66,6 +75,8 @@ namespace DrawOutput {
         // create a new window
         ImGui::SetNextWindowSize(io.DisplaySize);
         ImGui::SetNextWindowPos(ImVec2(0, 0));
+
+        glfwSetKeyCallback(window, key_callback);
 
         while (!glfwWindowShouldClose(window)) {
             glfwPollEvents();
@@ -107,7 +118,11 @@ namespace DrawOutput {
 
             glfwSwapBuffers(window);
         }
+        
+        // delete[] img;
 
+        ImGui_ImplGlfw_Shutdown();
+        ImGui_ImplOpenGL3_Shutdown();
         ImGui::DestroyContext();
 
         // Shutdown GLFW

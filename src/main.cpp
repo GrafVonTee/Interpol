@@ -1,3 +1,4 @@
+#include <sstream>
 #include "DrawImage.h"
 #include "CalculateIntersections.h"
 #include "Parsing.h"
@@ -6,9 +7,16 @@
 
 int main() {
     std::string userName = Interaction::getUserName();
-    Interaction::greeting(userName);
+    Interaction::greeting(userName);    
+    std::istringstream demoPoints("(300.0, 400.0)\n(100.0, 200.0)\n(100.0, 400.0)\n(100.0, 500.0)\n(100.0, 100.0)\n(500.0, 100.0)\n");
 
-    auto [tr1, tr2] = Interaction::getBothTriangles();
+    std::istream *input = &std::cin;
+
+    if ((userName == "Demo")||(userName == "demo")){
+        input = &demoPoints;
+    }
+
+    auto [tr1, tr2] = Interaction::getBothTriangles(*input);
     Interaction::printTriangle(tr1, 1);
     Interaction::printTriangle(tr2, 2);
 

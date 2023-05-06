@@ -146,7 +146,8 @@ add_executable(
         src/utils/GeometryUtils.cpp
         src/utils/StatesUtils.cpp
 
-        src/drawing/DrawImage.cpp
+        src/drawing/DrawImage.cpp        
+        src/drawing/GetImVecFromPolygon.cpp
 
         src/user_interaction/ConsoleInteraction.cpp
         src/user_interaction/Parsing.cpp
@@ -155,7 +156,6 @@ add_executable(
 
         src/user_interaction/ConsoleInteraction.cpp
         src/user_interaction/Parsing.cpp
-        src/drawing/GetImVecFromPolygon.cpp
 )
 
 target_include_directories(triangle_intersection PUBLIC include)
