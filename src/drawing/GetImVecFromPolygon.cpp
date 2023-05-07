@@ -26,7 +26,7 @@ namespace DrawUtils {
 
     void findParameters(const ImVec2& a1, const ImVec2& a2, const ImVec2& a3, /// Points of first triangle
                         const ImVec2& b1, const ImVec2& b2, const ImVec2& b3, /// Points of second triangle
-                        const double squareSideSize,
+                        const coord_t squareSideSize,
                         double& scale_x, double& scale_y, double& delta_x, double& delta_y, double& min_x, double& min_y)
     {
         min_x = std::min({a1.x, a2.x, a3.x, b1.x, b2.x, b3.x});
