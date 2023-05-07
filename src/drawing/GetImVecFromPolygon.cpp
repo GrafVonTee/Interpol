@@ -24,7 +24,7 @@ namespace DrawUtils {
         return pointsVector;
     }
 
-    void FindParameters(const ImVec2& a1, const ImVec2& a2, const ImVec2& a3,
+    void findParameters(const ImVec2& a1, const ImVec2& a2, const ImVec2& a3,
                         const ImVec2& b1, const ImVec2& b2, const ImVec2& b3,
                         double a,
                         double& scale_x, double& scale_y, double& delta_x, double& delta_y, double& min_x, double& min_y){
@@ -40,7 +40,7 @@ namespace DrawUtils {
         delta_y = (a - (max_y - min_y) * scale_y) / 2;
     }
 
-    void ScaleAndTranslate(ImVec2& a1, ImVec2& a2, ImVec2& a3,
+    void scaleAndTranslate(ImVec2& a1, ImVec2& a2, ImVec2& a3,
                            ImVec2& b1, ImVec2& b2, ImVec2& b3,
                            std::vector<ImVec2>& intersection_points,
                            double& scale_x, double& scale_y, double& delta_x, double& delta_y,
