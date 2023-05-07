@@ -9,7 +9,7 @@
 int main() {
     std::string userName = Interaction::getUserName();
     Interaction::greeting(userName);    
-    std::istringstream demoPoints("(300.0, 400.0)\n(100.0, 200.0)\n(100.0, 400.0)\n(100.0, 500.0)\n(100.0, 100.0)\n(500.0, 100.0)\n");
+    std::istringstream demoPoints("(20.0, 90.0)\n(20.0, 20.0)\n(90.0, 10.0)\n(10.0, 80.0)\n(50.0, 30.0)\n(70.0, 50.0)\n");
 
     std::istream *input = &std::cin;
 
