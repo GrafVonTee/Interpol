@@ -12,6 +12,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 namespace DrawOutput {
     #define WIDTH 1024
     #define HEIGHT 768
+    #define RED_COLOR    IM_COL32(186, 36,  66, 255)
+    #define GREEN_COLOR  IM_COL32(40,  156, 80, 255)
+    #define YELLOW_COLOR IM_COL32(204, 189, 12, 255)
 
     void draw_triangles_and_intersection(const ImVec2 &a1, const ImVec2 &a2, const ImVec2 &a3,
                                          const ImVec2 &b1, const ImVec2 &b2, const ImVec2 &b3,
@@ -90,20 +93,25 @@ namespace DrawOutput {
             ImDrawList *draw_list = ImGui::GetWindowDrawList();
 
             // draw the first triangle
-            draw_list->AddTriangle(a1, a2, a3,
-                                   IM_COL32(255, 0, 0, 255),
-                                   2.0f);
+            draw_list->AddTriangleFilled(a1, a2, a3,
+                                   RED_COLOR);
 
             // draw the second triangle
-            draw_list->AddTriangle(b1, b2, b3,
-                                   IM_COL32(0, 255, 0, 255),
-                                   2.0f);
+            draw_list->AddTriangleFilled(b1, b2, b3,
+                                   GREEN_COLOR);
 
             // draw the intersection
-            draw_list->AddPolyline(&intersection_points[0],
-                                   (int) intersection_points.size(),
-                                   IM_COL32(255, 255, 0, 255),
-                                   true, 5.0f);
+            if (intersection_points.size() >= 3)
+                draw_list->AddConvexPolyFilled(&intersection_points[0],
+                                       (int) intersection_points.size(),
+                                       YELLOW_COLOR);
+            else if (intersection_points.size() == 2)
+                draw_list->AddLine(intersection_points[0],
+                                   intersection_points[1],
+                                   YELLOW_COLOR,
+                                   10.f);
+            else
+                draw_list->AddCircleFilled(intersection_points[0], 10.f, YELLOW_COLOR);
 
             // end the window
             ImGui::End();
