@@ -9,7 +9,7 @@
 
 namespace DrawUtils {
     using im_vec_triangle_t = std::tuple<ImVec2, ImVec2, ImVec2>;
-    constexpr size_t SquareSideSize = 700;
+    constexpr coord_t SquareSideSize = 700;
     constexpr coord_t IndentSize = 34;
 
     im_vec_triangle_t getTupleOfPointsFromPolygon(const Geometry::Polygon &triangle);
@@ -17,7 +17,7 @@ namespace DrawUtils {
 
     void findParameters(const ImVec2& a1, const ImVec2& a2, const ImVec2& a3, /// Points of first triangle
                         const ImVec2& b1, const ImVec2& b2, const ImVec2& b3, /// Points of second triangle
-                        const double squareSideSize,
+                        const coord_t squareSideSize,
                         double& scale_x, double& scale_y, double& delta_x, double& delta_y, double& min_x, double& min_y);
 
     void scaleAndTranslate(ImVec2& a1, ImVec2& a2, ImVec2& a3, /// Points of first triangle

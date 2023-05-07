@@ -7,7 +7,7 @@
 #include "StatesUtils.h"
 
 // Type of coordinates
-using coord_t = long double;
+using coord_t = float;
 
 namespace Geometry {
     class Point {
