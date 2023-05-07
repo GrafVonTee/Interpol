@@ -46,29 +46,30 @@ namespace DrawUtils {
                            double& scale_x, double& scale_y, double& delta_x, double& delta_y,
                            double& min_x, double& min_y){
 
-        for(ImVec2 point : intersection_points){
+        for(ImVec2 &point : intersection_points){
             point.x = (point.x - min_x) * scale_x + delta_x;
             point.y = (point.y - min_y) * scale_y + delta_y;
         }
 
-        a1.x = (a1.x - min_x) * scale_x + delta_x;
-        a1.y = (a1.y - min_y) * scale_y + delta_y;
-        a1.x += delta_x;
-        a1.y += + delta_y;
+        for (auto v: {&a1, &a2, &a3, &b1, &b2, &b3}) {
+            v->x = (v->x - min_x) * scale_x + delta_x;
+            v->y = (v->y - min_y) * scale_y + delta_y;
+        }
+    }
 
-        a2.x = (a2.x - min_x) * scale_x + delta_x;
-        a2.y = (a2.y - min_y) * scale_y + delta_y;
+    void addIndents(ImVec2& a1, ImVec2& a2, ImVec2& a3,
+                    ImVec2& b1, ImVec2& b2, ImVec2& b3,
+                    std::vector<ImVec2>& intersection_points,
+                    const coord_t indentSize) {
 
-        a3.x = (a3.x - min_x) * scale_x + delta_x;
-        a3.y = (a3.y - min_y) * scale_y + delta_y;
+        for (auto v: { &a1, &a2, &a3, &b1, &b2, &b3 }) {
+            v->x += indentSize;
+            v->y += indentSize;
+        }
 
-        b1.x = (b1.x - min_x) * scale_x + delta_x;
-        b1.y = (b1.y - min_y) * scale_y + delta_y;
-
-        b2.x = (b2.x - min_x) * scale_x + delta_x;
-        b2.y = (b2.y - min_y) * scale_y + delta_y;
-
-        b3.x = (b3.x - min_x) * scale_x + delta_x;
-        b3.y = (b3.y - min_y) * scale_y + delta_y;
+        for (auto &v: intersection_points) {
+            v.x += indentSize;
+            v.y += indentSize;
+        }
     }
 }

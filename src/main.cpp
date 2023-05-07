@@ -22,9 +22,13 @@ int main() {
     double scale_x, scale_y, delta_x, delta_y, min_x, min_y;
 
     DrawUtils::findParameters(a1, a2, a3, b1, b2, b3, DrawUtils::squareSideSize_c,
-                   scale_x, scale_y, delta_x, delta_y, min_x, min_y);
+                              scale_x, scale_y, delta_x, delta_y, min_x, min_y);
     DrawUtils::scaleAndTranslate(a1, a2, a3, b1, b2, b3, intersectionPoints,
                                  scale_x, scale_y, delta_x, delta_y, min_x, min_y);
+    DrawUtils::addIndents(a1, a2, a3,
+                          b1, b2, b3,
+                          intersectionPoints,
+                          DrawUtils::indentSize_c);
 
     Interaction::welcomeToGui();
     DrawOutput::draw_triangles_and_intersection(
