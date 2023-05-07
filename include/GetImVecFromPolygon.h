@@ -8,8 +8,8 @@
 
 namespace DrawUtils {
     using im_vec_triangle_t = std::tuple<ImVec2, ImVec2, ImVec2>;
-    constexpr size_t squareSideSize_c = 700;
-    constexpr coord_t indentSize_c = 34;
+    constexpr size_t SquareSideSize = 700;
+    constexpr coord_t IndentSize = 34;
 
     im_vec_triangle_t getTupleFromPolygon(const Geometry::Polygon &triangle);
     std::vector<ImVec2> getVectorFromPolygon(Geometry::Polygon& polygon);
