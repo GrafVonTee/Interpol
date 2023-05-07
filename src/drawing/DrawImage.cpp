@@ -97,10 +97,10 @@ namespace DrawOutput {
             else if (intersection_points.size() == 2)
                 draw_list->AddLine(intersection_points[0],
                                    intersection_points[1],
-                                   IM_COL32(204, 189, 12, 255),
+                                   YELLOW_COLOR,
                                    10.f);
             else
-                draw_list->AddCircleFilled(intersection_points[0], 10.f, IM_COL32(204, 189, 12, 255));
+                draw_list->AddCircleFilled(intersection_points[0], 10.f, YELLOW_COLOR);
 
             // end the window
             ImGui::End();
