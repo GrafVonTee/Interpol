@@ -15,9 +15,9 @@ int main() {
     auto intersection = Math::findTriangleInter(tr1, tr2);
     Interaction::printIntersection(intersection);
 
-    auto [a1, a2, a3] = DrawUtils::getTupleFromPolygon(tr1);
-    auto [b1, b2, b3] = DrawUtils::getTupleFromPolygon(tr2);
-    auto intersectionPoints = DrawUtils::getVectorFromPolygon(intersection.polygon);
+    auto [a1, a2, a3] = DrawUtils::getTupleOfPointsFromPolygon(tr1);
+    auto [b1, b2, b3] = DrawUtils::getTupleOfPointsFromPolygon(tr2);
+    auto intersectionPoints = DrawUtils::getVectorOfPointsFromPolygon(intersection.polygon);
 
     double scale_x, scale_y, delta_x, delta_y, min_x, min_y;
 
