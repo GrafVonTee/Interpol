@@ -18,33 +18,24 @@ int main() {
     }
 
     auto [tr1, tr2] = Interaction::getBothTriangles(*input);
-    Interaction::printTriangle(tr1, 1);
-    Interaction::printTriangle(tr2, 2);
-
     auto intersection = Math::findTriangleInter(tr1, tr2);
-    Interaction::printIntersection(intersection);
+    DrawUtils::setActualPointsLabels(tr1, tr2, intersection);
 
-    auto [a1, a2, a3] = DrawUtils::getTupleOfPointsFromPolygon(tr1);
-    auto [b1, b2, b3] = DrawUtils::getTupleOfPointsFromPolygon(tr2);
-    auto intersectionPoints = DrawUtils::getVectorOfPointsFromPolygon(intersection.polygon);
+    Interaction::printTriangle(tr1);
+    Interaction::printTriangle(tr2);
+    Interaction::printIntersection(intersection);
 
     double scale_x, scale_y, delta_x, delta_y, min_x, min_y;
 
-    DrawUtils::findParameters(a1, a2, a3, b1, b2, b3, DrawUtils::SquareSideSize,
+    DrawUtils::findParameters(tr1, tr2, DrawUtils::SquareSideSize,
                               scale_x, scale_y, delta_x, delta_y, min_x, min_y);
-    DrawUtils::scaleAndTranslate(a1, a2, a3, b1, b2, b3, intersectionPoints,
+    DrawUtils::scaleAndTranslate(tr1, tr2, intersection,
                                  scale_x, scale_y, delta_x, delta_y, min_x, min_y);
-    DrawUtils::addIndents(a1, a2, a3,
-                          b1, b2, b3,
-                          intersectionPoints,
+    DrawUtils::addIndents(tr1, tr2, intersection,
                           DrawUtils::IndentSize);
 
     Interaction::welcomeToGui();
-    DrawOutput::draw_triangles_and_intersection(
-            a1, a2, a3,
-            b1, b2, b3,
-            intersectionPoints
-    );
+    DrawOutput::draw_triangles_and_intersection(tr1, tr2, intersection);
 
     Interaction::goodbye(userName);
     system("pause");

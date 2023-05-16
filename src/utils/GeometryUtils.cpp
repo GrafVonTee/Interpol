@@ -8,10 +8,14 @@ namespace Geometry {
     Point::Point(const coord_t &x, const coord_t &y)
             : m_x(x), m_y(y) {}
 
+    Point::Point(const coord_t &x, const coord_t &y, const char &label)
+            : m_x(x), m_y(y), m_label(label) {}
+
     Point::Point(Point &&other) noexcept
-            : m_x(other.m_x), m_y(other.m_y) {
+            : m_x(other.m_x), m_y(other.m_y), m_label(other.m_label) {
         other.m_x = 0;
         other.m_y = 0;
+        other.m_label = '#';
     }
 
     coord_t Point::getX() const {
@@ -22,6 +26,10 @@ namespace Geometry {
         return m_y;
     }
 
+    char Point::getLabel() const {
+        return m_label;
+    }
+
     void Point::setX(const coord_t &x) {
         m_x = x;
     }
@@ -30,10 +38,15 @@ namespace Geometry {
         m_y = y;
     }
 
+    void Point::setLabel(const char &label) {
+        m_label = label;
+    }
+
     Point& Point::operator=(const Point &other) {
         if (this != &other) {
             m_x = other.m_x;
             m_y = other.m_y;
+            m_label = other.m_label;
         }
         return *this;
     }
@@ -42,6 +55,7 @@ namespace Geometry {
         if (this != &other) {
             m_x = other.m_x;
             m_y = other.m_y;
+            m_label = other.m_label;
         }
         return *this;
     }
@@ -226,7 +240,7 @@ namespace Geometry {
         return m_pointList.size();
     }
 
-    std::vector<Point> Polygon::getPointsCopy() {
+    std::vector<Point> Polygon::getPointsCopy() const {
         return m_pointList;
     }
 
