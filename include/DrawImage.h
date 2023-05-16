@@ -2,12 +2,12 @@
 #define TRIANGLE_INTERSECTIONS_DRAW_IMAGE_H
 
 #include <vector>
-#include "GeometryUtils.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "GeometryUtils.h"
 
 namespace DrawOutput {
 void draw_triangles_and_intersection(const Geometry::Polygon &tr1,

@@ -1,7 +1,7 @@
 #include <algorithm>
+#include <sstream>
 #include "GeometryUtils.h"
 #include "Parsing.h"
-#include <sstream>
 
 namespace Parsing {
     std::string& parseStringFromIndent(std::string &input) {

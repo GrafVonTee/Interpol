@@ -1,8 +1,8 @@
-#include "GeometryUtils.h"
 #include <cmath>
 #include <algorithm>
 #include <limits>
 #include <iomanip>
+#include "GeometryUtils.h"
 
 namespace Geometry {
     Point::Point(const coord_t &x, const coord_t &y)

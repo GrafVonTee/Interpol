@@ -1,5 +1,5 @@
-#include "GetImVecFromPolygon.h"
 #include <cmath>
+#include "GetImVecFromPolygon.h"
 
 namespace DrawUtils {
     ImVec2 getImVec2(const Geometry::Point &p) {
@@ -70,7 +70,7 @@ namespace DrawUtils {
         Geometry::Point indentation{indentSize, indentSize};
         for (Geometry::Polygon* figurePtr: {&tr1, &tr2, &intersection.polygon}) {
             for (Geometry::Point &point: figurePtr->getPointsRef()) {
-                auto pointLabel = point.getLabel();
+                char pointLabel = point.getLabel();
                 point += indentation;
                 point.setLabel(pointLabel);
             }
