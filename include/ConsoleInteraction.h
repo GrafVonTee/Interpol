@@ -17,9 +17,14 @@ namespace Interaction {
     void goodbye(const std::string &userName);
     void welcomeToGui();
     std::string getUserName();
-    triangle_result_t getTriangle(int numberOfTriangle, std::istream& inputStream = std::cin);
-    point_result_t getPoint(Geometry::Letters letter, std::istream& inputStream = std::cin);
-    triangle_pair_t getBothTriangles(std::istream& inputStream = std::cin);
+    triangle_result_t getTriangle(int numberOfTriangle,
+                                  std::istream& inputStream = std::cin,
+                                  std::ostream& outputStream = std::cout);
+    point_result_t getPoint(Geometry::Letters letter,
+                            std::istream& inputStream = std::cin,
+                            std::ostream& outputStream = std::cout);
+    triangle_pair_t getBothTriangles(std::istream& inputStream = std::cin,
+                                     std::ostream& outputStream = std::cout);
 
     void printPoint(const Geometry::Point &point);
     void printTriangle(const Geometry::Polygon &triangle);
