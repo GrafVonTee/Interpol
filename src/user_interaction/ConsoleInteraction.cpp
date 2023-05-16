@@ -40,13 +40,15 @@ namespace Interaction {
         return userName;
     }
 
-    triangle_result_t getTriangle(int numberOfTriangle, std::istream& inputStream) {
+    triangle_result_t getTriangle(int numberOfTriangle,
+                                  std::istream& inputStream,
+                                  std::ostream& outputStream) {
         // Just for developers checking
         if ((numberOfTriangle > 2) or (numberOfTriangle < 1))
             throw std::out_of_range("Variable \'numberOfTriangle\' should equal either 1 or 2!");
 
         // Get points until both of them become correct
-        cout << "Let\'s enter your " << numberOfTriangle << " triangle!" << endl;
+        outputStream << "Let\'s enter your " << numberOfTriangle << " triangle!" << endl;
         std::vector<Geometry::Point> points;
         for (auto i = 0; i < Geometry::Letters::D; i++) {
             Geometry::Point point;
@@ -54,7 +56,7 @@ namespace Interaction {
             do {
                 auto [tuple_point, tuple_state] = getPoint(
                         Geometry::Letters(i + ((numberOfTriangle == 1) ? skipToTriangle1 : skipToTriangle2)),
-                        inputStream);
+                        inputStream, outputStream);
                 point = tuple_point;
                 state = tuple_state;
             } while (state != States::InputState::Correct);
@@ -75,12 +77,14 @@ namespace Interaction {
         return std::make_tuple(polygon, state);
     }
 
-    point_result_t getPoint(Geometry::Letters letter, std::istream &inputStream) {
+    point_result_t getPoint(Geometry::Letters letter,
+                            std::istream &inputStream,
+                            std::ostream& outputStream) {
         // Just for developers checking
         if (letter >= Geometry::Letters::AllLetters)
             throw std::out_of_range("Unexpected letter!");
 
-        cout << "Please, enter new point " << g_letters[letter] << " in \'(x, y)\' format: ";
+        outputStream << "Please, enter new point " << g_letters[letter] << " in \'(x, y)\' format: ";
         std::string inputStr;
         std::getline(inputStream, inputStr);
         // cin.ignore();
@@ -103,16 +107,17 @@ namespace Interaction {
         }
     }
 
-    triangle_pair_t getBothTriangles(std::istream &inputStream) {
+    triangle_pair_t getBothTriangles(std::istream &inputStream,
+                                     std::ostream& outputStream) {
         // Get triangles until both of them become correct
 
-        cout << "The first thing you need is defining your two triangles (1 and 2)!" << endl;
+        outputStream << "The first thing you need is defining your two triangles (1 and 2)!" << endl;
         Geometry::Polygon triangle1, triangle2;
         States::InputState state;
         for (int i = 1; i <= 2; ++i) {
             do {
-                cout << endl;
-                auto [tuple_triangle, tuple_state] = getTriangle(i, inputStream);
+                outputStream << endl;
+                auto [tuple_triangle, tuple_state] = getTriangle(i, inputStream, outputStream);
                 if (i == 1)
                     triangle1 = tuple_triangle;
                 else
