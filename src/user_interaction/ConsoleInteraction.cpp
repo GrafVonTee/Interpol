@@ -98,7 +98,8 @@ namespace Interaction {
                 std::stringstream stream(resulted);
                 coord_t x, y;
                 stream >> x >> y;
-                return std::make_tuple(Geometry::Point(x, y), state);
+                char label = g_letters[letter];
+                return std::make_tuple(Geometry::Point(x, y, label), state);
         }
     }
 
@@ -123,16 +124,19 @@ namespace Interaction {
         return std::make_tuple(triangle1, triangle2);
     }
 
-    void printPoint(const Geometry::Point &point, Geometry::Letters letter) {
-        cout << "Point " << g_letters[letter] << " = " << point << endl;
+    void printPoint(const Geometry::Point &point) {
+        cout << "Point " << point.getLabel() << " = " << point << endl;
     }
 
-    void printTriangle(const Geometry::Polygon &triangle, int triangleNumber) {
-        auto neededSkip = (triangleNumber == 1) ? skipToTriangle1 : skipToTriangle2;
-        cout << "Triangle " << g_letters.substr(neededSkip, 3)
+    void printTriangle(const Geometry::Polygon &triangle) {
+        std::string nameOfTriangle = "###";
+        for (size_t i = 0; i < triangle.size(); ++i)
+            nameOfTriangle[i] = triangle[i].getLabel();
+
+        cout << "Triangle " << nameOfTriangle
              << " with points:" << endl;
-        for (auto i = 0; i <= Geometry::Letters::C; ++i)
-            printPoint(triangle[i], Geometry::Letters(i + neededSkip));
+        for (auto i = 0; i < triangle.size(); ++i)
+            printPoint(triangle[i]);
         cout << endl;
     }
 
@@ -158,14 +162,17 @@ namespace Interaction {
 
     void printPolygon(const Geometry::Polygon &polygon) {
         auto polygonType = getTypeNameOfPolygon(polygon.getState());
-        auto polygonName = g_letters.substr(skipToIntersection, (unsigned int)polygon.getState());
+        std::string polygonName;
+        for (size_t i = 0; i < polygon.size(); ++i)
+            polygonName.push_back(polygon[i].getLabel());
+
         if (polygonType == "not a polygon")
             cout << "Your polygon... is something strange???"
                  << "I do not know when this output can be printed." << endl;
 
         cout << "Your polygon is a " << polygonType << " " << polygonName << " with points:" << endl;
         for (auto i = 0; i < polygon.size(); ++i)
-            printPoint(polygon[i], Geometry::Letters(i + skipToIntersection));
+            printPoint(polygon[i]);
     }
 
     std::string getTypeNameOfPolygon(const States::PolygonState &state) {

@@ -1,4 +1,5 @@
 #include "DrawImage.h"
+#include "GetImVecFromPolygon.h"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -16,9 +17,13 @@ namespace DrawOutput {
     #define GREEN_COLOR  IM_COL32(40,  156, 80, 255)
     #define YELLOW_COLOR IM_COL32(204, 189, 12, 255)
 
-    void draw_triangles_and_intersection(const ImVec2 &a1, const ImVec2 &a2, const ImVec2 &a3,
-                                         const ImVec2 &b1, const ImVec2 &b2, const ImVec2 &b3,
-                                         const std::vector<ImVec2> &intersection_points) {
+    void draw_triangles_and_intersection(const Geometry::Polygon &tr1,
+                                         const Geometry::Polygon &tr2,
+                                         const Geometry::Intersection &intersection) {
+
+        auto [a1, a2, a3] = DrawUtils::getTupleOfPointsFromPolygon(tr1);
+        auto [b1, b2, b3] = DrawUtils::getTupleOfPointsFromPolygon(tr2);
+        auto intersection_points = DrawUtils::getVectorOfPointsFromPolygon(intersection.polygon);
 
         #if defined(IMGUI_IMPL_OPENGL_ES2)
                 const char* glsl_version = "#version 100";

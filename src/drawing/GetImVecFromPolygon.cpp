@@ -1,3 +1,4 @@
+#include <cmath>
 #include "GetImVecFromPolygon.h"
 
 namespace DrawUtils {
@@ -16,23 +17,31 @@ namespace DrawUtils {
         );
     }
 
-    std::vector<ImVec2> getVectorOfPointsFromPolygon(Geometry::Polygon& polygon) {
+    std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon) {
         std::vector<ImVec2> pointsVector;
         pointsVector.reserve(polygon.size());
-        for (auto point : polygon.getPointsCopy())
+        for (auto &point : polygon.getPointsCopy())
             pointsVector.emplace_back(getImVec2(point));
         return pointsVector;
     }
 
-    void findParameters(const ImVec2& a1, const ImVec2& a2, const ImVec2& a3, /// Points of first triangle
-                        const ImVec2& b1, const ImVec2& b2, const ImVec2& b3, /// Points of second triangle
+    void findParameters(const Geometry::Polygon &tr1, const Geometry::Polygon &tr2,
                         const coord_t squareSideSize,
-                        double& scale_x, double& scale_y, double& delta_x, double& delta_y, double& min_x, double& min_y)
-    {
-        min_x = std::min({a1.x, a2.x, a3.x, b1.x, b2.x, b3.x});
-        double max_x = std::max({a1.x, a2.x, a3.x, b1.x, b2.x, b3.x});
-        min_y = std::min({a1.y, a2.y, a3.y, b1.y, b2.y, b3.y});
-        double max_y = std::max({a1.y, a2.y, a3.y, b1.y, b2.y, b3.y});
+                        double& scale_x, double& scale_y, double& delta_x, double& delta_y,
+                        double& min_x, double& min_y) {
+
+        std::vector<coord_t> arrayX, arrayY;
+        for (auto &triangle: {tr1, tr2}) {
+            for (size_t i = 0; i < triangle.size(); ++i) {
+                arrayX.push_back(triangle[i].getX());
+                arrayY.push_back(triangle[i].getY());
+            }
+        }
+
+        min_x = *std::min_element(arrayX.begin(), arrayX.end());
+        double max_x = *std::max_element(arrayX.begin(), arrayX.end());
+        min_y = *std::min_element(arrayY.begin(), arrayY.end());
+        double max_y = *std::max_element(arrayY.begin(), arrayY.end());
 
         scale_x = squareSideSize / (max_x - min_x);
         scale_y = squareSideSize / (max_y - min_y);
@@ -41,36 +50,58 @@ namespace DrawUtils {
         delta_y = (squareSideSize - (max_y - min_y) * scale_y) / 2;
     }
 
-    void scaleAndTranslate(ImVec2& a1, ImVec2& a2, ImVec2& a3, /// Points of first triangle
-                           ImVec2& b1, ImVec2& b2, ImVec2& b3, /// Points of second triangle
-                           std::vector<ImVec2>& intersectionPoints,
+    void scaleAndTranslate(Geometry::Polygon &tr1, Geometry::Polygon &tr2,
+                           Geometry::Intersection& intersection,
                            double& scale_x, double& scale_y, double& delta_x, double& delta_y,
-                           double& min_x, double& min_y){
+                           double& min_x, double& min_y)
+   {
+       for (Geometry::Polygon* figurePtr: {&tr1, &tr2, &intersection.polygon}) {
+           for (Geometry::Point &point: figurePtr->getPointsRef()) {
+               point.setX((point.getX() - min_x) * scale_x + delta_x);
+               point.setY((point.getY() - min_y) * scale_y + delta_y);
+           }
+       }
+    }
 
-        for(ImVec2 &point : intersectionPoints){
-            point.x = (point.x - min_x) * scale_x + delta_x;
-            point.y = (point.y - min_y) * scale_y + delta_y;
-        }
-
-        for (ImVec2* point: {&a1, &a2, &a3, &b1, &b2, &b3}) {
-            point->x = (point->x - min_x) * scale_x + delta_x;
-            point->y = (point->y - min_y) * scale_y + delta_y;
+    void addIndents(Geometry::Polygon &tr1, Geometry::Polygon &tr2,
+                    Geometry::Intersection& intersection,
+                    const coord_t indentSize)
+    {
+        Geometry::Point indentation{indentSize, indentSize};
+        for (Geometry::Polygon* figurePtr: {&tr1, &tr2, &intersection.polygon}) {
+            for (Geometry::Point &point: figurePtr->getPointsRef()) {
+                char pointLabel = point.getLabel();
+                point += indentation;
+                point.setLabel(pointLabel);
+            }
         }
     }
 
-    void addIndents(ImVec2& a1, ImVec2& a2, ImVec2& a3,
-                    ImVec2& b1, ImVec2& b2, ImVec2& b3,
-                    std::vector<ImVec2>& intersectionPoints,
-                    const coord_t indentSize) {
-
-        for (ImVec2* point: { &a1, &a2, &a3, &b1, &b2, &b3 }) {
-            point->x += indentSize;
-            point->y += indentSize;
+    void setActualPointsLabels(Geometry::Polygon &triangle1,
+                               Geometry::Polygon &triangle2,
+                               Geometry::Intersection &intersection)
+    {
+        std::vector<Geometry::Point*> allPoints;
+        size_t letterIndex = 0;
+        for (Geometry::Polygon* figurePtr: {&triangle1, &triangle2, &intersection.polygon}) {
+            for (Geometry::Point &point: figurePtr->getPointsRef()) {
+                if (point.getLabel() == 0) {
+                    point.setLabel((char) ((size_t) 'A' + letterIndex));
+                    letterIndex++;
+                } else {
+                    letterIndex = (letterIndex > (point.getLabel() - 'A' + 1))
+                            ? letterIndex : (point.getLabel() - 'A' + 1);
+                }
+                allPoints.push_back(&point);
+            }
         }
 
-        for (ImVec2& point: intersectionPoints) {
-            point.x += indentSize;
-            point.y += indentSize;
-        }
+        for (size_t i = 0; i < allPoints.size(); ++i)
+            for (size_t j = i + 1; j < allPoints.size(); ++j)
+                if (std::pow(allPoints[i]->getX() - allPoints[j]->getX(), 2) +
+                    std::pow(allPoints[i]->getY() - allPoints[j]->getY(), 2)
+                    <= std::numeric_limits<coord_t>::epsilon())
+
+                    allPoints[j]->setLabel(allPoints[i]->getLabel());
     }
 }

@@ -7,7 +7,7 @@
 #include "StatesUtils.h"
 
 // Type of coordinates
-using coord_t = float;
+using coord_t = double;
 
 namespace Geometry {
     class Point {
@@ -21,25 +21,32 @@ namespace Geometry {
 
      @param m_y: Y coordinate
      @type m_y: coord_t
+
+     @param m_label: Point's label
+     @type m_label: char
     */
     private:
         coord_t m_x{};
         coord_t m_y{};
+        char m_label{};
 
     public:
         // Constructors
         Point() = default;
         Point(const coord_t &x, const coord_t &y);
+        Point(const coord_t &x, const coord_t &y, const char &label);
         Point(const Point &other) = default;
         Point(Point &&other) noexcept;
 
         // Getters
         [[nodiscard]] coord_t getX() const;
         [[nodiscard]] coord_t getY() const;
+        [[nodiscard]] char getLabel() const;
 
         // Setters
         void setX(const coord_t &x);
         void setY(const coord_t &y);
+        void setLabel(const char &label);
 
         // Operators
         Point operator+(const Point &other) const;
@@ -133,7 +140,7 @@ namespace Geometry {
         // Getters
         [[nodiscard]] States::PolygonState getState() const;
         [[nodiscard]] std::vector<Point> &getPointsRef();
-        [[nodiscard]] std::vector<Point> getPointsCopy();
+        [[nodiscard]] std::vector<Point> getPointsCopy() const;
 
         // Methods
         [[nodiscard]] size_t size() const;

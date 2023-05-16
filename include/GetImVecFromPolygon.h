@@ -13,22 +13,24 @@ namespace DrawUtils {
     constexpr coord_t IndentSize = 34;
 
     im_vec_triangle_t getTupleOfPointsFromPolygon(const Geometry::Polygon &triangle);
-    std::vector<ImVec2> getVectorOfPointsFromPolygon(Geometry::Polygon& polygon);
+    std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon);
 
-    void findParameters(const ImVec2& a1, const ImVec2& a2, const ImVec2& a3, /// Points of first triangle
-                        const ImVec2& b1, const ImVec2& b2, const ImVec2& b3, /// Points of second triangle
+    void findParameters(const Geometry::Polygon &tr1, const Geometry::Polygon &tr2,
                         const coord_t squareSideSize,
-                        double& scale_x, double& scale_y, double& delta_x, double& delta_y, double& min_x, double& min_y);
+                        double& scale_x, double& scale_y, double& delta_x, double& delta_y,
+                        double& min_x, double& min_y);
 
-    void scaleAndTranslate(ImVec2& a1, ImVec2& a2, ImVec2& a3, /// Points of first triangle
-                           ImVec2& b1, ImVec2& b2, ImVec2& b3, /// Points of second triangle
-                           std::vector<ImVec2>& intersection_points,
+    void scaleAndTranslate(Geometry::Polygon &tr1, Geometry::Polygon &tr2,
+                           Geometry::Intersection& intersection,
                            double& scale_x, double& scale_y, double& delta_x, double& delta_y,
                            double& min_x, double& min_y);
 
-    void addIndents(ImVec2& a1, ImVec2& a2, ImVec2& a3, /// Points of first triangle
-                    ImVec2& b1, ImVec2& b2, ImVec2& b3, /// Points of second triangle
-                    std::vector<ImVec2>& intersection_points,
+    void addIndents(Geometry::Polygon &tr1, Geometry::Polygon &tr2,
+                    Geometry::Intersection& intersection,
                     const coord_t indentSize);
+
+    void setActualPointsLabels(Geometry::Polygon &triangle1,
+                               Geometry::Polygon &triangle2,
+                               Geometry::Intersection &intersection);
 }
 #endif //TRIANGLE_INTERSECTIONS_GETIMVECFROMPOLYGON_H
