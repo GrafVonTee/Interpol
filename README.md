@@ -58,7 +58,7 @@ For testing project you can use as input name: ```Demo``` or ```demo```
 <img width="1014" alt="Снимок экрана 2023-05-18 в 18 50 36" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/97de1c20-4c6e-42eb-8672-9eb0da1fda6d">
 
 ### Custom run:
-Write your name (or just press Enter for default name ```Travaler```) and then follow the print instucrtion
+Write your name (or just press Enter for default name ```Travaler```) and then follow the print instruction
 
 #### Console output:
 <img width="691" alt="Снимок экрана 2023-05-18 в 20 40 56" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/b27b2a20-2195-4d37-8d9d-f5c34e28c35b">
