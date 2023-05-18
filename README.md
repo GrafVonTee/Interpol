@@ -37,8 +37,6 @@ The project uses the CMake build system and the Clang compiler.
 
 To run the project, you must compile and run the executable. Follow the steps below:
 
-### Unix
-
 For MacOS: need python 3.* and PyCocoa lib
 ```
 git clone https://github.com/GrafVonTee/triangle_intersections.git
@@ -61,7 +59,7 @@ For testing project you can use as input name: ```Demo``` or ```demo```
 <img width="1014" alt="Снимок экрана 2023-05-18 в 18 50 36" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/97de1c20-4c6e-42eb-8672-9eb0da1fda6d">
 
 ### Custom run:
-Write your name (or just press Enter for deffault name ```Travaler``` and then follow the print instucrtion
+Write your name (or just press Enter for deffault name ```Travaler```) and then follow the print instucrtion
 
 <img width="1222" alt="Снимок экрана 2023-05-18 в 20 29 45" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/cc972059-6953-4a7c-8755-d421ca823fca">
 
