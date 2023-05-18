@@ -1,14 +1,14 @@
 #include <sstream>
-#include <cstdlib>
 #include "DrawImage.h"
 #include "CalculateIntersections.h"
 #include "Parsing.h"
 #include "ConsoleInteraction.h"
 #include "GetImVecFromPolygon.h"
+#include "ConstantsForDrawing.h"
 
 int main() {
     std::string userName = Interaction::getUserName();
-    Interaction::greeting(userName);    
+    Interaction::greeting(userName);
     std::istringstream demoPoints("(20.0, 90.0)\n(20.0, 20.0)\n(90.0, 10.0)\n(10.0, 80.0)\n(50.0, 30.0)\n(70.0, 50.0)\n");
     std::ostringstream empty;
 
@@ -30,12 +30,12 @@ int main() {
 
     double scale_x, scale_y, delta_x, delta_y, min_x, min_y;
 
-    DrawUtils::findParameters(tr1, tr2, DrawUtils::SquareSideSize,
+    DrawUtils::findParameters(tr1, tr2, DrawConst::SquareSideSize,
                               scale_x, scale_y, delta_x, delta_y, min_x, min_y);
     DrawUtils::scaleAndTranslate(tr1, tr2, intersection,
                                  scale_x, scale_y, delta_x, delta_y, min_x, min_y);
     DrawUtils::addIndents(tr1, tr2, intersection,
-                          DrawUtils::IndentSize);
+                          DrawConst::IndentSize);
 
     Interaction::welcomeToGui();
     DrawOutput::draw_triangles_and_intersection(tr1, tr2, intersection);
