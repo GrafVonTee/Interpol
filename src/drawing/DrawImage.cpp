@@ -16,6 +16,7 @@ namespace DrawOutput {
     #define RED_COLOR    IM_COL32(186, 36,  66, 255)
     #define GREEN_COLOR  IM_COL32(40,  156, 80, 255)
     #define YELLOW_COLOR IM_COL32(204, 189, 12, 255)
+    #define WHITE_COLOR  IM_COL32(255, 255, 255, 255)
 
     void draw_triangles_and_intersection(const Geometry::Polygon &tr1,
                                          const Geometry::Polygon &tr2,
@@ -100,6 +101,7 @@ namespace DrawOutput {
             // draw the first triangle
             draw_list->AddTriangleFilled(a1, a2, a3,
                                    RED_COLOR);
+            
 
             // draw the second triangle
             draw_list->AddTriangleFilled(b1, b2, b3,
@@ -108,8 +110,9 @@ namespace DrawOutput {
             // draw the intersection
             if (intersection_points.size() >= 3)
                 draw_list->AddConvexPolyFilled(&intersection_points[0],
-                                       (int) intersection_points.size(),
-                                       YELLOW_COLOR);
+                                               (int) intersection_points.size(),
+                                               YELLOW_COLOR);
+
             else if (intersection_points.size() == 2)
                 draw_list->AddLine(intersection_points[0],
                                    intersection_points[1],
@@ -117,6 +120,15 @@ namespace DrawOutput {
                                    10.f);
             else
                 draw_list->AddCircleFilled(intersection_points[0], 10.f, YELLOW_COLOR);
+
+            for (const Geometry::Polygon* figurePtr : {&tr1, &tr2, &intersection.polygon}) {
+                const std::vector<Geometry::Point>& points = const_cast<Geometry::Polygon*>(figurePtr)->getPointsRef();
+                for (const Geometry::Point& point : points) {
+                    draw_list->AddCircleFilled(ImVec2(point.getX(), point.getY()), 5.f, WHITE_COLOR);
+                    draw_list->AddText(ImVec2(point.getX(), point.getY()), WHITE_COLOR, std::string(1, point.getLabel()).c_str());
+                }
+            }
+
 
             // end the window
             ImGui::End();
