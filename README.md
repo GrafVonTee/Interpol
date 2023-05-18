@@ -55,13 +55,16 @@ For testing project you can use as input name: ```Demo``` or ```demo```
 <img width="552" alt="Снимок экрана 2023-05-18 в 18 49 05" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/4b45ef8f-9f9d-4f56-82e3-e49e2f35e855">
 
 #### UI output:
-
 <img width="1014" alt="Снимок экрана 2023-05-18 в 18 50 36" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/97de1c20-4c6e-42eb-8672-9eb0da1fda6d">
 
 ### Custom run:
-Write your name (or just press Enter for deffault name ```Travaler```) and then follow the print instucrtion
+Write your name (or just press Enter for default name ```Travaler```) and then follow the print instucrtion
 
-<img width="1222" alt="Снимок экрана 2023-05-18 в 20 29 45" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/cc972059-6953-4a7c-8755-d421ca823fca">
+#### Console output:
+<img width="691" alt="Снимок экрана 2023-05-18 в 20 40 56" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/b27b2a20-2195-4d37-8d9d-f5c34e28c35b">
+
+#### UI output:
+<img width="1011" alt="Снимок экрана 2023-05-18 в 20 40 23" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/473d745a-34d2-4f10-8d9f-bf27cfc9c614">
 
 ## Issues and Contributions
 
