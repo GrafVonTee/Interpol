@@ -65,49 +65,6 @@ namespace Geometry {
         friend std::ostream& operator<<(std::ostream &out, const Point &point);
     };
 
-    class Edge {
-    /*
-     2D Edge
-     Low-level class for other Geometric Structures
-     Private fields: m_left, m_right
-
-     @param m_left: Start point
-     @type m_left: Point
-
-     @param m_right: Finish point
-     @type m_right: Point
-    */
-    private:
-        Point m_left{};
-        Point m_right{};
-
-    public:
-        Edge() = default;
-        Edge(const Point &left, const Point &right);
-        Edge(Point &&left, Point &&right);
-        Edge(const Edge &other) = default;
-        Edge(Edge &&other) noexcept;
-
-        // Getters
-        [[nodiscard]] Point getLeft() const;
-        [[nodiscard]] Point getRight() const;
-
-        // Setters
-        void setLeft(const Point &left);
-        void setRight(const Point &right);
-
-        // Operators
-        Edge& operator=(const Edge &other);
-        Edge& operator=(Edge&& other) noexcept;
-
-        friend std::ostream& operator<<(std::ostream &out, const Edge &edge);
-
-        bool operator==(const Edge &other) const;
-        bool operator!=(const Edge &other) const;
-        bool operator==(Edge&& other) const noexcept;
-        bool operator!=(Edge&& other) const noexcept;
-    };
-
     class Polygon {
     /*
      2D Polygon with N points (1 < n <= 6)

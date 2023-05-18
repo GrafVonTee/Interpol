@@ -217,34 +217,3 @@ TEST(PointTest, SubtractionOperator) {
     EXPECT_EQ(p3.getX(), 2);
     EXPECT_EQ(p3.getY(), 2);
 }
-
-// Tests for the Edge class
-TEST(EdgeTest, DefaultConstructor) {
-    Edge e;
-    EXPECT_EQ(e.getLeft().getX(), 0);
-    EXPECT_EQ(e.getLeft().getY(), 0);
-    EXPECT_EQ(e.getRight().getX(), 0);
-    EXPECT_EQ(e.getRight().getY(), 0);
-}
-
-TEST(EdgeTest, ParameterizedConstructor) {
-    Point p1(1, 2);
-    Point p2(3, 4);
-    Edge e(p1, p2);
-    EXPECT_EQ(e.getLeft().getX(), 1);
-    EXPECT_EQ(e.getLeft().getY(), 2);
-    EXPECT_EQ(e.getRight().getX(), 3);
-    EXPECT_EQ(e.getRight().getY(), 4);
-}
-
-TEST(EdgeTest, MoveConstructor) {
-    Point p1(1, 2);
-    Point p2(3, 4);
-    Edge e(Point(1, 2), Point(3, 4));
-    Edge e2(std::move(e));
-    EXPECT_EQ(e2.getLeft().getX(), 1);
-    EXPECT_EQ(e2.getLeft().getY(), 2);
-    EXPECT_EQ(e2.getRight().getX(), 3);
-    EXPECT_EQ(e2.getRight().getY(), 4);
-}
-
