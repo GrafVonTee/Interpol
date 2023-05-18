@@ -1,5 +1,6 @@
 #include "DrawImage.h"
 #include "GetImVecFromPolygon.h"
+#include "ConstantsForDrawing.h"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -11,13 +12,6 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 namespace DrawOutput {
-    #define WIDTH 1024
-    #define HEIGHT 768
-    #define RED_COLOR    IM_COL32(186, 36,  66, 255)
-    #define GREEN_COLOR  IM_COL32(40,  156, 80, 255)
-    #define YELLOW_COLOR IM_COL32(204, 189, 12, 255)
-    #define WHITE_COLOR  IM_COL32(255, 255, 255, 255)
-
     void draw_triangles_and_intersection(const Geometry::Polygon &tr1,
                                          const Geometry::Polygon &tr2,
                                          const Geometry::Intersection &intersection) {
@@ -48,7 +42,7 @@ namespace DrawOutput {
         glfwInit();
 
         // Create a GLFW window
-        GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT,
+        GLFWwindow *window = glfwCreateWindow(DrawConst::WINDOW_WIDTH, DrawConst::WINDOWS_HEIGHT,
                                               "Triangle Intersection",
                                               nullptr, nullptr);
 
@@ -63,8 +57,8 @@ namespace DrawOutput {
         ImGui::CreateContext();
         ImGuiIO &io = ImGui::GetIO();
         (void) io;
-        io.DisplaySize = ImVec2(1024, 1024);
-        io.DisplayFramebufferScale = ImVec2(2, 2);
+        io.DisplaySize = ImVec2(DrawConst::DISPLAY_SIZE, DrawConst::DISPLAY_SIZE);
+        io.DisplayFramebufferScale = ImVec2(DrawConst::DISPLAY_SCALE, DrawConst::DISPLAY_SCALE);
 
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -111,19 +105,19 @@ namespace DrawOutput {
                 draw_list->AddLine(intersection_points[0],
                                    intersection_points[1],
                                    YELLOW_COLOR,
-                                   10.f);
-            else
-                draw_list->AddCircleFilled(intersection_points[0], 10.f, YELLOW_COLOR);
+                                   DrawConst::LINE_THICKNESS);
+            else if (intersection_points.size() == 1)
+                draw_list->AddCircleFilled(intersection_points[0], DrawConst::INTERSECTION_POINT_SIZE, YELLOW_COLOR);
 
             for (const Geometry::Polygon* figurePtr : {&tr1, &tr2, &intersection.polygon}) {
                 const std::vector<Geometry::Point>& points = const_cast<Geometry::Polygon*>(figurePtr)->getPointsRef();
                 for (const Geometry::Point& point : points) {
                     draw_list->AddCircleFilled(ImVec2((float) point.getX(), (float) point.getY()),
-                                               5.f,
+                                               DrawConst::POINT_SIZE,
                                                WHITE_COLOR);
-                    draw_list->AddText(ImVec2((float) point.getX(), (float) point.getY()),
+                    draw_list->AddText(nullptr, DrawConst::LETTER_FONT_SIZE, DrawUtils::getImVec2(point),
                                        WHITE_COLOR,
-                                       (' ' + std::string(1, point.getLabel())).c_str());
+                                       (" " + std::string(1, point.getLabel())).c_str());
                 }
             }
 

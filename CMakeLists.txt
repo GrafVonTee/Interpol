@@ -121,7 +121,9 @@ add_executable(
 
         src/user_interaction/ConsoleInteraction.cpp
         src/user_interaction/Parsing.cpp
+
         src/drawing/GetImVecFromPolygon.cpp
+        src/utils/ConstantsForDrawing.cpp
 )
 
 target_include_directories(unit_tests PUBLIC googletest)
@@ -147,6 +149,7 @@ add_executable(
 
         src/drawing/DrawImage.cpp        
         src/drawing/GetImVecFromPolygon.cpp
+        src/utils/ConstantsForDrawing.cpp
 
         src/user_interaction/ConsoleInteraction.cpp
         src/user_interaction/Parsing.cpp
