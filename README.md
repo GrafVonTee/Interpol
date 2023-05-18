@@ -1,5 +1,8 @@
 # Triangle Intersections
 
+[![CI](https://github.com/GrafVonTee/triangle_intersections/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/GrafVonTee/triangle_intersections/actions/workflows/main.yml)
+
+
 Triangle Intersections is a C++20 project that finds the intersection point of two triangles based on their coordinates. The project uses ImGUI and OpenGL libraries and is a student project for the C++ Programming course.
 
 ## Contributors
