@@ -30,12 +30,12 @@ int main() {
 
     double scale_x, scale_y, delta_x, delta_y, min_x, min_y;
 
-    DrawUtils::findParameters(tr1, tr2, DrawConst::SquareSideSize,
+    DrawUtils::findParameters(tr1, tr2, DrawConst::SQUARE_SIDE_SIZE,
                               scale_x, scale_y, delta_x, delta_y, min_x, min_y);
     DrawUtils::scaleAndTranslate(tr1, tr2, intersection,
                                  scale_x, scale_y, delta_x, delta_y, min_x, min_y);
     DrawUtils::addIndents(tr1, tr2, intersection,
-                          DrawConst::IndentSize);
+                          DrawConst::INDENT_SIZE);
 
     Interaction::welcomeToGui();
     DrawOutput::draw_triangles_and_intersection(tr1, tr2, intersection);

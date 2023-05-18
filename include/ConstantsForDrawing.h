@@ -2,18 +2,18 @@
 #define TRIANGLE_INTERSECTIONS_CONSTANTSFORDRAWING_H
 
 namespace DrawConst {
-    extern const float LetterFontSize;
-    extern const float LineThickness;
-    extern const float IntersectionPointThickness;
-    extern const float PointThickness;
+    extern const float LETTER_FONT_SIZE;
+    extern const float LINE_THICKNESS;
+    extern const float INTERSECTION_POINT_SIZE;
+    extern const float POINT_SIZE;
 
-    extern const int WindowWidth;
-    extern const int WindowHeight;
-    extern const int DisplaySize;
-    extern const int DisplayScale;
+    extern const int WINDOW_WIDTH;
+    extern const int WINDOWS_HEIGHT;
+    extern const int DISPLAY_SIZE;
+    extern const int DISPLAY_SCALE;
 
-    extern const float SquareSideSize;
-    extern const float IndentSize;
+    extern const float SQUARE_SIDE_SIZE;
+    extern const float INDENT_SIZE;
 }
 
 #endif //TRIANGLE_INTERSECTIONS_CONSTANTSFORDRAWING_H

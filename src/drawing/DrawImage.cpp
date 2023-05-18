@@ -42,7 +42,7 @@ namespace DrawOutput {
         glfwInit();
 
         // Create a GLFW window
-        GLFWwindow *window = glfwCreateWindow(DrawConst::WindowWidth, DrawConst::WindowHeight,
+        GLFWwindow *window = glfwCreateWindow(DrawConst::WINDOW_WIDTH, DrawConst::WINDOWS_HEIGHT,
                                               "Triangle Intersection",
                                               nullptr, nullptr);
 
@@ -57,8 +57,8 @@ namespace DrawOutput {
         ImGui::CreateContext();
         ImGuiIO &io = ImGui::GetIO();
         (void) io;
-        io.DisplaySize = ImVec2(DrawConst::DisplaySize, DrawConst::DisplaySize);
-        io.DisplayFramebufferScale = ImVec2(DrawConst::DisplayScale, DrawConst::DisplayScale);
+        io.DisplaySize = ImVec2(DrawConst::DISPLAY_SIZE, DrawConst::DISPLAY_SIZE);
+        io.DisplayFramebufferScale = ImVec2(DrawConst::DISPLAY_SCALE, DrawConst::DISPLAY_SCALE);
 
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -105,17 +105,17 @@ namespace DrawOutput {
                 draw_list->AddLine(intersection_points[0],
                                    intersection_points[1],
                                    YELLOW_COLOR,
-                                   DrawConst::LineThickness);
+                                   DrawConst::LINE_THICKNESS);
             else if (intersection_points.size() == 1)
-                draw_list->AddCircleFilled(intersection_points[0], DrawConst::IntersectionPointThickness, YELLOW_COLOR);
+                draw_list->AddCircleFilled(intersection_points[0], DrawConst::INTERSECTION_POINT_SIZE, YELLOW_COLOR);
 
             for (const Geometry::Polygon* figurePtr : {&tr1, &tr2, &intersection.polygon}) {
                 const std::vector<Geometry::Point>& points = const_cast<Geometry::Polygon*>(figurePtr)->getPointsRef();
                 for (const Geometry::Point& point : points) {
                     draw_list->AddCircleFilled(ImVec2((float) point.getX(), (float) point.getY()),
-                                               DrawConst::PointThickness,
+                                               DrawConst::POINT_SIZE,
                                                WHITE_COLOR);
-                    draw_list->AddText(nullptr, DrawConst::LetterFontSize, DrawUtils::getImVec2(point),
+                    draw_list->AddText(nullptr, DrawConst::LETTER_FONT_SIZE, DrawUtils::getImVec2(point),
                                        WHITE_COLOR,
                                        (" " + std::string(1, point.getLabel())).c_str());
                 }
