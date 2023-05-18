@@ -44,10 +44,6 @@ namespace DrawOutput {
                 glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         #endif
 
-        // create a new image
-        // auto *img = new unsigned char[1024 * 1024 * 3];
-        // memset(img, 255, 1024 * 1024 * 3);
-
         // Initialize GLFW
         glfwInit();
 
@@ -68,18 +64,16 @@ namespace DrawOutput {
         ImGuiIO &io = ImGui::GetIO();
         (void) io;
         io.DisplaySize = ImVec2(1024, 1024);
-        io.DisplayFramebufferScale = ImVec2(1, 1);
+        io.DisplayFramebufferScale = ImVec2(2, 2);
 
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-
         // Setup Dear ImGui style
         ImGui::StyleColorsDark();
 
         // Setup Platform/Renderer backends
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init(glsl_version);
-
 
         // create a new window
         ImGui::SetNextWindowSize(io.DisplaySize);
@@ -124,8 +118,12 @@ namespace DrawOutput {
             for (const Geometry::Polygon* figurePtr : {&tr1, &tr2, &intersection.polygon}) {
                 const std::vector<Geometry::Point>& points = const_cast<Geometry::Polygon*>(figurePtr)->getPointsRef();
                 for (const Geometry::Point& point : points) {
-                    draw_list->AddCircleFilled(ImVec2(point.getX(), point.getY()), 5.f, WHITE_COLOR);
-                    draw_list->AddText(ImVec2(point.getX(), point.getY()), WHITE_COLOR, std::string(1, point.getLabel()).c_str());
+                    draw_list->AddCircleFilled(ImVec2((float) point.getX(), (float) point.getY()),
+                                               5.f,
+                                               WHITE_COLOR);
+                    draw_list->AddText(ImVec2((float) point.getX(), (float) point.getY()),
+                                       WHITE_COLOR,
+                                       (' ' + std::string(1, point.getLabel())).c_str());
                 }
             }
 
