@@ -6,7 +6,10 @@
 | ------------------- | ------------------ |
 | С++20               | :white_check_mark: |
 | CMake version 3.16  | :white_check_mark: |
-| OpenGL < 2.0        | :x:                |
+| OpenGL 2.x-3.x      | :white_check_mark: |
+| Clang 14.0.x        | :white_check_mark: |
+| GCC 12.2.x          | :white_check_mark: |
+| MinGW 9.x           | :white_check_mark: |
 
 ## Suported Operating Systems
 

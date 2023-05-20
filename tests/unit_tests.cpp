@@ -60,7 +60,7 @@ TEST(ConsoleInteraction, NotATriangle) {
     testing::internal::CaptureStderr();    
     Polygon triangle = get<0>(getTriangle(1, input));    
     std::string output = testing::internal::GetCapturedStderr();
-    EXPECT_EQ(output, "Points are located in one line!\n");
+    EXPECT_EQ(output, "Points: C, A, B are located in one line!\n");
 }
 
 TEST(ParserTest, ValidInput) {
