@@ -14,6 +14,10 @@ namespace DrawUtils {
     std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon);
     ImVec2 getImVec2(const Geometry::Point &p);
 
+    im_vec_triangle_t getOffsetTupleOfPointsFromPolygon(const Geometry::Polygon &triangle, ImVec2 offset);
+    std::vector<ImVec2> getOffsetVectorOfPointsFromPolygon(const Geometry::Polygon& polygon, ImVec2 offset);
+    ImVec2 getOffsetImVec2(const Geometry::Point &p, ImVec2 offset);
+
     void findParameters(const Geometry::Polygon &tr1, const Geometry::Polygon &tr2,
                         const coord_t squareSideSize,
                         double& scale_x, double& scale_y, double& delta_x, double& delta_y,

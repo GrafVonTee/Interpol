@@ -16,9 +16,7 @@ namespace DrawOutput {
                                          const Geometry::Polygon &tr2,
                                          const Geometry::Intersection &intersection) {
 
-        auto [a1, a2, a3] = DrawUtils::getTupleOfPointsFromPolygon(tr1);
-        auto [b1, b2, b3] = DrawUtils::getTupleOfPointsFromPolygon(tr2);
-        auto intersection_points = DrawUtils::getVectorOfPointsFromPolygon(intersection.polygon);
+
 
         #if defined(IMGUI_IMPL_OPENGL_ES2)
                 const char* glsl_version = "#version 100";
@@ -48,6 +46,9 @@ namespace DrawOutput {
 
         // Make the OpenGL context current
         glfwMakeContextCurrent(window);
+        // glfwHideWindow(window);
+        glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
+        glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 
         // Initialize GLAD
         gladLoadGLLoader((GLADloadproc) glfwGetProcAddress);
@@ -76,27 +77,63 @@ namespace DrawOutput {
         glfwSetKeyCallback(window, key_callback);
 
         while (!glfwWindowShouldClose(window)) {
-            glfwPollEvents();
+            glfwPollEvents();       
+            
 
             // Start the Dear ImGui frame
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
-            ImGui::Begin("Intersection", nullptr);
+
+            ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
+            ImGui::SetNextWindowSize(ImVec2(DrawConst::WINDOW_WIDTH / 3, DrawConst::WINDOWS_HEIGHT), ImGuiCond_Once);
+            
+            ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+            if (ImGui::BeginMenuBar())
+            {
+                if (ImGui::BeginMenu("File"))
+                {
+                    if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
+                    if (ImGui::MenuItem("Save", "Ctrl+S"))   { /* Do stuff */ }
+                    // if (ImGui::MenuItem("Close", "Ctrl+W"))  { my_tool_active = false; }
+                    ImGui::EndMenu();
+                }
+                ImGui::EndMenuBar();
+            }
+            ImGui::End();
+
+
+
+            ImGui::SetNextWindowPos(ImVec2(DrawConst::WINDOW_WIDTH / 3, 0), ImGuiCond_Once);
+            ImGui::SetNextWindowSize(ImVec2(2 * DrawConst::WINDOW_WIDTH / 3, DrawConst::WINDOWS_HEIGHT), ImGuiCond_Once);
+            ImGui::Begin("Canvas", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
             ImDrawList *draw_list = ImGui::GetWindowDrawList();
+            
+            
+            ImVec2 pos = ImGui::GetCursorScreenPos();
+
+            auto [a1, a2, a3] = DrawUtils::getOffsetTupleOfPointsFromPolygon(tr1, pos);
+            auto [b1, b2, b3] = DrawUtils::getOffsetTupleOfPointsFromPolygon(tr2, pos);
+            auto intersection_points = DrawUtils::getOffsetVectorOfPointsFromPolygon(intersection.polygon, pos);
 
             // draw the first triangle
-            draw_list->AddTriangleFilled(a1, a2, a3,
+            draw_list->AddTriangleFilled(
+                a1,
+                a2,
+                a3,
                                    RED_COLOR);
             
 
             // draw the second triangle
-            draw_list->AddTriangleFilled(b1, b2, b3,
+            draw_list->AddTriangleFilled(
+                b1,
+                b2,
+                b3,
                                    GREEN_COLOR);
 
             // draw the intersection
-            if (intersection_points.size() >= 3)
+            if (intersection_points.size() >= 3)               
                 draw_list->AddConvexPolyFilled(&intersection_points[0],
                                                (int) intersection_points.size(),
                                                YELLOW_COLOR);
@@ -110,14 +147,19 @@ namespace DrawOutput {
                 draw_list->AddCircleFilled(intersection_points[0], DrawConst::INTERSECTION_POINT_SIZE, YELLOW_COLOR);
 
             for (const Geometry::Polygon* figurePtr : {&tr1, &tr2, &intersection.polygon}) {
-                const std::vector<Geometry::Point>& points = const_cast<Geometry::Polygon*>(figurePtr)->getPointsRef();
+                const std::vector<Geometry::Point>& points = const_cast<Geometry::Polygon*>(figurePtr)->getPointsRef();                
                 for (const Geometry::Point& point : points) {
-                    draw_list->AddCircleFilled(ImVec2((float) point.getX(), (float) point.getY()),
-                                               DrawConst::POINT_SIZE,
-                                               WHITE_COLOR);
-                    draw_list->AddText(nullptr, DrawConst::LETTER_FONT_SIZE, DrawUtils::getImVec2(point),
-                                       WHITE_COLOR,
-                                       (" " + std::string(1, point.getLabel())).c_str());
+                    ImVec2 relativePoint = ImVec2(pos.x + (float) point.getX(), pos.y + (float) point.getY());
+                    draw_list->AddCircleFilled(
+                        relativePoint,
+                        DrawConst::POINT_SIZE,
+                        WHITE_COLOR);
+                    draw_list->AddText(
+                        nullptr, 
+                        DrawConst::LETTER_FONT_SIZE, 
+                        relativePoint,
+                        WHITE_COLOR,
+                        (" " + std::string(1, point.getLabel())).c_str());
                 }
             }
 
@@ -130,12 +172,13 @@ namespace DrawOutput {
             int display_w, display_h;
             glfwGetFramebufferSize(window, &display_w, &display_h);
             glViewport(0, 0, display_w, display_h);
-            glClear(GL_COLOR_BUFFER_BIT);
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
             glfwSwapBuffers(window);
         }
-        
+
         // delete[] img;
 
         ImGui_ImplGlfw_Shutdown();
