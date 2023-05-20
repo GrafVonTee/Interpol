@@ -232,8 +232,13 @@ namespace Geometry {
                 ((p3.getX() - p1.getX()) * (p2.getY() - p1.getY())) -
                         (p3.getY() - p1.getY()) * (p2.getX() - p1.getX()), 2)
                 <= std::numeric_limits<coord_t>::epsilon())
+        {
+            std::string errorType = "Points: ";
+            errorType = errorType + p1.getLabel() + ", " + p2.getLabel() + ", " + p3.getLabel() +
+                    " are located in one line!";
 
-            throw std::logic_error("3 Points are located in one line!");
+            throw std::logic_error(errorType);
+        }
     }
 
     // We decide that the minimal point is the point, that located below than another (has minimal Y coord).
