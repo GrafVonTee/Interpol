@@ -82,8 +82,8 @@ namespace Geometry {
 
     bool Point::operator==(const Point &other) const {
         return (
-                std::abs(m_x - other.m_x) < std::numeric_limits<coord_t>::epsilon() and
-                std::abs(m_y - other.m_y) < std::numeric_limits<coord_t>::epsilon()
+                std::abs(m_x - other.m_x) <= std::numeric_limits<coord_t>::epsilon() and
+                std::abs(m_y - other.m_y) <= std::numeric_limits<coord_t>::epsilon()
         );
     }
 
@@ -123,6 +123,9 @@ namespace Geometry {
     Polygon::Polygon(Polygon &&other) noexcept {
         m_state = other.m_state;
         m_pointList = std::move(other.m_pointList);
+
+        other.m_state = States::PolygonState::NotPolygon;
+        other.m_pointList.clear();
     }
 
     States::PolygonState Polygon::getState() const {
@@ -212,9 +215,6 @@ namespace Geometry {
     }
 
     void Polygon::checkPolygon(const std::vector<Point>& points) {
-        if (points.size() > 6)
-            throw std::length_error("Invalid number of points!");
-
         for (size_t i = 0; i < points.size(); ++i)
             for (size_t j = i + 1; j < points.size(); ++j)
                 if (points[i] == points[j])
@@ -223,8 +223,8 @@ namespace Geometry {
         for (size_t i = 0; i < points.size() - 3; ++i)
             checkPointsForPolygon(points[i], points[i+1], points[i+2]);
 
-        checkPointsForPolygon(points[points.size() - 1], points[0], points[1]); // FAB
-        checkPointsForPolygon(points[points.size() - 2], points[points.size() - 1], points[0]); // EFA
+        checkPointsForPolygon(points[points.size() - 1], points[0], points[1]); // ZAB
+        checkPointsForPolygon(points[points.size() - 2], points[points.size() - 1], points[0]); // YZA
     }
 
     void Polygon::checkPointsForPolygon(const Point &p1, const Point &p2, const Point &p3) {
@@ -233,7 +233,7 @@ namespace Geometry {
                         (p3.getY() - p1.getY()) * (p2.getX() - p1.getX()), 2)
                 <= std::numeric_limits<coord_t>::epsilon())
 
-            throw std::logic_error("Points are located in one line!");
+            throw std::logic_error("3 Points are located in one line!");
     }
 
     // We decide that the minimal point is the point, that located below than another (has minimal Y coord).

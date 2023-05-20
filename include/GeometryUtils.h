@@ -67,8 +67,7 @@ namespace Geometry {
 
     class Polygon {
     /*
-     2D Polygon with N points (1 < n <= 6)
-     High-level class for Intersection between 2 triangles
+     High-level class for 2D Polygon with N points
      Private fields: m_pointList, m_state
 
      @param m_pointList: Vector of polygon's points
@@ -78,8 +77,8 @@ namespace Geometry {
      @type m_state: PolygonState
 
      Methods:
-     * size(): return size of a vector
-     * sortPoints(): sort vector using atan2 function
+     size(): return size of a vector
+     sortPoints(): sort vector using atan2 function
     */
     private:
         std::vector<Point> m_pointList{};
