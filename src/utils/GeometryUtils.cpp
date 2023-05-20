@@ -218,7 +218,11 @@ namespace Geometry {
         for (size_t i = 0; i < points.size(); ++i)
             for (size_t j = i + 1; j < points.size(); ++j)
                 if (points[i] == points[j])
-                    throw std::logic_error("Points must be different!");
+                {
+                    std::string errorType = "Points: ";
+                    errorType = errorType + points[i].getLabel() + " and " + points[j].getLabel() + " are equal!";
+                    throw std::logic_error(errorType);
+                }
 
         for (size_t i = 0; i < points.size() - 3; ++i)
             checkPointsForPolygon(points[i], points[i+1], points[i+2]);

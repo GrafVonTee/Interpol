@@ -52,7 +52,7 @@ TEST(ConsoleInteraction, SamePointsTriangle) {
     testing::internal::CaptureStderr();    
     Polygon triangle = get<0>(getTriangle(1, input));    
     std::string output = testing::internal::GetCapturedStderr();
-    EXPECT_EQ(output, "Points must be different!\n");
+    EXPECT_EQ(output, "Points: A and C are equal!\n");
 }
 
 TEST(ConsoleInteraction, NotATriangle) {
