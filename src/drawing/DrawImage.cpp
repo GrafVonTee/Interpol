@@ -160,7 +160,7 @@ namespace DrawOutput {
                         DrawConst::LETTER_FONT_SIZE, 
                         relativePoint,
                         WHITE_COLOR,
-                        (" " + std::string(1, point.getLabel())).c_str());
+                        (" " + point.getLabel()).c_str());
                 }
             }
 

@@ -93,7 +93,7 @@ namespace DrawUtils {
         Geometry::Polygon newPolygon = polygon;
         Geometry::Point indentation{indentSize, indentSize};
         for (Geometry::Point &point: newPolygon.getPointsRef()) {
-            char pointLabel = point.getLabel();
+            std::string pointLabel = point.getLabel();
             point += indentation;
             point.setLabel(pointLabel);
         }
@@ -105,15 +105,12 @@ namespace DrawUtils {
                                Geometry::Intersection &intersection)
     {
         std::vector<Geometry::Point*> allPoints;
-        size_t letterIndex = 0;
+        size_t letterIndex = 1;
         for (Geometry::Polygon* figurePtr: {&triangle1, &triangle2, &intersection.polygon}) {
             for (Geometry::Point &point: figurePtr->getPointsRef()) {
-                if (point.getLabel() == 0) {
-                    point.setLabel((char) ((size_t) 'A' + letterIndex));
+                if (point.getLabel().empty()) {
+                    point.setLabel("C" + std::to_string(letterIndex));
                     letterIndex++;
-                } else {
-                    letterIndex = (letterIndex > (point.getLabel() - 'A' + 1))
-                            ? letterIndex : (point.getLabel() - 'A' + 1);
                 }
                 allPoints.push_back(&point);
             }

@@ -6,8 +6,6 @@
 
 using std::cout, std::cin, std::endl, std::cerr;
 
-const std::string g_letters = "ABCDEFGHKLMN";
-
 namespace Interaction {
     void greeting(const std::string &userName) {
         cout << "Greetings, " << (userName.empty() ? "Traveller" : userName) << "!" << endl;
@@ -40,22 +38,21 @@ namespace Interaction {
         return userName;
     }
 
-    triangle_result_t getTriangle(int numberOfTriangle,
+    triangle_result_t getTriangle(const std::string &letter,
                                   std::istream& inputStream,
                                   std::ostream& outputStream) {
-        // Just for developers checking
-        if ((numberOfTriangle > 2) or (numberOfTriangle < 1))
-            throw std::out_of_range("Variable \'numberOfTriangle\' should equal either 1 or 2!");
 
         // Get points until both of them become correct
-        outputStream << "Let\'s enter your " << numberOfTriangle << " triangle!" << endl;
+        outputStream << "Let\'s enter your triangle!" << endl;
         std::vector<Geometry::Point> points;
-        for (auto i = 0; i < Geometry::Letters::D; i++) {
+        constexpr short numberOfPoints = 3;
+        for (auto i = 0; i < numberOfPoints; i++) {
             Geometry::Point point;
             States::InputState state;
+            std::string pointLetter = letter + std::to_string(i+1);
             do {
                 auto [tuple_point, tuple_state] = getPoint(
-                        Geometry::Letters(i + ((numberOfTriangle == 1) ? skipToTriangle1 : skipToTriangle2)),
+                        pointLetter,
                         inputStream, outputStream);
                 point = tuple_point;
                 state = tuple_state;
@@ -77,14 +74,11 @@ namespace Interaction {
         return std::make_tuple(polygon, state);
     }
 
-    point_result_t getPoint(Geometry::Letters letter,
+    point_result_t getPoint(const std::string &letter,
                             std::istream &inputStream,
-                            std::ostream& outputStream) {
-        // Just for developers checking
-        if (letter >= Geometry::Letters::AllLetters)
-            throw std::out_of_range("Unexpected letter!");
-
-        outputStream << "Please, enter new point " << g_letters[letter] << " in \'(x, y)\' format: ";
+                            std::ostream& outputStream)
+    {
+        outputStream << "Please, enter new point " << letter << " in \'(x, y)\' format: ";
         std::string inputStr;
         std::getline(inputStream, inputStr);
         // cin.ignore();
@@ -102,8 +96,7 @@ namespace Interaction {
                 std::stringstream stream(resulted);
                 coord_t x, y;
                 stream >> x >> y;
-                char label = g_letters[letter];
-                return std::make_tuple(Geometry::Point(x, y, label), state);
+                return std::make_tuple(Geometry::Point(x, y, letter), state);
         }
     }
 
@@ -117,7 +110,8 @@ namespace Interaction {
         for (int i = 1; i <= 2; ++i) {
             do {
                 outputStream << endl;
-                auto [tuple_triangle, tuple_state] = getTriangle(i, inputStream, outputStream);
+                std::string letterTriangle = (i == 1) ? "A" : "B";
+                auto [tuple_triangle, tuple_state] = getTriangle(letterTriangle, inputStream, outputStream);
                 if (i == 1)
                     triangle1 = tuple_triangle;
                 else
@@ -134,9 +128,10 @@ namespace Interaction {
     }
 
     void printTriangle(const Geometry::Polygon &triangle) {
-        std::string nameOfTriangle = "###";
-        for (size_t i = 0; i < triangle.size(); ++i)
-            nameOfTriangle[i] = triangle[i].getLabel();
+        std::string nameOfTriangle;
+        for (size_t i = 0; i < triangle.size() - 1; ++i)
+            nameOfTriangle += triangle[i].getLabel() + ",";
+        nameOfTriangle += triangle[2].getLabel();
 
         cout << "Triangle " << nameOfTriangle
              << " with points:" << endl;
@@ -168,12 +163,14 @@ namespace Interaction {
     void printPolygon(const Geometry::Polygon &polygon) {
         auto polygonType = getTypeNameOfPolygon(polygon.getState());
         std::string polygonName;
-        for (size_t i = 0; i < polygon.size(); ++i)
-            polygonName.push_back(polygon[i].getLabel());
+        for (size_t i = 0; i < polygon.size() - 1; ++i)
+            polygonName += polygon[i].getLabel() + ",";
+        if (polygon.size())
+            polygonName += polygon[polygon.size() - 1].getLabel();
 
         if (polygonType == "not a polygon")
             cout << "Your polygon... is something strange???"
-                 << "I do not know when this output can be printed." << endl;
+                 << "I do not know when this output could be printed." << endl;
 
         cout << "Your polygon is a " << polygonType << " " << polygonName << " with points:" << endl;
         for (auto i = 0; i < polygon.size(); ++i)
