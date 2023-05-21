@@ -117,7 +117,7 @@ namespace DrawOutput {
                                                WHITE_COLOR);
                     draw_list->AddText(nullptr, DrawConst::LETTER_FONT_SIZE, DrawUtils::getImVec2(point),
                                        WHITE_COLOR,
-                                       (" " + std::string(1, point.getLabel())).c_str());
+                                       (" " + point.getLabel()).c_str());
                 }
             }
 
