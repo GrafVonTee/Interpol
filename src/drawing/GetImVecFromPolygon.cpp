@@ -97,7 +97,7 @@ namespace DrawUtils {
             point += indentation;
             point.setLabel(pointLabel);
         }
-        
+        return newPolygon;
     }
 
     void setActualPointsLabels(Geometry::Polygon &triangle1,

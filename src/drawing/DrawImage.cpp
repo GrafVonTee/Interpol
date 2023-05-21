@@ -177,7 +177,7 @@ namespace DrawOutput {
             ImGui::Text("Polygon 1");
             for (Geometry::Point& point : points1) {                
                 float pointXY[2] = {(float)point.getX(), (float)point.getY()};
-                ImGui::InputFloat2((" " + std::string(1, point.getLabel())).c_str(), pointXY);
+                ImGui::InputFloat2((" " + point.getLabel()).c_str(), pointXY);
                 point.setX(pointXY[0]);
                 point.setY(pointXY[1]);
                 tr1.sortPoints();
@@ -187,7 +187,7 @@ namespace DrawOutput {
             ImGui::Text("Polygon 2");
             for (Geometry::Point& point : points2) {
                 float pointXY[2] = {(float)point.getX(), (float)point.getY()};
-                ImGui::InputFloat2((" " + std::string(1, point.getLabel())).c_str(), pointXY);
+                ImGui::InputFloat2((" " + point.getLabel()).c_str(), pointXY);
                 point.setX(pointXY[0]);
                 point.setY(pointXY[1]);
                 tr2.sortPoints();      
@@ -197,7 +197,7 @@ namespace DrawOutput {
             ImGui::Text("Intersection");
             for (Geometry::Point point : interPoints) {
                 float pointXY[2] = {(float)point.getX(), (float)point.getY()};
-                ImGui::InputFloat2(("  " + std::string(1, point.getLabel())).c_str(), pointXY);
+                ImGui::InputFloat2(("  " + point.getLabel()).c_str(), pointXY);
             }    
             
             ImGui::End();
