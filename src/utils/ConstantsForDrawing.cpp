@@ -11,6 +11,6 @@ namespace DrawConst {
     const int DISPLAY_SIZE = 1600;
     const int DISPLAY_SCALE = 2;
 
-    const float SQUARE_SIDE_SIZE = 1000;
+    const float SQUARE_SIDE_SIZE = 800;
     const float INDENT_SIZE = 0;
 }
