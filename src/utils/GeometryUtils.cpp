@@ -2,20 +2,21 @@
 #include <algorithm>
 #include <limits>
 #include <iomanip>
+#include <utility>
 #include "GeometryUtils.h"
 
 namespace Geometry {
     Point::Point(const coord_t &x, const coord_t &y)
             : m_x(x), m_y(y) {}
 
-    Point::Point(const coord_t &x, const coord_t &y, const char &label)
-            : m_x(x), m_y(y), m_label(label) {}
+    Point::Point(const coord_t &x, const coord_t &y, std::string label)
+            : m_x(x), m_y(y), m_label(std::move(label)) {}
 
     Point::Point(Point &&other) noexcept
-            : m_x(other.m_x), m_y(other.m_y), m_label(other.m_label) {
+            : m_x(other.m_x), m_y(other.m_y), m_label(std::move(other.m_label)) {
         other.m_x = 0;
         other.m_y = 0;
-        other.m_label = '#';
+        other.m_label = "#";
     }
 
     coord_t Point::getX() const {
@@ -26,7 +27,7 @@ namespace Geometry {
         return m_y;
     }
 
-    char Point::getLabel() const {
+    std::string Point::getLabel() const {
         return m_label;
     }
 
@@ -38,7 +39,7 @@ namespace Geometry {
         m_y = y;
     }
 
-    void Point::setLabel(const char &label) {
+    void Point::setLabel(const std::string &label) {
         m_label = label;
     }
 

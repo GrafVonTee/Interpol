@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(triangle_intersections)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static-libgcc")
 
 include(FetchContent)
 FetchContent_Declare(googletest
@@ -110,7 +111,6 @@ add_executable(
         tests/unit_tests.cpp
 
         src/utils/GeometryUtils.cpp
-        src/utils/StatesUtils.cpp
 
         src/drawing/DrawImage.cpp
 
@@ -145,7 +145,6 @@ add_executable(
         src/main.cpp
 
         src/utils/GeometryUtils.cpp
-        src/utils/StatesUtils.cpp
 
         src/drawing/DrawImage.cpp        
         src/drawing/GetImVecFromPolygon.cpp
@@ -155,9 +154,6 @@ add_executable(
         src/user_interaction/Parsing.cpp
 
         src/math/CalculateIntersections.cpp
-
-        src/user_interaction/ConsoleInteraction.cpp
-        src/user_interaction/Parsing.cpp
 )
 
 target_include_directories(triangle_intersection PUBLIC include)
