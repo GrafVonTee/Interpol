@@ -74,31 +74,30 @@ namespace DrawUtils {
         delta_y = (squareSideSize - (max_y - min_y) * scale_y) / 2;
     }
 
-    void scaleAndTranslate(Geometry::Polygon &tr1, Geometry::Polygon &tr2,
-                           Geometry::Intersection& intersection,
+    Geometry::Polygon scaleAndTranslate(Geometry::Polygon &polygon,
                            double& scale_x, double& scale_y, double& delta_x, double& delta_y,
                            double& min_x, double& min_y)
-   {
-       for (Geometry::Polygon* figurePtr: {&tr1, &tr2, &intersection.polygon}) {
-           for (Geometry::Point &point: figurePtr->getPointsRef()) {
-               point.setX((point.getX() - min_x) * scale_x + delta_x);
-               point.setY((point.getY() - min_y) * scale_y + delta_y);
-           }
-       }
+   {       
+        Geometry::Polygon newPolygon = polygon;
+        for (Geometry::Point &point: newPolygon.getPointsRef()) {
+            point.setX((point.getX() - min_x) * scale_x + delta_x);
+            point.setY((point.getY() - min_y) * scale_y + delta_y);
+        }
+        return newPolygon;
     }
 
-    void addIndents(Geometry::Polygon &tr1, Geometry::Polygon &tr2,
+    Geometry::Polygon addIndents(Geometry::Polygon &polygon, Geometry::Polygon &tr2,
                     Geometry::Intersection& intersection,
                     const coord_t indentSize)
     {
+        Geometry::Polygon newPolygon = polygon;
         Geometry::Point indentation{indentSize, indentSize};
-        for (Geometry::Polygon* figurePtr: {&tr1, &tr2, &intersection.polygon}) {
-            for (Geometry::Point &point: figurePtr->getPointsRef()) {
-                char pointLabel = point.getLabel();
-                point += indentation;
-                point.setLabel(pointLabel);
-            }
+        for (Geometry::Point &point: newPolygon.getPointsRef()) {
+            char pointLabel = point.getLabel();
+            point += indentation;
+            point.setLabel(pointLabel);
         }
+        
     }
 
     void setActualPointsLabels(Geometry::Polygon &triangle1,

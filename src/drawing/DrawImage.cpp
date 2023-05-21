@@ -1,6 +1,8 @@
 #include "DrawImage.h"
 #include "GetImVecFromPolygon.h"
 #include "ConstantsForDrawing.h"
+#include "imgui_demo.cpp"
+#include "CalculateIntersections.h"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -12,9 +14,9 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 }
 
 namespace DrawOutput {
-    void draw_triangles_and_intersection(const Geometry::Polygon &tr1,
-                                         const Geometry::Polygon &tr2,
-                                         const Geometry::Intersection &intersection) {
+    void draw_triangles_and_intersection(Geometry::Polygon &tr1,
+                                         Geometry::Polygon &tr2,
+                                         Geometry::Intersection &intersection) {
 
 
 
@@ -86,25 +88,6 @@ namespace DrawOutput {
             ImGui::NewFrame();
 
 
-            ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
-            ImGui::SetNextWindowSize(ImVec2(DrawConst::WINDOW_WIDTH / 3, DrawConst::WINDOWS_HEIGHT), ImGuiCond_Once);
-            
-            ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-            if (ImGui::BeginMenuBar())
-            {
-                if (ImGui::BeginMenu("File"))
-                {
-                    if (ImGui::MenuItem("Open..", "Ctrl+O")) { /* Do stuff */ }
-                    if (ImGui::MenuItem("Save", "Ctrl+S"))   { /* Do stuff */ }
-                    // if (ImGui::MenuItem("Close", "Ctrl+W"))  { my_tool_active = false; }
-                    ImGui::EndMenu();
-                }
-                ImGui::EndMenuBar();
-            }
-            ImGui::End();
-
-
-
             ImGui::SetNextWindowPos(ImVec2(DrawConst::WINDOW_WIDTH / 3, 0), ImGuiCond_Once);
             ImGui::SetNextWindowSize(ImVec2(2 * DrawConst::WINDOW_WIDTH / 3, DrawConst::WINDOWS_HEIGHT), ImGuiCond_Once);
             ImGui::Begin("Canvas", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
@@ -113,9 +96,27 @@ namespace DrawOutput {
             
             ImVec2 pos = ImGui::GetCursorScreenPos();
 
-            auto [a1, a2, a3] = DrawUtils::getOffsetTupleOfPointsFromPolygon(tr1, pos);
-            auto [b1, b2, b3] = DrawUtils::getOffsetTupleOfPointsFromPolygon(tr2, pos);
-            auto intersection_points = DrawUtils::getOffsetVectorOfPointsFromPolygon(intersection.polygon, pos);
+            double scale_x, scale_y, delta_x, delta_y, min_x, min_y;
+
+            DrawUtils::findParameters(tr1, tr2, DrawConst::SQUARE_SIDE_SIZE,
+                                    scale_x, scale_y, delta_x, delta_y, min_x, min_y);
+            Geometry::Polygon drawnTr1 = DrawUtils::scaleAndTranslate(tr1, scale_x, scale_y, 
+                                    delta_x, delta_y, min_x, min_y);
+            Geometry::Polygon drawnTr2 = DrawUtils::scaleAndTranslate(tr2, scale_x, scale_y, 
+                                    delta_x, delta_y, min_x, min_y);
+            Geometry::Polygon drawnIntersection = DrawUtils::scaleAndTranslate(intersection.polygon, scale_x, scale_y, 
+                                    delta_x, delta_y, min_x, min_y);    
+                                    
+            // Geometry::Polygon drawnTr1 = tr1;
+            // Geometry::Polygon drawnTr2 = tr2;
+            // Geometry::Polygon drawnIntersection = intersection.polygon;                                 
+                                        
+
+            auto [a1, a2, a3] = DrawUtils::getOffsetTupleOfPointsFromPolygon(drawnTr1, pos);
+            auto [b1, b2, b3] = DrawUtils::getOffsetTupleOfPointsFromPolygon(drawnTr2, pos);
+            auto intersection_points = DrawUtils::getOffsetVectorOfPointsFromPolygon(drawnIntersection, pos);
+
+            
 
             // draw the first triangle
             draw_list->AddTriangleFilled(
@@ -146,7 +147,7 @@ namespace DrawOutput {
             else if (intersection_points.size() == 1)
                 draw_list->AddCircleFilled(intersection_points[0], DrawConst::INTERSECTION_POINT_SIZE, YELLOW_COLOR);
 
-            for (const Geometry::Polygon* figurePtr : {&tr1, &tr2, &intersection.polygon}) {
+            for (const Geometry::Polygon* figurePtr : {&drawnTr1, &drawnTr2, &drawnIntersection}) {
                 const std::vector<Geometry::Point>& points = const_cast<Geometry::Polygon*>(figurePtr)->getPointsRef();                
                 for (const Geometry::Point& point : points) {
                     ImVec2 relativePoint = ImVec2(pos.x + (float) point.getX(), pos.y + (float) point.getY());
@@ -163,9 +164,45 @@ namespace DrawOutput {
                 }
             }
 
-
-            // end the window
             ImGui::End();
+
+
+
+            ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
+            ImGui::SetNextWindowSize(ImVec2(DrawConst::WINDOW_WIDTH / 3, DrawConst::WINDOWS_HEIGHT), ImGuiCond_Once);
+            
+            ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+            
+            std::vector<Geometry::Point> &points1 = tr1.getPointsRef();
+            ImGui::Text("Polygon 1");
+            for (Geometry::Point& point : points1) {                
+                float pointXY[2] = {(float)point.getX(), (float)point.getY()};
+                ImGui::InputFloat2((" " + std::string(1, point.getLabel())).c_str(), pointXY);
+                point.setX(pointXY[0]);
+                point.setY(pointXY[1]);
+                tr1.sortPoints();
+                intersection = Math::findTriangleInter(tr1, tr2);
+            }
+            std::vector<Geometry::Point> &points2 = tr2.getPointsRef();
+            ImGui::Text("Polygon 2");
+            for (Geometry::Point& point : points2) {
+                float pointXY[2] = {(float)point.getX(), (float)point.getY()};
+                ImGui::InputFloat2((" " + std::string(1, point.getLabel())).c_str(), pointXY);
+                point.setX(pointXY[0]);
+                point.setY(pointXY[1]);
+                tr2.sortPoints();      
+                intersection = Math::findTriangleInter(tr1, tr2);  
+            }    
+            std::vector<Geometry::Point> interPoints = intersection.polygon.getPointsRef();
+            ImGui::Text("Intersection");
+            for (Geometry::Point point : interPoints) {
+                float pointXY[2] = {(float)point.getX(), (float)point.getY()};
+                ImGui::InputFloat2(("  " + std::string(1, point.getLabel())).c_str(), pointXY);
+            }    
+            
+            ImGui::End();
+
+            // ImGui::ShowDemoWindow();
 
             // Rendering
             ImGui::Render();
