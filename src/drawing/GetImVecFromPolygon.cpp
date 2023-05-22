@@ -4,12 +4,12 @@
 
 namespace DrawUtils {
 
-    ImVec2 getImVec2(const Geometry::Point &p, ImVec2 offset = ImVec2(0,0)) {
+    ImVec2 getImVec2(const Geometry::Point &p, ImVec2 offset) {
         return ImVec2{(float)p.getX() + offset.x, (float)p.getY() + offset.y};
     }
 
 
-    im_vec_triangle_t getTupleOfPointsFromPolygon(const Geometry::Polygon &triangle, ImVec2 offset = ImVec2(0,0)) {
+    im_vec_triangle_t getTupleOfPointsFromPolygon(const Geometry::Polygon &triangle, ImVec2 offset) {
         if (triangle.size() != 3)
             throw std::logic_error("Functions \'getTupleFromPolygon\' got not a triangle argument!");
 
@@ -20,7 +20,7 @@ namespace DrawUtils {
         );
     }
 
-    std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon, ImVec2 offset = ImVec2(0,0)) {
+    std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon, ImVec2 offset) {
         std::vector<ImVec2> pointsVector;
         pointsVector.reserve(polygon.size());
         for (auto &point : polygon.getPointsCopy())
