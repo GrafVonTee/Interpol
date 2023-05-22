@@ -7,7 +7,11 @@ namespace DrawUtils {
         return ImVec2{(float)p.getX(), (float)p.getY()};
     }
 
-    im_vec_triangle_t getTupleOfPointsFromPolygon(const Geometry::Polygon &triangle) {
+    ImVec2 getOffsetImVec2(const Geometry::Point &p, ImVec2 offset) {
+        return ImVec2{(float)p.getX() + offset.x, (float)p.getY() + offset.y};
+    }
+
+    im_vec_triangle_t getOffsetTupleOfPointsFromPolygon(const Geometry::Polygon &triangle) {
         if (triangle.size() != 3)
             throw std::logic_error("Functions \'getTupleFromPolygon\' got not a triangle argument!");
 
@@ -18,11 +22,30 @@ namespace DrawUtils {
         );
     }
 
+    im_vec_triangle_t getOffsetTupleOfPointsFromPolygon(const Geometry::Polygon &triangle, ImVec2 offset) {
+        if (triangle.size() != 3)
+            throw std::logic_error("Functions \'getTupleFromPolygon\' got not a triangle argument!");
+
+        return std::make_tuple(
+                getOffsetImVec2(triangle[0], offset),
+                getOffsetImVec2(triangle[1], offset),
+                getOffsetImVec2(triangle[2], offset)
+        );
+    }
+
     std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon) {
         std::vector<ImVec2> pointsVector;
         pointsVector.reserve(polygon.size());
         for (auto &point : polygon.getPointsCopy())
             pointsVector.emplace_back(getImVec2(point));
+        return pointsVector;
+    }
+
+    std::vector<ImVec2> getOffsetVectorOfPointsFromPolygon(const Geometry::Polygon& polygon, ImVec2 offset) {
+        std::vector<ImVec2> pointsVector;
+        pointsVector.reserve(polygon.size());
+        for (auto &point : polygon.getPointsCopy())
+            pointsVector.emplace_back(getOffsetImVec2(point, offset));
         return pointsVector;
     }
 
@@ -51,31 +74,30 @@ namespace DrawUtils {
         delta_y = (squareSideSize - (max_y - min_y) * scale_y) / 2;
     }
 
-    void scaleAndTranslate(Geometry::Polygon &tr1, Geometry::Polygon &tr2,
-                           Geometry::Intersection& intersection,
+    Geometry::Polygon scaleAndTranslate(Geometry::Polygon &polygon,
                            double& scale_x, double& scale_y, double& delta_x, double& delta_y,
                            double& min_x, double& min_y)
-   {
-       for (Geometry::Polygon* figurePtr: {&tr1, &tr2, &intersection.polygon}) {
-           for (Geometry::Point &point: figurePtr->getPointsRef()) {
-               point.setX((point.getX() - min_x) * scale_x + delta_x);
-               point.setY((point.getY() - min_y) * scale_y + delta_y);
-           }
-       }
+   {       
+        Geometry::Polygon newPolygon = polygon;
+        for (Geometry::Point &point: newPolygon.getPointsRef()) {
+            point.setX((point.getX() - min_x) * scale_x + delta_x);
+            point.setY((point.getY() - min_y) * scale_y + delta_y);
+        }
+        return newPolygon;
     }
 
-    void addIndents(Geometry::Polygon &tr1, Geometry::Polygon &tr2,
+    Geometry::Polygon addIndents(Geometry::Polygon &polygon, Geometry::Polygon &tr2,
                     Geometry::Intersection& intersection,
                     const coord_t indentSize)
     {
+        Geometry::Polygon newPolygon = polygon;
         Geometry::Point indentation{indentSize, indentSize};
-        for (Geometry::Polygon* figurePtr: {&tr1, &tr2, &intersection.polygon}) {
-            for (Geometry::Point &point: figurePtr->getPointsRef()) {
-                std::string pointLabel = point.getLabel();
-                point += indentation;
-                point.setLabel(pointLabel);
-            }
+        for (Geometry::Point &point: newPolygon.getPointsRef()) {
+            std::string pointLabel = point.getLabel();
+            point += indentation;
+            point.setLabel(pointLabel);
         }
+        return newPolygon;
     }
 
     void setActualPointsLabels(Geometry::Polygon &triangle1,

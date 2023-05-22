@@ -136,7 +136,7 @@ namespace Geometry {
     std::vector<Point>& Polygon::getPointsRef() {
         return m_pointList;
     }
-
+    
     std::ostream& operator<<(std::ostream &out, const Polygon &polygon) {
         out << "Polygon[";
         for (auto i = 0; i < polygon.size(); ++i) {
