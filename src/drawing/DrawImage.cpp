@@ -193,7 +193,8 @@ namespace DrawOutput {
                 point.setX(pointXY[0]);
                 point.setY(pointXY[1]);
                 tr2.sortPoints();      
-                intersection = Math::findTriangleInter(tr1, tr2);  
+                intersection = Math::findTriangleInter(tr1, tr2);
+                DrawUtils::setActualPointsLabels(tr1, tr2, intersection);
             }    
             std::vector<Geometry::Point> interPoints = intersection.polygon.getPointsRef();
             ImGui::Text("Intersection");
