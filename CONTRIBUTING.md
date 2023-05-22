@@ -31,11 +31,11 @@ Before submitting a [new issue](../../issues/new), please search the
 We may have additional questions and will communicate through the GitHub issue, so please respond back to our questions to help reproduce and resolve the issue as quickly as possible.
 ### How to submit Pull Requests
 
-1. [Fork][fork] this repo
-2. Clone your fork and create a new branch: `$ git checkout https://github.com/your_username_here/repo_name -b name_for_new_branch`.
+1. Fork this repo
+2. Clone your fork and create a new branch: `git clone https://github.com/GrafVonTee/triangle_intersections.git -b name_for_new_branch`.
 3. Make changes and test
 4. Publish the changes to your fork
-5. Submit a [Pull Request][pulls] with comprehensive description of changes
+5. Submit a Pull Request with comprehensive description of changes
 6. Pull Request must target `develop` branch
 7. For a Pull Request to be merged:
    * CI workflow must succeed
