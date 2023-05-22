@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
-project(triangle_intersections)
+project(triangle_intersections CXX C)
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static-libgcc")
+set(CMAKE_CXX_STANDARD 20
+set(CMAKE_C_STANDARD 99))
+
+if(UNIX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -static-libstdc++ -static-libgcc")
+endif(UNIX)
 
 include(FetchContent)
 FetchContent_Declare(googletest
@@ -13,62 +17,62 @@ FetchContent_Declare(googletest
 FetchContent_Declare(
         glad
         GIT_REPOSITORY https://github.com/Dav1dde/glad.git
+)
+FetchContent_MakeAvailable(glad)
+FetchContent_GetProperties(glad)
+if(NOT glad_POPULATED)
+    FetchContent_Populate(glad)
+    set(
+        GLAD_PROFILE "core"
+        CACHE STRING "OpenGL profile"
     )
-    FetchContent_MakeAvailable(glad)
-    FetchContent_GetProperties(glad)
-    if(NOT glad_POPULATED)
-        FetchContent_Populate(glad)
-        set(
-            GLAD_PROFILE "core"
-            CACHE STRING "OpenGL profile"
-        )
-        set(
-            GLAD_API "gl=4.6"
-            CACHE STRING "API type/version pairs, "
-                         "like \"gl=3.2,gles=\", no version means latest"
-        )
-        set(
-            GLAD_GENERATOR "c"
-            CACHE STRING "Language to generate the binding for")
-        add_subdirectory(
-           ${glad_SOURCE_DIR}
-           ${glad_BINARY_DIR}
-        )
-    endif()
+    set(
+        GLAD_API "gl=4.6"
+        CACHE STRING "API type/version pairs, "
+                        "like \"gl=3.2,gles=\", no version means latest"
+    )
+    set(
+        GLAD_GENERATOR "c"
+        CACHE STRING "Language to generate the binding for")
+    add_subdirectory(
+        ${glad_SOURCE_DIR}
+        ${glad_BINARY_DIR}
+    )
+endif()
 
 # download and configure the GLFW project
 FetchContent_Declare(
         glfw
         GIT_REPOSITORY https://github.com/glfw/glfw.git
+)
+FetchContent_MakeAvailable(glfw)
+FetchContent_GetProperties(glfw)
+if(NOT glfw_POPULATED)
+    FetchContent_Populate(glfw)
+
+    set(GLFW_BUILD_DOCS     off CACHE BOOL "" FORCE)
+    set(GLFW_BUILD_TESTS    off CACHE BOOL "" FORCE)
+    set(GLFW_BUILD_EXAMPLES off CACHE BOOL "" FORCE)
+
+    add_subdirectory(
+        ${glfw_SOURCE_DIR}
+        ${glfw_BINARY_DIR}
     )
-    FetchContent_MakeAvailable(glfw)
-    FetchContent_GetProperties(glfw)
-    if(NOT glfw_POPULATED)
-        FetchContent_Populate(glfw)
-
-        set(GLFW_BUILD_DOCS     off CACHE BOOL "" FORCE)
-        set(GLFW_BUILD_TESTS    off CACHE BOOL "" FORCE)
-        set(GLFW_BUILD_EXAMPLES off CACHE BOOL "" FORCE)
-
-        add_subdirectory(
-            ${glfw_SOURCE_DIR}
-            ${glfw_BINARY_DIR}
-        )
-    endif()
+endif()
 
 # download the Dear ImGUI project
 FetchContent_Declare(
         imgui
         GIT_REPOSITORY https://github.com/ocornut/imgui.git
+)
+FetchContent_MakeAvailable(imgui)
+FetchContent_GetProperties(imgui)
+if(NOT imgui_POPULATED)
+    FetchContent_Populate(imgui)
+    add_subdirectory(
+        ${imgui_SOURCE_DIR}
     )
-    FetchContent_MakeAvailable(imgui)
-    FetchContent_GetProperties(imgui)
-    if(NOT imgui_POPULATED)
-        FetchContent_Populate(imgui)
-        add_subdirectory(
-            ${imgui_SOURCE_DIR}
-        )
-    endif()
+endif()
 
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
@@ -83,7 +87,8 @@ add_library(
     ${imgui_SOURCE_DIR}/imgui_widgets.cpp
     ${imgui_SOURCE_DIR}/imgui_tables.cpp
     ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
-    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp)
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+)
 
 include_directories(
     ${imgui_SOURCE_DIR}
@@ -105,25 +110,20 @@ target_link_libraries(
     ${OPENGL_LIBRARY}
 )
 
+file(GLOB_RECURSE SOURCES_MATH src/math/*.cpp)
+file(GLOB_RECURSE SOURCES_CONSOLE src/user_interaction/*.cpp)
+file(GLOB_RECURSE SOURCES_GUI src/drawing/*.cpp)
+file(GLOB_RECURSE SOURCES_UTILS src/utils/*.cpp)
+
 # unit_test configuration
 add_executable(
         unit_tests
         tests/unit_tests.cpp
 
-        src/utils/GeometryUtils.cpp
-
-        src/drawing/DrawImage.cpp
-
-        src/user_interaction/ConsoleInteraction.cpp
-        src/user_interaction/Parsing.cpp
-
-        src/math/CalculateIntersections.cpp
-
-        src/user_interaction/ConsoleInteraction.cpp
-        src/user_interaction/Parsing.cpp
-
-        src/drawing/GetImVecFromPolygon.cpp
-        src/utils/ConstantsForDrawing.cpp
+        ${SOURCES_MATH}
+        ${SOURCES_CONSOLE}
+        ${SOURCES_GUI}
+        ${SOURCES_UTILS}
 )
 
 target_include_directories(unit_tests PUBLIC googletest)
@@ -144,16 +144,10 @@ add_executable(
         triangle_intersection
         src/main.cpp
 
-        src/utils/GeometryUtils.cpp
-
-        src/drawing/DrawImage.cpp        
-        src/drawing/GetImVecFromPolygon.cpp
-        src/utils/ConstantsForDrawing.cpp
-
-        src/user_interaction/ConsoleInteraction.cpp
-        src/user_interaction/Parsing.cpp
-
-        src/math/CalculateIntersections.cpp
+        ${SOURCES_MATH}
+        ${SOURCES_CONSOLE}
+        ${SOURCES_GUI}
+        ${SOURCES_UTILS}
 )
 
 target_include_directories(triangle_intersection PUBLIC include)
