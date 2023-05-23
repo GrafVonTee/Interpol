@@ -28,25 +28,25 @@ namespace Geometry {
     private:
         coord_t m_x{};
         coord_t m_y{};
-        char m_label{};
+        std::string m_label{};
 
     public:
         // Constructors
         Point() = default;
         Point(const coord_t &x, const coord_t &y);
-        Point(const coord_t &x, const coord_t &y, const char &label);
+        Point(const coord_t &x, const coord_t &y, std::string label);
         Point(const Point &other) = default;
         Point(Point &&other) noexcept;
 
         // Getters
         [[nodiscard]] coord_t getX() const;
         [[nodiscard]] coord_t getY() const;
-        [[nodiscard]] char getLabel() const;
+        [[nodiscard]] std::string getLabel() const;
 
         // Setters
         void setX(const coord_t &x);
         void setY(const coord_t &y);
-        void setLabel(const char &label);
+        void setLabel(const std::string &label);
 
         // Operators
         Point operator+(const Point &other) const;
@@ -67,8 +67,7 @@ namespace Geometry {
 
     class Polygon {
     /*
-     2D Polygon with N points (1 < n <= 6)
-     High-level class for Intersection between 2 triangles
+     High-level class for 2D Polygon with N points
      Private fields: m_pointList, m_state
 
      @param m_pointList: Vector of polygon's points
@@ -78,8 +77,8 @@ namespace Geometry {
      @type m_state: PolygonState
 
      Methods:
-     * size(): return size of a vector
-     * sortPoints(): sort vector using atan2 function
+     size(): return size of a vector
+     sortPoints(): sort vector using atan2 function
     */
     private:
         std::vector<Point> m_pointList{};
@@ -131,22 +130,6 @@ namespace Geometry {
     */
         States::IntersectionState state = States::IntersectionState::NoIntersection;
         Polygon polygon;
-    };
-
-    enum Letters {
-        A,
-        B,
-        C,
-        D,
-        E,
-        F,
-        G,
-        H,
-        K,
-        L,
-        M,
-        N,
-        AllLetters,
     };
 }
 

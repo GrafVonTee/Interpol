@@ -4,12 +4,11 @@
 #include "Parsing.h"
 #include "ConsoleInteraction.h"
 #include "GetImVecFromPolygon.h"
-#include "ConstantsForDrawing.h"
 
 int main() {
     std::string userName = Interaction::getUserName();
     Interaction::greeting(userName);
-    std::istringstream demoPoints("(20.0, 90.0)\n(20.0, 20.0)\n(90.0, 10.0)\n(10.0, 80.0)\n(50.0, 30.0)\n(70.0, 50.0)\n");
+    std::istringstream demoPoints("(200.0, 900.0)\n(200.0, 200.0)\n(900.0, 100.0)\n(100.0, 800.0)\n(500.0, 300.0)\n(700.0, 500.0)\n");
     std::ostringstream empty;
 
     std::istream *input = &std::cin;
@@ -28,14 +27,6 @@ int main() {
     Interaction::printTriangle(tr2);
     Interaction::printIntersection(intersection);
 
-    double scale_x, scale_y, delta_x, delta_y, min_x, min_y;
-
-    DrawUtils::findParameters(tr1, tr2, DrawConst::SQUARE_SIDE_SIZE,
-                              scale_x, scale_y, delta_x, delta_y, min_x, min_y);
-    DrawUtils::scaleAndTranslate(tr1, tr2, intersection,
-                                 scale_x, scale_y, delta_x, delta_y, min_x, min_y);
-    DrawUtils::addIndents(tr1, tr2, intersection,
-                          DrawConst::INDENT_SIZE);
 
     Interaction::welcomeToGui();
     DrawOutput::draw_triangles_and_intersection(tr1, tr2, intersection);

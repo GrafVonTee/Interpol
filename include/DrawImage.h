@@ -15,8 +15,8 @@
 #define WHITE_COLOR  IM_COL32(255, 255, 255, 255)
 
 namespace DrawOutput {
-    void draw_triangles_and_intersection(const Geometry::Polygon &tr1,
-                                         const Geometry::Polygon &tr2,
-                                         const Geometry::Intersection &intersection);
+    void draw_triangles_and_intersection(Geometry::Polygon &tr1,
+                                         Geometry::Polygon &tr2,
+                                         Geometry::Intersection &intersection);
 }
 #endif // TRIANGLE_INTERSECTIONS_DRAW_IMAGE_H
