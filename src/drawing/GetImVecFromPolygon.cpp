@@ -27,22 +27,21 @@ namespace DrawUtils {
         }
 
         scalingParameters result;
-        result.min_x = *std::min_element(arrayX.begin(), arrayX.end());
-        float max_x = *std::max_element(arrayX.begin(), arrayX.end());
-        result.min_y = *std::min_element(arrayY.begin(), arrayY.end());
-        float max_y = *std::max_element(arrayY.begin(), arrayY.end());
+        result.min_x = (float) *std::min_element(arrayX.begin(), arrayX.end());
+        float max_x = (float) *std::max_element(arrayX.begin(), arrayX.end());
+        result.min_y = (float) *std::min_element(arrayY.begin(), arrayY.end());
+        float max_y = (float) *std::max_element(arrayY.begin(), arrayY.end());
 
-        result.scale_x = squareSideSize / (max_x - result.min_x);
-        result.scale_y = squareSideSize / (max_y - result.min_y);
+        result.scale_x = (float) squareSideSize / (max_x - result.min_x);
+        result.scale_y = (float) squareSideSize / (max_y - result.min_y);
 
-        result.delta_x = (squareSideSize - (max_x - result.min_x) * result.scale_x) / 2;
-        result.delta_y = (squareSideSize - (max_y - result.min_y) * result.scale_y) / 2;
+        result.delta_x = (float) (squareSideSize - (max_x - result.min_x) * result.scale_x) / 2;
+        result.delta_y = (float) (squareSideSize - (max_y - result.min_y) * result.scale_y) / 2;
 
         return result;
     }
 
-    Geometry::Polygon scaleAndTranslate(const Geometry::Polygon &polygon, const scalingParameters& parameters)
-   {       
+    Geometry::Polygon scaleAndTranslate(const Geometry::Polygon &polygon, const scalingParameters& parameters) {
         Geometry::Polygon newPolygon = polygon;
         for (Geometry::Point &point: newPolygon.getPointsRef()) {
             point.setX((point.getX() - parameters.min_x) * parameters.scale_x + parameters.delta_x);
@@ -76,7 +75,6 @@ namespace DrawUtils {
                 allPoints.push_back(&point);
             }
         }
-
         setAllDuplicatesSameLetter(allPoints);
     }
 }

@@ -8,9 +8,8 @@
 #include "GeometryUtils.h"
 
 namespace DrawUtils {
-    using im_vec_triangle_t = std::tuple<ImVec2, ImVec2, ImVec2>;
 
-    struct scalingParameters{
+    struct scalingParameters {
         float scale_x = 0;
         float scale_y = 0;
         float delta_x = 0;
@@ -19,14 +18,17 @@ namespace DrawUtils {
         float min_y = 0;
     };
 
-    std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon, ImVec2 offset = ImVec2(0,0));
-    ImVec2 getImVec2(const Geometry::Point &p, ImVec2 offset = ImVec2(0,0));
+    std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon,
+                                                     ImVec2 offset = ImVec2(0,0));
+    ImVec2 getImVec2(const Geometry::Point &p,
+                     ImVec2 offset = ImVec2(0,0));
 
     scalingParameters findParameters(const Geometry::Polygon &tr1, 
                         const Geometry::Polygon &tr2,
-                        const coord_t squareSideSize);
+                        coord_t squareSideSize);
 
-    Geometry::Polygon scaleAndTranslate(const Geometry::Polygon &polygon, const scalingParameters& parameters);
+    Geometry::Polygon scaleAndTranslate(const Geometry::Polygon &polygon,
+                                        const scalingParameters& parameters);
 
     void setActualPointsLabels(Geometry::Polygon &triangle1,
                                Geometry::Polygon &triangle2,
