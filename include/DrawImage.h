@@ -8,6 +8,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "GeometryUtils.h"
+#include "GetImVecFromPolygon.h"
 
 #define RED_COLOR    IM_COL32(186, 36,  66, 255)
 #define GREEN_COLOR  IM_COL32(40,  156, 80, 255)
@@ -18,5 +19,23 @@ namespace DrawOutput {
     void draw_triangles_and_intersection(Geometry::Polygon &tr1,
                                          Geometry::Polygon &tr2,
                                          Geometry::Intersection &intersection);
+    void DrawPoints(
+        ImDrawList *draw_list, 
+        const Geometry::Polygon *polygon, 
+        DrawUtils::scalingParameters parameters,
+        ImVec2 offset = ImVec2(0, 0), 
+        ImU32 col = WHITE_COLOR
+    );
+    void DrawPolygon(
+        ImDrawList *draw_list, 
+        Geometry::Polygon polygon, 
+        DrawUtils::scalingParameters parameters, 
+        ImVec2 offset = ImVec2(0, 0), 
+        ImU32 col = WHITE_COLOR
+    );
+    // set muted to "true" if you don't want your point to be editable
+    void DisplayPoint(Geometry::Point &point, bool muted = false);
+    void DisplayPolygon(Geometry::Polygon &polygon, const char* title = "default", bool muted = false);
+
 }
 #endif // TRIANGLE_INTERSECTIONS_DRAW_IMAGE_H

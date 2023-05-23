@@ -2,7 +2,7 @@
 #include "GetImVecFromPolygon.h"
 #include "ConstantsForDrawing.h"
 
-namespace DrawUtils {
+namespace DrawUtils {    
 
     ImVec2 getImVec2(const Geometry::Point &p, ImVec2 offset) {
         return ImVec2{(float)p.getX() + offset.x, (float)p.getY() + offset.y};
@@ -28,11 +28,9 @@ namespace DrawUtils {
         return pointsVector;
     }
 
-    void findParameters(const Geometry::Polygon &tr1, const Geometry::Polygon &tr2,
-                        const coord_t squareSideSize,
-                        double& scale_x, double& scale_y, double& delta_x, double& delta_y,
-                        double& min_x, double& min_y) {
-
+    scalingParameters findParameters(const Geometry::Polygon &tr1, 
+                        const Geometry::Polygon &tr2,
+                        const coord_t squareSideSize) {
         std::vector<coord_t> arrayX, arrayY;
         for (auto &triangle: {tr1, tr2}) {
             for (size_t i = 0; i < triangle.size(); ++i) {
@@ -41,26 +39,27 @@ namespace DrawUtils {
             }
         }
 
-        min_x = *std::min_element(arrayX.begin(), arrayX.end());
-        double max_x = *std::max_element(arrayX.begin(), arrayX.end());
-        min_y = *std::min_element(arrayY.begin(), arrayY.end());
-        double max_y = *std::max_element(arrayY.begin(), arrayY.end());
+        scalingParameters result;
+        result.min_x = *std::min_element(arrayX.begin(), arrayX.end());
+        float max_x = *std::max_element(arrayX.begin(), arrayX.end());
+        result.min_y = *std::min_element(arrayY.begin(), arrayY.end());
+        float max_y = *std::max_element(arrayY.begin(), arrayY.end());
 
-        scale_x = squareSideSize / (max_x - min_x);
-        scale_y = squareSideSize / (max_y - min_y);
+        result.scale_x = squareSideSize / (max_x - result.min_x);
+        result.scale_y = squareSideSize / (max_y - result.min_y);
 
-        delta_x = (squareSideSize - (max_x - min_x) * scale_x) / 2;
-        delta_y = (squareSideSize - (max_y - min_y) * scale_y) / 2;
+        result.delta_x = (squareSideSize - (max_x - result.min_x) * result.scale_x) / 2;
+        result.delta_y = (squareSideSize - (max_y - result.min_y) * result.scale_y) / 2;
+
+        return result;
     }
 
-    Geometry::Polygon scaleAndTranslate(Geometry::Polygon &polygon,
-                           double& scale_x, double& scale_y, double& delta_x, double& delta_y,
-                           double& min_x, double& min_y)
+    Geometry::Polygon scaleAndTranslate(const Geometry::Polygon &polygon, scalingParameters parameters)
    {       
         Geometry::Polygon newPolygon = polygon;
         for (Geometry::Point &point: newPolygon.getPointsRef()) {
-            point.setX((point.getX() - min_x) * scale_x + delta_x);
-            point.setY((point.getY() - min_y) * scale_y + delta_y);
+            point.setX((point.getX() - parameters.min_x) * parameters.scale_x + parameters.delta_x);
+            point.setY((point.getY() - parameters.min_y) * parameters.scale_y + parameters.delta_y);
         }
         return newPolygon;
     }
