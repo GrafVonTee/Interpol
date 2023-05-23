@@ -7,10 +7,10 @@ namespace DrawConst {
     extern const float INTERSECTION_POINT_SIZE;
     extern const float POINT_SIZE;
 
-    extern const int WINDOW_WIDTH;
-    extern const int WINDOWS_HEIGHT;
-    extern const int DISPLAY_SIZE;
-    extern const int DISPLAY_SCALE;
+    extern const float WINDOW_WIDTH;
+    extern const float WINDOWS_HEIGHT;
+    extern const float DISPLAY_SIZE;
+    extern const float DISPLAY_SCALE;
 
     extern const float SQUARE_SIDE_SIZE;
     extern const float INDENT_SIZE;

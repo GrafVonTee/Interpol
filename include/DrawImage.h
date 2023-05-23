@@ -23,19 +23,19 @@ namespace DrawOutput {
         ImDrawList *draw_list, 
         const Geometry::Polygon &polygon, 
         const DrawUtils::scalingParameters& parameters,
-        ImVec2 offset = ImVec2(0, 0), 
-        ImU32 col = WHITE_COLOR
+        const ImVec2& offset = ImVec2(0, 0), 
+        const ImU32& col = WHITE_COLOR
     );
     void DrawPolygon(
         ImDrawList *draw_list, 
-        Geometry::Polygon polygon, 
+        const Geometry::Polygon& polygon, 
         const DrawUtils::scalingParameters& parameters, 
-        ImVec2 offset = ImVec2(0, 0), 
-        ImU32 col = WHITE_COLOR
+        const ImVec2& offset = ImVec2(0, 0), 
+        const ImU32& col = WHITE_COLOR
     );
     // set muted to "true" if you don't want your point to be editable
     void DisplayPoint(Geometry::Point &point, bool muted = false);
-    void DisplayPolygon(Geometry::Polygon &polygon, const char* title = "default", bool muted = false);
+    void DisplayPolygon(Geometry::Polygon &polygon, std::string title = "default", bool muted = false);
 
 }
 #endif // TRIANGLE_INTERSECTIONS_DRAW_IMAGE_H

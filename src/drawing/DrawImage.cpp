@@ -149,8 +149,8 @@ namespace DrawOutput {
         ImDrawList *draw_list, 
         const Geometry::Polygon& polygon, 
         const DrawUtils::scalingParameters& parameters, 
-        ImVec2 offset, 
-        ImU32 col)
+        const ImVec2& offset, 
+        const ImU32& col)
     {
         Geometry::Polygon drawnPolygon = DrawUtils::scaleAndTranslate(polygon, parameters);
         const std::vector<Geometry::Point>& points = drawnPolygon.getPointsRef();                
@@ -173,10 +173,10 @@ namespace DrawOutput {
 
     void DrawPolygon(
         ImDrawList *draw_list, 
-        Geometry::Polygon polygon, 
+        const Geometry::Polygon& polygon, 
         const DrawUtils::scalingParameters& parameters, 
-        ImVec2 offset, 
-        ImU32 col)
+        const ImVec2& offset, 
+        const ImU32& col)
     {
         Geometry::Polygon drawnPolygon = DrawUtils::scaleAndTranslate(polygon, parameters);
         auto polygon_points = DrawUtils::getVectorOfPointsFromPolygon(drawnPolygon, offset);
@@ -205,12 +205,12 @@ namespace DrawOutput {
 
     }
 
-    void DisplayPolygon(Geometry::Polygon &polygon, const char* title, bool muted)
+    void DisplayPolygon(Geometry::Polygon &polygon, std::string title, bool muted)
     {
         std::vector<Geometry::Point> &points1 = polygon.getPointsRef();
         if (muted)
             points1 = polygon.getPointsRef();
-        ImGui::Text(title);
+        ImGui::Text(title.c_str());
         for (Geometry::Point& point : points1) {   
             DisplayPoint(point, muted);                    
             polygon.sortPoints();

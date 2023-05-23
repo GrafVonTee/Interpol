@@ -19,8 +19,6 @@ namespace DrawUtils {
         float min_y = 0;
     };
 
-
-    im_vec_triangle_t getTupleOfPointsFromPolygon(const Geometry::Polygon &triangle, ImVec2 offset = ImVec2(0,0));
     std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon, ImVec2 offset = ImVec2(0,0));
     ImVec2 getImVec2(const Geometry::Point &p, ImVec2 offset = ImVec2(0,0));
 
@@ -28,7 +26,7 @@ namespace DrawUtils {
                         const Geometry::Polygon &tr2,
                         const coord_t squareSideSize);
 
-    Geometry::Polygon scaleAndTranslate(const Geometry::Polygon &polygon, scalingParameters parameters);
+    Geometry::Polygon scaleAndTranslate(const Geometry::Polygon &polygon, const scalingParameters& parameters);
 
     void setActualPointsLabels(Geometry::Polygon &triangle1,
                                Geometry::Polygon &triangle2,
