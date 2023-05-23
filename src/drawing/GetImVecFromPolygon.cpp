@@ -1,6 +1,5 @@
 #include <cmath>
 #include "GetImVecFromPolygon.h"
-#include "ConstantsForDrawing.h"
 
 namespace DrawUtils {    
 
@@ -78,6 +77,16 @@ namespace DrawUtils {
         return newPolygon;
     }
 
+    void setAllDuplicatesSameLetter(std::vector<Geometry::Point*> &points) {
+        for (size_t i = 0; i < points.size(); ++i)
+            for (size_t j = i + 1; j < points.size(); ++j)
+                if (std::pow(points[i]->getX() - points[j]->getX(), 2) +
+                    std::pow(points[i]->getY() - points[j]->getY(), 2)
+                    <= std::numeric_limits<coord_t>::epsilon())
+
+                    points[j]->setLabel(points[i]->getLabel());
+    }
+
     void setActualPointsLabels(Geometry::Polygon &triangle1,
                                Geometry::Polygon &triangle2,
                                Geometry::Intersection &intersection)
@@ -94,12 +103,6 @@ namespace DrawUtils {
             }
         }
 
-        for (size_t i = 0; i < allPoints.size(); ++i)
-            for (size_t j = i + 1; j < allPoints.size(); ++j)
-                if (std::pow(allPoints[i]->getX() - allPoints[j]->getX(), 2) +
-                    std::pow(allPoints[i]->getY() - allPoints[j]->getY(), 2)
-                    <= std::numeric_limits<coord_t>::epsilon())
-
-                    allPoints[j]->setLabel(allPoints[i]->getLabel());
+        setAllDuplicatesSameLetter(allPoints);
     }
 }
