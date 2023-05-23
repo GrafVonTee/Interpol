@@ -30,9 +30,6 @@ namespace DrawUtils {
 
     Geometry::Polygon scaleAndTranslate(const Geometry::Polygon &polygon, scalingParameters parameters);
 
-    Geometry::Polygon addIndents(Geometry::Polygon &polygon,
-                    const coord_t indentSize);
-
     void setActualPointsLabels(Geometry::Polygon &triangle1,
                                Geometry::Polygon &triangle2,
                                Geometry::Intersection &intersection);
