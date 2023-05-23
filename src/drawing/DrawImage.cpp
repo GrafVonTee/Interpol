@@ -100,8 +100,8 @@ namespace DrawOutput {
                 DrawPolygon(draw_list, tr1, parameters, pos, RED_COLOR);
                 DrawPolygon(draw_list, tr2, parameters, pos, GREEN_COLOR);
                 DrawPolygon(draw_list, intersection.polygon, parameters, pos, YELLOW_COLOR);
-                for (const Geometry::Polygon* figurePtr : {&tr1, &tr2, &intersection.polygon}) {
-                    DrawPoints(draw_list, figurePtr, parameters, pos, WHITE_COLOR);                    
+                for (const Geometry::Polygon& figurePtr : {tr1, tr2, intersection.polygon}) {
+                    DrawPoints(draw_list, figurePtr, parameters, pos, WHITE_COLOR);
                 }
             }
             ImGui::End();
@@ -118,10 +118,9 @@ namespace DrawOutput {
                 DrawUtils::setActualPointsLabels(tr1, tr2, intersection);                
                 DisplayPolygon(intersection.polygon, "Intersection", true);
             }
-            ImGui::End();
-            
+            ImGui::End();            
 
-            // ImGui::ShowDemoWindow();
+            ImGui::ShowDemoWindow();
 
             // Rendering
             ImGui::Render();
@@ -148,25 +147,25 @@ namespace DrawOutput {
 
     void DrawPoints(
         ImDrawList *draw_list, 
-        const Geometry::Polygon* polygon, 
-        DrawUtils::scalingParameters parameters, 
+        const Geometry::Polygon& polygon, 
+        const DrawUtils::scalingParameters& parameters, 
         ImVec2 offset, 
         ImU32 col)
     {
-        Geometry::Polygon drawnPolygon = DrawUtils::scaleAndTranslate(*polygon, parameters);
+        Geometry::Polygon drawnPolygon = DrawUtils::scaleAndTranslate(polygon, parameters);
         const std::vector<Geometry::Point>& points = drawnPolygon.getPointsRef();                
         for (const Geometry::Point& point : points) {
             ImVec2 relativePoint = ImVec2(offset.x + (float) point.getX(), offset.y + (float) point.getY());
             draw_list->AddCircleFilled(
                 relativePoint,
                 DrawConst::POINT_SIZE,
-                WHITE_COLOR
+                col
             );
             draw_list->AddText(
                 nullptr, 
                 DrawConst::LETTER_FONT_SIZE, 
                 relativePoint,
-                WHITE_COLOR,
+                col,
                 (" " + point.getLabel()).c_str()
             );
         }
@@ -175,7 +174,7 @@ namespace DrawOutput {
     void DrawPolygon(
         ImDrawList *draw_list, 
         Geometry::Polygon polygon, 
-        DrawUtils::scalingParameters parameters, 
+        const DrawUtils::scalingParameters& parameters, 
         ImVec2 offset, 
         ImU32 col)
     {
@@ -220,9 +219,7 @@ namespace DrawOutput {
 
     void DisplayPoint(Geometry::Point &point, bool muted)
     {
-        const char* prefix = " ";
-        if (muted)
-            prefix = "  ";
+        std::string prefix = (muted) ? "  " : " ";
         float pointXY[2] = {(float)point.getX(), (float)point.getY()};
         ImGui::InputFloat2((prefix + point.getLabel()).c_str(), pointXY);
         if (!muted)

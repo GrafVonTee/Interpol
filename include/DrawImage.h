@@ -21,15 +21,15 @@ namespace DrawOutput {
                                          Geometry::Intersection &intersection);
     void DrawPoints(
         ImDrawList *draw_list, 
-        const Geometry::Polygon *polygon, 
-        DrawUtils::scalingParameters parameters,
+        const Geometry::Polygon &polygon, 
+        const DrawUtils::scalingParameters& parameters,
         ImVec2 offset = ImVec2(0, 0), 
         ImU32 col = WHITE_COLOR
     );
     void DrawPolygon(
         ImDrawList *draw_list, 
         Geometry::Polygon polygon, 
-        DrawUtils::scalingParameters parameters, 
+        const DrawUtils::scalingParameters& parameters, 
         ImVec2 offset = ImVec2(0, 0), 
         ImU32 col = WHITE_COLOR
     );
