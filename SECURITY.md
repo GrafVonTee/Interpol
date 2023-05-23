@@ -26,5 +26,5 @@ When reporting issues, please provide the following information:
 - A description indicating how to reproduce the issue
 - A summary of the security vulnerability and impact
 
-We request that you contact us via the telegram _(see CONTRIBUTING.md)_ and give the project the project contributors a chance to resolve
+We request that you contact us via the telegram _(see [CONTRIBUTING](CONTRIBUTING.md))_ and give the project the project contributors a chance to resolve
 the vulnerability.
