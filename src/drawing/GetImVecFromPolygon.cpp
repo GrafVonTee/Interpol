@@ -63,20 +63,6 @@ namespace DrawUtils {
         return newPolygon;
     }
 
-    Geometry::Polygon addIndents(Geometry::Polygon &polygon, Geometry::Polygon &tr2,
-                    Geometry::Intersection& intersection,
-                    const coord_t indentSize)
-    {
-        Geometry::Polygon newPolygon = polygon;
-        Geometry::Point indentation{indentSize, indentSize};
-        for (Geometry::Point &point: newPolygon.getPointsRef()) {
-            std::string pointLabel = point.getLabel();
-            point += indentation;
-            point.setLabel(pointLabel);
-        }
-        return newPolygon;
-    }
-
     void setAllDuplicatesSameLetter(std::vector<Geometry::Point*> &points) {
         for (size_t i = 0; i < points.size(); ++i)
             for (size_t j = i + 1; j < points.size(); ++j)
