@@ -8,23 +8,27 @@
 #include "GeometryUtils.h"
 
 namespace DrawUtils {
-    using im_vec_triangle_t = std::tuple<ImVec2, ImVec2, ImVec2>;
 
-    im_vec_triangle_t getTupleOfPointsFromPolygon(const Geometry::Polygon &triangle, ImVec2 offset = ImVec2(0,0));
-    std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon, ImVec2 offset = ImVec2(0,0));
-    ImVec2 getImVec2(const Geometry::Point &p, ImVec2 offset = ImVec2(0,0));
+    struct scalingParameters {
+        float scale_x = 0;
+        float scale_y = 0;
+        float delta_x = 0;
+        float delta_y = 0;
+        float min_x = 0;
+        float min_y = 0;
+    };
 
-    void findParameters(const Geometry::Polygon &tr1, const Geometry::Polygon &tr2,
-                        const coord_t squareSideSize,
-                        double& scale_x, double& scale_y, double& delta_x, double& delta_y,
-                        double& min_x, double& min_y);
+    std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon,
+                                                     ImVec2 offset = ImVec2(0,0));
+    ImVec2 getImVec2(const Geometry::Point &p,
+                     ImVec2 offset = ImVec2(0,0));
 
-    Geometry::Polygon scaleAndTranslate(Geometry::Polygon &polygon,
-                           double& scale_x, double& scale_y, double& delta_x, double& delta_y,
-                           double& min_x, double& min_y);
+    scalingParameters findParameters(const Geometry::Polygon &tr1, 
+                        const Geometry::Polygon &tr2,
+                        coord_t squareSideSize);
 
-    Geometry::Polygon addIndents(Geometry::Polygon &polygon,
-                    const coord_t indentSize);
+    Geometry::Polygon scaleAndTranslate(const Geometry::Polygon &polygon,
+                                        const scalingParameters& parameters);
 
     void setActualPointsLabels(Geometry::Polygon &triangle1,
                                Geometry::Polygon &triangle2,
