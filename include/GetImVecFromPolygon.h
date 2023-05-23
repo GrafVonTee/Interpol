@@ -10,13 +10,9 @@
 namespace DrawUtils {
     using im_vec_triangle_t = std::tuple<ImVec2, ImVec2, ImVec2>;
 
-    im_vec_triangle_t getTupleOfPointsFromPolygon(const Geometry::Polygon &triangle);
-    std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon);
-    ImVec2 getImVec2(const Geometry::Point &p);
-
-    im_vec_triangle_t getOffsetTupleOfPointsFromPolygon(const Geometry::Polygon &triangle, ImVec2 offset);
-    std::vector<ImVec2> getOffsetVectorOfPointsFromPolygon(const Geometry::Polygon& polygon, ImVec2 offset);
-    ImVec2 getOffsetImVec2(const Geometry::Point &p, ImVec2 offset);
+    im_vec_triangle_t getTupleOfPointsFromPolygon(const Geometry::Polygon &triangle, ImVec2 offset = ImVec2(0,0));
+    std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon, ImVec2 offset = ImVec2(0,0));
+    ImVec2 getImVec2(const Geometry::Point &p, ImVec2 offset = ImVec2(0,0));
 
     void findParameters(const Geometry::Polygon &tr1, const Geometry::Polygon &tr2,
                         const coord_t squareSideSize,

@@ -112,9 +112,9 @@ namespace DrawOutput {
             // Geometry::Polygon drawnIntersection = intersection.polygon;                                 
                                         
 
-            auto [a1, a2, a3] = DrawUtils::getOffsetTupleOfPointsFromPolygon(drawnTr1, pos);
-            auto [b1, b2, b3] = DrawUtils::getOffsetTupleOfPointsFromPolygon(drawnTr2, pos);
-            auto intersection_points = DrawUtils::getOffsetVectorOfPointsFromPolygon(drawnIntersection, pos);
+            auto [a1, a2, a3] = DrawUtils::getTupleOfPointsFromPolygon(drawnTr1, pos);
+            auto [b1, b2, b3] = DrawUtils::getTupleOfPointsFromPolygon(drawnTr2, pos);
+            auto intersection_points = DrawUtils::getVectorOfPointsFromPolygon(drawnIntersection, pos);
 
             
 
@@ -123,7 +123,8 @@ namespace DrawOutput {
                 a1,
                 a2,
                 a3,
-                                   RED_COLOR);
+                RED_COLOR
+            );
             
 
             // draw the second triangle
@@ -131,7 +132,8 @@ namespace DrawOutput {
                 b1,
                 b2,
                 b3,
-                                   GREEN_COLOR);
+                GREEN_COLOR
+            );
 
             // draw the intersection
             if (intersection_points.size() >= 3)               
