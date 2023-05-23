@@ -23,9 +23,6 @@ namespace DrawUtils {
                            double& scale_x, double& scale_y, double& delta_x, double& delta_y,
                            double& min_x, double& min_y);
 
-    Geometry::Polygon addIndents(Geometry::Polygon &polygon,
-                    const coord_t indentSize);
-
     void setActualPointsLabels(Geometry::Polygon &triangle1,
                                Geometry::Polygon &triangle2,
                                Geometry::Intersection &intersection);
