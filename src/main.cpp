@@ -4,7 +4,6 @@
 #include "Parsing.h"
 #include "ConsoleInteraction.h"
 #include "GetImVecFromPolygon.h"
-#include "ConstantsForDrawing.h"
 
 int main() {
     std::string userName = Interaction::getUserName();
