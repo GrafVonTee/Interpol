@@ -60,7 +60,7 @@ Write your name (or just press Enter for default name ```Travaler```) and then f
 
 
 ## New Feature:
-You can change triangle's coordinates in "Properties" window and it's automatically plot new intersection.
+You can change triangle coordinates in "Properties" window and new intersection will be automatically ploted.
 <img width="531" alt="Снимок экрана 2023-05-23 в 21 27 09" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/58745e49-62db-47b5-bdad-db16b9342aa2">
 
 
