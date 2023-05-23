@@ -13,14 +13,6 @@ Triangle Intersections is a C++20 project that finds intersection (or noninterse
 - Daniil Yeryomenko (@DanTimson)
 - Alexander Yulin (@Alxyll)
 
-## Project Structure
-
-The following files are included in the project:
-
-- **CONTRIBUTING.md:** This file provides guidelines for contributing to the project.
-- **LICENCE:** This file specifies the license under which the project is distributed.
-- **SECURITY.md:** This file provides guidelines for reporting security vulnerabilities.
-
 ## Testing
 
 The project is tested using GTEST, a C++ testing framework.
@@ -74,7 +66,7 @@ You can change triangle's coordinates in "Properties" window and it's automatica
 
 ## Issues and Contributions
 
-If you encounter any issues or want to contribute to the project, please refer to CONTRIBUTING.md and SECURITY.md for guidelines.
+If you encounter any issues or want to contribute to the project, please refer to [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md) for guidelines.
 
 ## License
 
