@@ -247,34 +247,7 @@ namespace Interaction {
     }
 
 
-    void skSorting(Geometry::Polygon& polygon) {
-        // Ask the user if they want to sort the points by traversal
-        std::string answer;
-        std::cout << "Do you want to sort the points by traversal? (yes/no): ";
-        std::getline(std::cin, answer);
 
-        if (answer == "yes") {
-            // Determine the starting letter based on the polygon's label
-            char startingLetter = polygon[0].getLabel()[0];
-
-            // Update the point labels based on traversal order
-            for (std::size_t i = 0; i < polygon.size(); ++i) {
-                char currentLetter = startingLetter + i;
-                std::string pointLabel = "A" + std::to_string(i + 1);
-
-                // Update the point label if it doesn't start with the correct letter
-                if (polygon[i].getLabel()[0] != currentLetter) {
-                    polygon[i].setLabel(pointLabel);
-                }
-            }
-        }
-
-        // Output the points
-        std::cout << "Points:" << std::endl;
-        for (const auto& point : polygon.getPointsRef()) {
-            std::cout << point.getLabel() << ": " << point.getX() << ", " << point.getY() << std::endl;
-        }
-    }
 
 
 }
