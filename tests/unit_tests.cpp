@@ -95,7 +95,7 @@ TEST(IntersectionTest, FourPointIntersection) {
     Polygon triangle2{{Point(100.0, 100.0), Point(100.0, 500.0), Point(500.0, 100.0)}};
 
     // Compute the intersection of the triangles
-    Intersection intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findPolygonsInter(triangle1, triangle2);
 
     // Check that the intersection is empty
     ASSERT_EQ(intersection.polygon.size(), 4);
@@ -107,7 +107,7 @@ TEST(IntersectionTest, SinglePointIntersection) {
     Polygon triangle2{{Point(0.5, 0.5), Point(1.5, 0.5), Point(0.5, 1.5)}};
 
     // Compute the intersection of the triangles
-    Intersection intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findPolygonsInter(triangle1, triangle2);
 
     // Check that the intersection contains a single point
     ASSERT_EQ(intersection.polygon.size(), 1);
@@ -121,7 +121,7 @@ TEST(IntersectionTest, SingleLineIntersection) {
     Polygon triangle2{{Point(0, 0), Point(1, 0), Point(0, -1)}};
 
     // Compute the intersection of the triangles
-    Intersection intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findPolygonsInter(triangle1, triangle2);
 
     // Check that the intersection contains a single edge
     ASSERT_EQ(intersection.polygon.size(), 2);
@@ -135,7 +135,7 @@ TEST(IntersectionTest, PolygonIntersection) {
     Polygon triangle2{{Point(0, 0), Point(1, 0), Point(1, 1)}};
 
     // Compute the intersection of the triangles
-    Intersection intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findPolygonsInter(triangle1, triangle2);
 
     // Check that the intersection contains a single edge
     ASSERT_EQ(intersection.polygon.size(), 3);
@@ -149,7 +149,7 @@ TEST(IntersectionTest, OverlappingTriangle) {
     Polygon triangle2{{Point(0, 0), Point(0, 3), Point(3, 0)}};
 
     // Compute the intersection of the triangles
-    Intersection intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findPolygonsInter(triangle1, triangle2);
 
     // Check that the intersection is the same as the smaller triangle
     ASSERT_EQ(intersection.polygon.size(), 3);
