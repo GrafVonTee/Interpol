@@ -38,3 +38,4 @@ namespace Interaction {
     std::string getTypeNameOfPolygon(const States::PolygonState &state);
 }
 #endif //TRIANGLE_INTERSECTIONS_CONSOLE_INTERACTION_H
+
