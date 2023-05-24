@@ -183,7 +183,7 @@ namespace Math {
         LineIntersection inter;
 
         for (size_t firstEdge = 0; firstEdge < first.size(); firstEdge++) {
-            for (size_t secondEdge = 0; secondEdge <= second.size(); secondEdge++) {
+            for (size_t secondEdge = 0; secondEdge < second.size(); secondEdge++) {
 
                 inter = findLinesInter(first[firstEdge], first[(firstEdge + 1) % first.size()],
                                           second[secondEdge],second[(secondEdge + 1) % second.size()]);
