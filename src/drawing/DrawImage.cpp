@@ -119,7 +119,7 @@ namespace DrawOutput {
             }
             ImGui::End();            
 
-            // ImGui::ShowDemoWindow();
+            ImGui::ShowDemoWindow();
 
             // Rendering
             ImGui::Render();
