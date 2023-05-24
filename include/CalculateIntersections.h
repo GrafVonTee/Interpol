@@ -1,5 +1,5 @@
-#ifndef TRIANGLE_INTERSECTIONS_CALCULATEINTERSECTIONS_H
-#define TRIANGLE_INTERSECTIONS_CALCULATEINTERSECTIONS_H
+#ifndef POLYGON_INTERSECTIONS_CALCULATEINTERSECTIONS_H
+#define POLYGON_INTERSECTIONS_CALCULATEINTERSECTIONS_H
 
 #include <vector>
 #include <algorithm>
@@ -9,7 +9,7 @@
 
 namespace Math {
 
-    // Important case - it is when 2 lines not parallel and sections have intersection. If case is important, we get coords of intersection point, else we get (0,0) point
+// Important case - it is when 2 lines not parallel and sections have intersection. If case is important, we get coords of intersection point, else we get (0,0) point
     struct LineIntersection{
         Geometry::Point point;
         bool isImportantCase;
@@ -32,6 +32,7 @@ namespace Math {
         Geometry::Point& secondStart,Geometry::Point& secondEnd);
 
     // Main function of math module, find intersection area
-    Geometry::Intersection findTriangleInter(Geometry::Polygon& first, Geometry::Polygon& second);
+    Geometry::Intersection findPolygonsInter(Geometry::Polygon& first, Geometry::Polygon& second);
+
 }
-#endif //TRIANGLE_INTERSECTIONS_CALCULATEINTERSECTIONS_H
+#endif //POLYGON_INTERSECTIONS_CALCULATEINTERSECTIONS_H
