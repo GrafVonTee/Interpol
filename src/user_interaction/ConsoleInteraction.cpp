@@ -74,41 +74,6 @@ namespace Interaction {
         return std::make_tuple(polygon, state);
     }
 
-    polygon_result_t getPolygon(const std::string& letter, std::istream& inputStream, std::ostream& outputStream) {
-        outputStream << "Enter the number of points for the polygon " << letter << ":\n";
-        int numPoints;
-        inputStream >> numPoints;
-
-        std::vector<Geometry::Point> points;
-        points.reserve(numPoints);
-
-        for (int i = 1; i <= numPoints; ++i) {
-            std::string pointLetter = letter + std::to_string(i);
-            Geometry::Point point;
-            States::InputState state;
-
-            do {
-                auto [tuplePoint, tupleState] = getPoint(pointLetter, inputStream, outputStream);
-                point = tuplePoint;
-                state = tupleState;
-            } while (state != States::InputState::Correct);
-
-            points.emplace_back(point);
-        }
-
-        Geometry::Polygon polygon;
-        States::InputState state = States::InputState::Correct;
-
-        try {
-            polygon = Geometry::Polygon(points);
-        } catch (const std::logic_error& e) {
-            std::cerr << e.what() << std::endl;
-            polygon = Geometry::Polygon();
-            state = States::InputState::IncorrectInput;
-        }
-
-        return std::make_tuple(polygon, state);
-    }
 
     point_result_t getPoint(const std::string &letter,
                             std::istream &inputStream,
