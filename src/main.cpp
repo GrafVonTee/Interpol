@@ -20,7 +20,7 @@ int main() {
     }
 
     auto [tr1, tr2] = Interaction::getBothTriangles(*input, *output);
-    auto intersection = Math::findTriangleInter(tr1, tr2);
+    auto intersection = Math::findPolygonsInter(tr1, tr2);
     DrawUtils::setActualPointsLabels(tr1, tr2, intersection);
 
     Interaction::printTriangle(tr1);
