@@ -113,7 +113,7 @@ namespace DrawOutput {
             {
                 DisplayPolygon(tr1, "Polygon 1");
                 DisplayPolygon(tr2, "Polygon 2");
-                intersection = Math::findPolygonsInter(tr1, tr2);
+                intersection = Math::findTriangleInter(tr1, tr2);
                 DrawUtils::setActualPointsLabels(tr1, tr2, intersection);                
                 DisplayPolygon(intersection.polygon, "Intersection", true);
             }
