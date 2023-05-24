@@ -4,10 +4,10 @@ name: CI
 on: 
   push:
     branches:
-      - develop
+      - main
   pull_request:
     branches:
-      - develop
+      - main
 
 jobs:
   build:
@@ -17,7 +17,9 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2      
     - name: Configure RandR
-      run: sudo apt-get install xorg-dev libglu1-mesa-dev
+      run: |
+          sudo apt-get update
+          sudo apt-get install xorg-dev libglu1-mesa-dev
     - name: Configure CMake
       run: cmake -B build -S .
     - name: Build
