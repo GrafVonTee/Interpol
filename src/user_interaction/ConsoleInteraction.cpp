@@ -79,6 +79,11 @@ namespace Interaction {
         int numPoints;
         inputStream >> numPoints;
 
+        if (numPoints <= 0) {
+            outputStream << "Invalid number of points. Please enter a positive integer.\n";
+            return std::make_tuple(Geometry::Polygon(), States::InputState::IncorrectInput);
+        }
+
         std::vector<Geometry::Point> points;
         points.reserve(numPoints);
 
@@ -102,7 +107,7 @@ namespace Interaction {
         try {
             polygon = Geometry::Polygon(points);
         } catch (const std::logic_error& e) {
-            std::cerr << e.what() << std::endl;
+            outputStream << e.what() << std::endl;
             polygon = Geometry::Polygon();
             state = States::InputState::IncorrectInput;
         }
@@ -247,11 +252,11 @@ namespace Interaction {
     }
 
 
-    void skSorting(Geometry::Polygon& polygon) {
+    void askSorting(Geometry::Polygon& polygon, std::ostream& out = std::cout, std::istream& in = std::cin) {
         // Ask the user if they want to sort the points by traversal
+        out << "Do you want to sort the points by traversal? (yes/no): ";
         std::string answer;
-        std::cout << "Do you want to sort the points by traversal? (yes/no): ";
-        std::getline(std::cin, answer);
+        std::getline(in, answer);
 
         if (answer == "yes") {
             // Determine the starting letter based on the polygon's label
@@ -260,7 +265,7 @@ namespace Interaction {
             // Update the point labels based on traversal order
             for (std::size_t i = 0; i < polygon.size(); ++i) {
                 char currentLetter = startingLetter + i;
-                std::string pointLabel = "A" + std::to_string(i + 1);
+                std::string pointLabel = std::string(1, currentLetter) + std::to_string(i + 1);
 
                 // Update the point label if it doesn't start with the correct letter
                 if (polygon[i].getLabel()[0] != currentLetter) {
@@ -269,12 +274,10 @@ namespace Interaction {
             }
         }
 
-        // Output the points
-        std::cout << "Points:" << std::endl;
-        for (const auto& point : polygon.getPointsRef()) {
-            std::cout << point.getLabel() << ": " << point.getX() << ", " << point.getY() << std::endl;
-        }
+        // Print the polygon
+        printPolygon(polygon);
     }
+
 
 
 }

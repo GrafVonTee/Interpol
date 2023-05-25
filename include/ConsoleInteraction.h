@@ -28,7 +28,8 @@ namespace Interaction {
                                 std::ostream& outputStream = std::cout);
     polygon_pair_t getBothPolygons(std::istream& inputStream = std::cin,
                                    std::ostream& outputStream = std::cout);
-    void askSorting(Geometry::Polygon& polygon, char letter);
+    void askSortingaskSorting(Geometry::Polygon& polygon,
+                              std::ostream& out = std::cout, std::istream& in = std::cin);
 
     void printPoint(const Geometry::Point &point);
     void printTriangle(const Geometry::Polygon &triangle);
