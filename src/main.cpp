@@ -19,17 +19,17 @@ int main() {
         output = &empty;
     }
 
-    auto [tr1, tr2] = Interaction::getBothTriangles(*input, *output);
-    auto intersection = Math::findPolygonsInter(tr1, tr2);
-    DrawUtils::setActualPointsLabels(tr1, tr2, intersection);
+    auto [p1, p2] = Interaction::getBothPolygons(*input, *output);
+    auto intersection = Math::findPolygonsInter(p1, p2);
+    DrawUtils::setActualPointsLabels(p1, p2, intersection);
 
-    Interaction::printTriangle(tr1);
-    Interaction::printTriangle(tr2);
+    Interaction::printPolygon(p1);
+    Interaction::printPolygon(p2);
     Interaction::printIntersection(intersection);
 
 
     Interaction::welcomeToGui();
-    DrawOutput::draw_triangles_and_intersection(tr1, tr2, intersection);
+    DrawOutput::draw_triangles_and_intersection(p1, p2, intersection);
 
     Interaction::goodbye(userName);
     system("pause");
