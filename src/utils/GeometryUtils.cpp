@@ -276,4 +276,18 @@ namespace Geometry {
 
         m_pointList.insert(m_pointList.begin(), center);
     }
+
+    void Polygon::emplaceBack(const Point &point) {
+        m_pointList.emplace_back(point);
+        this->checkPolygon(m_pointList);
+        this->sortPoints();
+        m_state = States::PolygonState(this->size());
+    }
+
+    void Polygon::emplaceBack(Point &&point) noexcept {
+        m_pointList.emplace_back(point);
+        this->checkPolygon(m_pointList);
+        this->sortPoints();
+        m_state = States::PolygonState(this->size());
+    }
 }

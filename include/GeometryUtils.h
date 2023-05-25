@@ -79,12 +79,16 @@ namespace Geometry {
      Methods:
      size(): return size of a vector
      sortPoints(): sort vector using atan2 function
+     emplaceBack(const Point& | Point&&): emplace point in Polygon, auto-validator and auto-sort
     */
     private:
         std::vector<Point> m_pointList{};
         States::PolygonState m_state = States::PolygonState::NotPolygon;
 
+        // Validator for vector of points in Polygon
         static void checkPolygon(const std::vector<Point> &points);
+
+        // Subfunction for checkPolygon(const std::vector<Point> &points)
         static void checkPointsForPolygon(const Point &p1, const Point &p2, const Point &p3);
     public:
         // Constructors
@@ -101,6 +105,8 @@ namespace Geometry {
         // Methods
         [[nodiscard]] size_t size() const;
         void sortPoints();
+        void emplaceBack(const Point& point);
+        void emplaceBack(Point&& point) noexcept;
 
         // Operators
         friend std::ostream &operator<<(std::ostream &out, const Polygon &polygon);
