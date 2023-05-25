@@ -75,13 +75,20 @@ namespace Interaction {
     }
 
     polygon_result_t getPolygon(const std::string& letter, std::istream& inputStream, std::ostream& outputStream) {
-        outputStream << "Enter the number of points for the polygon " << letter << ":\n";
         int numPoints;
-        inputStream >> numPoints;
+        while (true) {
+            outputStream << "Enter the number of points for the polygon " << letter << ":\n";
+            if (!(inputStream >> numPoints)) {
+                outputStream << "Invalid input. Please enter a number.\n";
+                inputStream.clear();
+                continue;
+            }
 
-        if (numPoints <= 0) {
-            outputStream << "Invalid number of points. Please enter a positive integer.\n";
-            return std::make_tuple(Geometry::Polygon(), States::InputState::IncorrectInput);
+            if (numPoints <= 0) {
+                outputStream << "Invalid number of points. Please enter a positive integer.\n";
+            } else {
+                break;
+            }
         }
 
         std::vector<Geometry::Point> points;
@@ -114,6 +121,7 @@ namespace Interaction {
 
         return std::make_tuple(polygon, state);
     }
+
 
     point_result_t getPoint(const std::string &letter,
                             std::istream &inputStream,
@@ -264,11 +272,10 @@ namespace Interaction {
 
             // Update the point labels based on traversal order
             for (std::size_t i = 0; i < polygon.size(); ++i) {
-                char currentLetter = startingLetter + i;
-                std::string pointLabel = std::string(1, currentLetter) + std::to_string(i + 1);
+                std::string pointLabel = std::string(1, startingLetter) + std::to_string(i + 1);
 
                 // Update the point label if it doesn't start with the correct letter
-                if (polygon[i].getLabel()[0] != currentLetter) {
+                if (polygon[i].getLabel()[0] != startingLetter) {
                     polygon[i].setLabel(pointLabel);
                 }
             }
