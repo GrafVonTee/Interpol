@@ -215,7 +215,7 @@ namespace DrawOutput {
 
     void DisplayPoint(Geometry::Point &point, bool muted)
     {
-        std::string prefix = (muted) ? "  " : " ";
+        std::string prefix = (muted) ? " #" : " ";
         float pointXY[2] = {(float)point.getX(), (float)point.getY()};
         ImGui::InputFloat2((prefix + point.getLabel()).c_str(), pointXY);
         if (!muted) {

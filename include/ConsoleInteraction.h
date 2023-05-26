@@ -21,6 +21,14 @@ namespace Interaction {
                             std::ostream& outputStream = std::cout);
     triangle_pair_t getBothTriangles(std::istream& inputStream = std::cin,
                                      std::ostream& outputStream = std::cout);
+  
+    polygon_result_t getPolygon(const char letter,
+                                std::istream& inputStream = std::cin,
+                                std::ostream& outputStream = std::cout);
+    polygon_pair_t getBothPolygons(std::istream& inputStream = std::cin,
+                                   std::ostream& outputStream = std::cout);
+    void askSortingaskSorting(Geometry::Polygon& polygon,
+                              std::ostream& out = std::cout, std::istream& in = std::cin);
 
     void printPoint(const Geometry::Point &point);
     void printTriangle(const Geometry::Polygon &triangle);

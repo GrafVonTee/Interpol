@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <limits>
 #include "GeometryUtils.h"
 #include "ConsoleInteraction.h"
 #include "Parsing.h"
@@ -67,6 +68,60 @@ namespace Interaction {
             polygon = Geometry::Polygon(points);
         } catch (const std::logic_error& e) {
             cerr << e.what() << endl;
+            polygon = Geometry::Polygon();
+            state = States::InputState::IncorrectInput;
+        }
+
+        return std::make_tuple(polygon, state);
+    }
+
+    polygon_result_t getPolygon(const std::string& letter, std::istream& inputStream, std::ostream& outputStream) {
+        int numPoints;
+
+        while (true) {
+            outputStream << "Enter the number of points for the polygon " << letter << ":\n";
+            inputStream >> numPoints;
+
+            if (!inputStream) {
+                outputStream << "Invalid input. Please enter a number.\n";
+                inputStream.clear();
+                inputStream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
+
+            inputStream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+            if (numPoints <= 0) {
+                outputStream << "Invalid number of points. Please enter a positive integer.\n";
+            } else {
+                break;
+            }
+        }
+
+        std::vector<Geometry::Point> points;
+        points.reserve(numPoints);
+
+        for (int i = 1; i <= numPoints; ++i) {
+            std::string pointLetter = letter + std::to_string(i);
+            Geometry::Point point;
+            States::InputState state;
+
+            do {
+                auto [tuplePoint, tupleState] = getPoint(pointLetter, inputStream, outputStream);
+                point = tuplePoint;
+                state = tupleState;
+            } while (state != States::InputState::Correct);
+
+            points.emplace_back(point);
+        }
+
+        Geometry::Polygon polygon;
+        States::InputState state = States::InputState::Correct;
+
+        try {
+            polygon = Geometry::Polygon(points);
+        } catch (const std::logic_error& e) {
+            outputStream << e.what() << std::endl;
             polygon = Geometry::Polygon();
             state = States::InputState::IncorrectInput;
         }
@@ -189,4 +244,32 @@ namespace Interaction {
         };
         return polygonTypes[(unsigned int)state];
     }
+
+
+    void askSorting(Geometry::Polygon& polygon, std::ostream& out = std::cout, std::istream& in = std::cin) {
+        // Ask the user if they want to sort the points by traversal
+        out << "Do you want to sort the points by traversal? (yes/no): ";
+        std::string answer;
+        std::getline(in, answer);
+
+        if (answer == "yes") {
+            // Determine the starting letter based on the polygon's label
+            char startingLetter = polygon[0].getLabel()[0];
+
+            // Update the point labels based on traversal order
+            for (std::size_t i = 0; i < polygon.size(); ++i) {
+                std::string pointLabel = std::string(1, startingLetter) + std::to_string(i + 1);
+
+                // Update the point label if it doesn't start with the correct letter
+                if (polygon[i].getLabel()[0] != startingLetter) {
+                    polygon[i].setLabel(pointLabel);
+                }
+            }
+        }
+        // Print the polygon
+        printPolygon(polygon);
+    }
+
+
 }
+
