@@ -8,8 +8,6 @@ namespace Interaction {
     using point_result_t = std::tuple<Geometry::Point, States::InputState>;
     using triangle_result_t = std::tuple<Geometry::Polygon, States::InputState>;
     using triangle_pair_t = std::tuple<Geometry::Polygon, Geometry::Polygon>;
-    using polygon_result_t = std::tuple<Geometry::Polygon, States::InputState>;
-    using polygon_pair_t = std::tuple<Geometry::Polygon, Geometry::Polygon>;
 
     void greeting(const std::string &userName);
     void goodbye(const std::string &userName);
@@ -23,6 +21,7 @@ namespace Interaction {
                             std::ostream& outputStream = std::cout);
     triangle_pair_t getBothTriangles(std::istream& inputStream = std::cin,
                                      std::ostream& outputStream = std::cout);
+  
     polygon_result_t getPolygon(const char letter,
                                 std::istream& inputStream = std::cin,
                                 std::ostream& outputStream = std::cout);

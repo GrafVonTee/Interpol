@@ -129,7 +129,6 @@ namespace Interaction {
         return std::make_tuple(polygon, state);
     }
 
-
     point_result_t getPoint(const std::string &letter,
                             std::istream &inputStream,
                             std::ostream& outputStream)
@@ -177,26 +176,6 @@ namespace Interaction {
         }
 
         return std::make_tuple(triangle1, triangle2);
-    }
-
-    polygon_pair_t getBothPolygons(std::istream& inputStream, std::ostream& outputStream) {
-        outputStream << "The first thing you need is to define your two polygons (1 and 2)!" << std::endl;
-        Geometry::Polygon polygon1, polygon2;
-        States::InputState state;
-        for (int i = 1; i <= 2; ++i) {
-            do {
-                outputStream << std::endl;
-                std::string letterPolygon = (i == 1) ? "A" : "B";
-                auto [tuplePolygon, tupleState] = getPolygon(letterPolygon, inputStream, outputStream);
-                if (i == 1)
-                    polygon1 = tuplePolygon;
-                else
-                    polygon2 = tuplePolygon;
-                state = tupleState;
-            } while (state != States::InputState::Correct);
-        }
-
-        return std::make_tuple(polygon1, polygon2);
     }
 
     void printPoint(const Geometry::Point &point) {
@@ -255,13 +234,13 @@ namespace Interaction {
 
     std::string getTypeNameOfPolygon(const States::PolygonState &state) {
         std::string polygonTypes[] {
-                "not a polygon",
-                "point",
-                "edge",
-                "triangle",
-                "quadrilateral",
-                "pentagon",
-                "hexagon",
+            "not a polygon",
+            "point",
+            "edge",
+            "triangle",
+            "quadrilateral",
+            "pentagon",
+            "hexagon",
         };
         return polygonTypes[(unsigned int)state];
     }
@@ -287,17 +266,10 @@ namespace Interaction {
                 }
             }
         }
-
         // Print the polygon
         printPolygon(polygon);
     }
 
 
-
 }
-
-
-
-
-
 
