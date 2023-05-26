@@ -14,7 +14,7 @@ int main() {
     std::istream *input = &std::cin;
     std::ostream *output = &std::cout;
 
-    if ((userName == "Demo") || (userName == "demo")) {
+    if ((userName == "Demo") || (userName == "demo") || (userName == "DEMO")) {
         input = &demoPoints;
         output = &empty;
     }

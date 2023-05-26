@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+#include <limits>
 #include "GeometryUtils.h"
 #include "ConsoleInteraction.h"
 #include "Parsing.h"
@@ -76,13 +77,19 @@ namespace Interaction {
 
     polygon_result_t getPolygon(const std::string& letter, std::istream& inputStream, std::ostream& outputStream) {
         int numPoints;
+
         while (true) {
             outputStream << "Enter the number of points for the polygon " << letter << ":\n";
-            if (!(inputStream >> numPoints)) {
+            inputStream >> numPoints;
+
+            if (!inputStream) {
                 outputStream << "Invalid input. Please enter a number.\n";
                 inputStream.clear();
+                inputStream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                 continue;
             }
+
+            inputStream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
             if (numPoints <= 0) {
                 outputStream << "Invalid number of points. Please enter a positive integer.\n";
