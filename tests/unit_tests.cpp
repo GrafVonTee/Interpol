@@ -1,6 +1,4 @@
 #include "gtest/gtest.h"
-#include "imgui.h"
-#include "DrawImage.h"
 #include "GeometryUtils.h"
 #include "StatesUtils.h"
 #include "CalculateIntersections.h"
@@ -18,8 +16,8 @@ TEST(ConsoleInteraction, ValidInputFormat) {
 }
 
 TEST(ConsoleInteraction, InvalidInputFormatPoint) {
-    std::istringstream input("1,2\n(3.0, 4.0)\n");        
-    testing::internal::CaptureStderr();    
+    std::istringstream input("1,2\n(3.0, 4.0)\n");
+    testing::internal::CaptureStderr();
     Point point = get<0>(getPoint("A", input));
     std::string output = testing::internal::GetCapturedStderr();
     EXPECT_EQ(output, "Incorrect input! Please, enter values in CORRECT format '(x, y)'!\n");
@@ -27,8 +25,8 @@ TEST(ConsoleInteraction, InvalidInputFormatPoint) {
 }
 
 TEST(ConsoleInteraction, EmptyString) {
-    std::istringstream input("\n(3.0, 4.0)\n");       
-    testing::internal::CaptureStderr();    
+    std::istringstream input("\n(3.0, 4.0)\n");
+    testing::internal::CaptureStderr();
     Point point = get<0>(getPoint("A", input));
     std::string output = testing::internal::GetCapturedStderr();
     EXPECT_EQ(output, "String is empty! Please, enter values in format '(x, y)'!\n");
@@ -36,11 +34,11 @@ TEST(ConsoleInteraction, EmptyString) {
 }
 
 TEST(ConsoleInteraction, ReenteredInvalidInputFormatTriangle) {
-    std::istringstream input("1,2\n(3.0, 4.0)\n(1.0, 2.0)\n1,2\n(1.0, 4.0)\n");        
-    testing::internal::CaptureStderr();    
+    std::istringstream input("1,2\n(3.0, 4.0)\n(1.0, 2.0)\n1,2\n(1.0, 4.0)\n");
+    testing::internal::CaptureStderr();
     Polygon triangle = get<0>(getTriangle("A", input));
     std::string output = testing::internal::GetCapturedStderr();
-    EXPECT_EQ(output, "Incorrect input! Please, enter values in CORRECT format '(x, y)'!\nIncorrect input! Please, enter values in CORRECT format '(x, y)'!\n");    
+    EXPECT_EQ(output, "Incorrect input! Please, enter values in CORRECT format '(x, y)'!\nIncorrect input! Please, enter values in CORRECT format '(x, y)'!\n");
     EXPECT_EQ(triangle.size(), 3);
     ASSERT_EQ(triangle[0], Point(1.0, 2.0));
     ASSERT_EQ(triangle[1], Point(1.0, 4.0));
@@ -49,7 +47,7 @@ TEST(ConsoleInteraction, ReenteredInvalidInputFormatTriangle) {
 
 TEST(ConsoleInteraction, SamePointsTriangle) {
     std::istringstream input("(3.0, 4.0)\n(1.0, 2.0)\n(3.0, 4.0)\n");
-    testing::internal::CaptureStderr();    
+    testing::internal::CaptureStderr();
     Polygon triangle = get<0>(getTriangle("A", input));
     std::string output = testing::internal::GetCapturedStderr();
     EXPECT_EQ(output, "Points: A1 and A3 are equal!\n");
@@ -57,7 +55,7 @@ TEST(ConsoleInteraction, SamePointsTriangle) {
 
 TEST(ConsoleInteraction, NotATriangle) {
     std::istringstream input("(0.0, 0.0)\n(0.0, 2.0)\n(0.0, 4.0)\n");
-    testing::internal::CaptureStderr();    
+    testing::internal::CaptureStderr();
     Polygon triangle = get<0>(getTriangle("A", input));
     std::string output = testing::internal::GetCapturedStderr();
     EXPECT_EQ(output, "Points: A3, A1, A2 are located in one line!\n");
@@ -95,7 +93,7 @@ TEST(IntersectionTest, FourPointIntersection) {
     Polygon triangle2{{Point(100.0, 100.0), Point(100.0, 500.0), Point(500.0, 100.0)}};
 
     // Compute the intersection of the triangles
-    Intersection intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findPolygonsInter(triangle1, triangle2);
 
     // Check that the intersection is empty
     ASSERT_EQ(intersection.polygon.size(), 4);
@@ -107,7 +105,7 @@ TEST(IntersectionTest, SinglePointIntersection) {
     Polygon triangle2{{Point(0.5, 0.5), Point(1.5, 0.5), Point(0.5, 1.5)}};
 
     // Compute the intersection of the triangles
-    Intersection intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findPolygonsInter(triangle1, triangle2);
 
     // Check that the intersection contains a single point
     ASSERT_EQ(intersection.polygon.size(), 1);
@@ -121,7 +119,7 @@ TEST(IntersectionTest, SingleLineIntersection) {
     Polygon triangle2{{Point(0, 0), Point(1, 0), Point(0, -1)}};
 
     // Compute the intersection of the triangles
-    Intersection intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findPolygonsInter(triangle1, triangle2);
 
     // Check that the intersection contains a single edge
     ASSERT_EQ(intersection.polygon.size(), 2);
@@ -135,7 +133,7 @@ TEST(IntersectionTest, PolygonIntersection) {
     Polygon triangle2{{Point(0, 0), Point(1, 0), Point(1, 1)}};
 
     // Compute the intersection of the triangles
-    Intersection intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findPolygonsInter(triangle1, triangle2);
 
     // Check that the intersection contains a single edge
     ASSERT_EQ(intersection.polygon.size(), 3);
@@ -149,7 +147,7 @@ TEST(IntersectionTest, OverlappingTriangle) {
     Polygon triangle2{{Point(0, 0), Point(0, 3), Point(3, 0)}};
 
     // Compute the intersection of the triangles
-    Intersection intersection = findTriangleInter(triangle1, triangle2);
+    Intersection intersection = findPolygonsInter(triangle1, triangle2);
 
     // Check that the intersection is the same as the smaller triangle
     ASSERT_EQ(intersection.polygon.size(), 3);
