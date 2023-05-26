@@ -80,6 +80,7 @@ namespace Geometry {
      size(): return size of a vector
      sortPoints(): sort vector using atan2 function
      emplaceBack(const Point& | Point&&): emplace point in Polygon, auto-validator and auto-sort
+     popBack(): delete last point from vector
     */
     private:
         std::vector<Point> m_pointList{};
@@ -107,6 +108,7 @@ namespace Geometry {
         void sortPoints();
         void emplaceBack(const Point& point);
         void emplaceBack(Point&& point) noexcept;
+        void popBack();
 
         // Operators
         friend std::ostream &operator<<(std::ostream &out, const Polygon &polygon);

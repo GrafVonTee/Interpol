@@ -290,4 +290,9 @@ namespace Geometry {
         this->sortPoints();
         m_state = States::PolygonState(this->size());
     }
+
+    void Polygon::popBack() {
+        m_pointList.pop_back();
+        m_state = States::PolygonState(this->size() - 1);
+    }
 }
