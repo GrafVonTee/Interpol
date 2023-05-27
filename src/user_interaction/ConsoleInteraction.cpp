@@ -274,7 +274,7 @@ namespace Interaction {
         std::string answer;
         std::getline(in, answer);
 
-        if (answer == "yes") {
+        if ((answer == "yes") || (answer == "y") || (answer == "Y") || (answer == "YES")) {
             // Determine the starting letter based on the polygon's label
             char startingLetter = polygon[0].getLabel()[0];
 
