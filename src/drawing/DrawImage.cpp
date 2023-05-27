@@ -20,23 +20,23 @@ namespace DrawOutput {
 
 
 
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-        const char* glsl_version = "#version 100";
+        #if defined(IMGUI_IMPL_OPENGL_ES2)
+                const char* glsl_version = "#version 100";
                 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
                 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
                 glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-#elif defined(__APPLE__)
-        const char *glsl_version = "#version 120";
+        #elif defined(__APPLE__)
+                const char *glsl_version = "#version 120";
                 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
                 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
                 glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
                 glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#else
-        const char* glsl_version = "#version 130";
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+        #else
+                const char* glsl_version = "#version 130";
+                glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+                glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+                glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        #endif
 
         // Initialize GLFW
         glfwInit();
@@ -78,13 +78,13 @@ namespace DrawOutput {
         glfwSetKeyCallback(window, key_callback);
 
         while (!glfwWindowShouldClose(window)) {
-            glfwPollEvents();
+            glfwPollEvents();                   
 
             // Start the Dear ImGui frame
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-
+            
             // Set ImGui window properties
             ImGui::SetNextWindowPos(ImVec2(DrawConst::WINDOW_WIDTH / 3, 0), ImGuiCond_Once);
             ImGui::SetNextWindowSize(ImVec2(2 * DrawConst::WINDOW_WIDTH / 3, DrawConst::WINDOWS_HEIGHT), ImGuiCond_Once);
@@ -108,16 +108,16 @@ namespace DrawOutput {
             // Set ImGui window properties
             ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
             ImGui::SetNextWindowSize(ImVec2(DrawConst::WINDOW_WIDTH / 3, DrawConst::WINDOWS_HEIGHT), ImGuiCond_Once);
-
+            
             ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
             {
                 DisplayPolygon(tr1, "Polygon 1");
                 DisplayPolygon(tr2, "Polygon 2");
                 intersection = Math::findPolygonsInter(tr1, tr2);
-                DrawUtils::setActualPointsLabels(tr1, tr2, intersection);
+                DrawUtils::setActualPointsLabels(tr1, tr2, intersection);                
                 DisplayPolygon(intersection.polygon, "Intersection", true);
             }
-            ImGui::End();
+            ImGui::End();            
 
             // ImGui::ShowDemoWindow();
 
@@ -143,61 +143,61 @@ namespace DrawOutput {
     }
 
     void DrawPoints(
-            ImDrawList *drawList,
-            const Geometry::Polygon& polygon,
-            const DrawUtils::scalingParameters& parameters,
-            const ImVec2& offset,
-            const ImU32& col)
+        ImDrawList *drawList,
+        const Geometry::Polygon& polygon, 
+        const DrawUtils::scalingParameters& parameters, 
+        const ImVec2& offset, 
+        const ImU32& col)
     {
         Geometry::Polygon drawnPolygon = DrawUtils::scaleAndTranslate(polygon, parameters);
-        const std::vector<Geometry::Point>& points = drawnPolygon.getPointsRef();
+        const std::vector<Geometry::Point>& points = drawnPolygon.getPointsRef();                
         for (const Geometry::Point& point : points) {
             ImVec2 relativePoint = ImVec2(offset.x + (float) point.getX(), offset.y + (float) point.getY());
             drawList->AddCircleFilled(
-                    relativePoint,
-                    DrawConst::POINT_SIZE,
-                    col
+                relativePoint,
+                DrawConst::POINT_SIZE,
+                col
             );
             drawList->AddText(
-                    nullptr,
-                    DrawConst::LETTER_FONT_SIZE,
-                    relativePoint,
-                    col,
-                    (" " + point.getLabel()).c_str()
+                nullptr, 
+                DrawConst::LETTER_FONT_SIZE, 
+                relativePoint,
+                col,
+                (" " + point.getLabel()).c_str()
             );
         }
     }
 
     void DrawPolygon(
-            ImDrawList *drawList,
-            const Geometry::Polygon& polygon,
-            const DrawUtils::scalingParameters& parameters,
-            const ImVec2& offset,
-            const ImU32& col)
+        ImDrawList *drawList,
+        const Geometry::Polygon& polygon, 
+        const DrawUtils::scalingParameters& parameters, 
+        const ImVec2& offset, 
+        const ImU32& col)
     {
         Geometry::Polygon drawnPolygon = DrawUtils::scaleAndTranslate(polygon, parameters);
         auto polygon_points = DrawUtils::getVectorOfPointsFromPolygon(drawnPolygon, offset);
         // draw the intersection
         if (polygon_points.size() >= 3)
             drawList->AddConvexPolyFilled(
-                    &polygon_points[0],
-                    (int) polygon_points.size(),
-                    col
+                &polygon_points[0],
+                (int) polygon_points.size(),
+                col
             );
 
         else if (polygon_points.size() == 2)
             drawList->AddLine(
-                    polygon_points[0],
-                    polygon_points[1],
-                    col,
-                    DrawConst::LINE_THICKNESS
+                polygon_points[0],
+                polygon_points[1],
+                col,
+                DrawConst::LINE_THICKNESS
             );
 
         else if (polygon_points.size() == 1)
             drawList->AddCircleFilled(
-                    polygon_points[0],
-                    DrawConst::INTERSECTION_POINT_SIZE,
-                    col
+                polygon_points[0], 
+                DrawConst::INTERSECTION_POINT_SIZE, 
+                col
             );
     }
 
@@ -207,38 +207,49 @@ namespace DrawOutput {
         if (muted)
             points1 = polygon.getPointsRef();
         ImGui::Text(title.c_str());
-        for (Geometry::Point& point : points1) {
-            DisplayPoint(point, muted);
+        for (Geometry::Point& point : points1) {   
+            DisplayPoint(point, muted);                    
             polygon.sortPoints();
         }
         if (!muted){
-            DisplayAddButton();            
+            DisplayAddButton(polygon);            
             ImGui::SameLine();
-            DisplayDeleteButton();
+            DisplayDeleteButton(polygon);
             
             
         }
     }
 
-    void DisplayAddButton(){
+    void DisplayAddButton(Geometry::Polygon& polygon){
         ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(2 / 7.0f, 0.6f, 0.6f));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(2 / 7.0f, 0.7f, 0.7f));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(2 / 7.0f, 0.8f, 0.8f));
-        ImGui::Button("Add point");
+        std::string label = polygon.getPointsRef().front().getLabel();
+        label.pop_back();
+        if (ImGui::Button("Add point")){
+            Geometry::Point front = polygon.getPointsRef().front();
+            Geometry::Point back = polygon.getPointsRef().back();
+            Geometry::Point newPoint = Geometry::Point((front.getX() + back.getX())/2 + 100, (front.getY() + back.getY())/2);
+            polygon.getPointsRef().emplace_back(newPoint);
+        }
         ImGui::PopStyleColor(3);
     }
 
-    void DisplayDeleteButton(){
+    void DisplayDeleteButton(Geometry::Polygon& polygon){
         ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0 / 7.0f, 0.6f, 0.6f));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0 / 7.0f, 0.7f, 0.7f));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0 / 7.0f, 0.8f, 0.8f));
-        ImGui::Button("Delete point");
+        std::string label = polygon.getPointsRef().front().getLabel();
+        label.pop_back();
+        if (ImGui::Button("Delete point")){
+            polygon.getPointsRef().pop_back();
+        }
         ImGui::PopStyleColor(3);
     }
 
     void DisplayPoint(Geometry::Point &point, bool muted)
     {
-        std::string prefix = (muted) ? " #" : " ";
+        std::string prefix = (muted) ? "  " : " ";
         float pointXY[2] = {(float)point.getX(), (float)point.getY()};
         ImGui::InputFloat2((prefix + point.getLabel()).c_str(), pointXY);
         if (!muted) {
