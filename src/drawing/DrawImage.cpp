@@ -226,7 +226,8 @@ namespace DrawOutput {
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(2 / 7.0f, 0.8f, 0.8f));
         std::string label = polygon.getPointsRef().front().getLabel();
         label.pop_back();
-        if (ImGui::Button("Add point")){
+        std::string name = "Add point for " + label;
+        if (ImGui::Button(name.c_str())){
             Geometry::Point front = polygon.getPointsRef().front();
             Geometry::Point back = polygon.getPointsRef().back();
             Geometry::Point newPoint = Geometry::Point((front.getX() + back.getX())/2 + 100, (front.getY() + back.getY())/2);
@@ -241,7 +242,8 @@ namespace DrawOutput {
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0 / 7.0f, 0.8f, 0.8f));
         std::string label = polygon.getPointsRef().front().getLabel();
         label.pop_back();
-        if (ImGui::Button("Delete point")){
+        std::string name = "Delete point from " + label;
+        if (ImGui::Button(name.c_str())){
             polygon.getPointsRef().pop_back();
         }
         ImGui::PopStyleColor(3);
