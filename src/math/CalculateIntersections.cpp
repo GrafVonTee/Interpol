@@ -127,6 +127,28 @@ namespace Math {
         }
     }
 
+    bool arePolygonsMatched(const Polygon &first, const Polygon &second,
+                              const std::vector<Point> &listOfInterPoints)
+    {
+        for (size_t pointNumber = 0; pointNumber < first.size(); pointNumber++) {
+            bool match = false;
+
+            for (size_t vertexOfSecond = 0; vertexOfSecond < second.size(); vertexOfSecond++) {
+                if (first[vertexOfSecond] == second[pointNumber]) {
+                    match = true;
+                    break;
+                }
+            }
+
+            // In this case, we have that all vertexes of the one polygon located into another polygon and polygons are not matching.
+            // So one polygon is nested into another.
+
+            if (!match)
+                return false;
+        }
+        return true;
+    }
+
     Intersection findPolygonsInter(Polygon &first, Polygon &second) {
 
         // In this function we find all points, which are the vertexes of intersection polygon, and add their into <listOfInterPoints> vector.
@@ -146,30 +168,11 @@ namespace Math {
         addInsideVertex(listOfInterPoints, first, second);
 
         // Checking the case, when polygons are matching.
-
-        if (listOfInterPoints.size() == first.size()) {
-
-            // The boolean, that describes polygons are matching or not.
-
-            bool match;
-
-            for (size_t pointNumber = 0; pointNumber < first.size(); pointNumber++) {
-                match = false;
-
-                for (size_t vertexOfSecond = 0; vertexOfSecond < second.size(); vertexOfSecond++) {
-                    if (first[vertexOfSecond] == second[pointNumber]) {
-                        match = true;
-                        break;
-                    }
-                }
-
-                // In this case, we have that all vertexes of the one polygon located into another polygon and polygons are not matching.
-                // So one polygon is nested into another.
-
-                if (!match)
-                    return Intersection{States::IntersectionState::Nested, Polygon(listOfInterPoints)};
-            }
-            return Intersection{States::IntersectionState::Matched, second};
+        if ((listOfInterPoints.size() == first.size()) && (first.size() == second.size())) {
+            if (arePolygonsMatched(first, second, listOfInterPoints))
+                return Intersection{States::IntersectionState::Matched, second};
+            else
+                return Intersection{States::IntersectionState::Nested, Polygon(listOfInterPoints)};
         }
 
         bool nestedFlag = listOfInterPoints.empty();
