@@ -1,8 +1,13 @@
+#include <iomanip>
+#include <sstream>
 #include "DrawImage.h"
 #include "GetImVecFromPolygon.h"
 #include "ConstantsForDrawing.h"
 #include "imgui_demo.cpp"
 #include "CalculateIntersections.h"
+
+const int BUFFER_SIZE = 32;
+
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
@@ -70,15 +75,13 @@ namespace DrawOutput {
         // Setup Platform/Renderer backends
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init(glsl_version);
+        // ImGui_ImplGlfw_InstallCallbacks(window);
 
         // create a new window
         ImGui::SetNextWindowSize(io.DisplaySize);
         ImGui::SetNextWindowPos(ImVec2(0, 0));
 
-        glfwSetKeyCallback(window, key_callback);
-
-        Geometry::Polygon tr1Edited = tr1;
-        Geometry::Polygon tr1Edited = tr2;
+        // glfwSetKeyCallback(window, key_callback);
 
         while (!glfwWindowShouldClose(window)) {
             glfwPollEvents();                   
@@ -252,19 +255,47 @@ namespace DrawOutput {
     }
 
     void DisplayPoint(Geometry::Point &point, bool muted)
-    {
-        std::string prefix = (muted) ? "  " : " ";
-        float pointXY[2] = {(float)point.getX(), (float)point.getY()};
-        bool notEdited = ImGui::InputFloat2((prefix + point.getLabel()).c_str(), pointXY);
-        if (!muted){
-            std::string name = "Apply " + point.getLabel();
-            ImGui::SameLine();
-            if (ImGui::Button(name.c_str()) && notEdited) {
-                point.setX(pointXY[0]);
-                point.setY(pointXY[1]);
-            }
-        }
-        ImGui::InputText()
-    }
+    {   
+        int readonly = 0;
+        if (muted) readonly = ImGuiInputTextFlags_ReadOnly;
 
+        char x_buffer[BUFFER_SIZE];        
+        char y_buffer[BUFFER_SIZE];
+
+        std::stringstream stream1;
+        std::stringstream stream2;
+        stream1 << std::fixed << std::setprecision(2) << point.getX();
+        stream2 << std::fixed << std::setprecision(2) << point.getY();
+        std::string s1 = stream1.str();
+        std::string s2 = stream2.str();
+        
+        strcpy(x_buffer, s1.c_str());
+        strcpy(y_buffer, s2.c_str());
+
+        std::string prefix = (muted) ? "  " : " ";
+        std::string name = prefix + point.getLabel() + ".x";
+
+        
+        ImGui::PushItemWidth(150);
+
+        bool modified = false;
+
+        modified = ImGui::InputText(name.c_str(), x_buffer, BUFFER_SIZE, 
+                            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue | readonly);
+
+        if (!muted && modified){
+            point.setX(atof(x_buffer));
+        }
+
+        ImGui::SameLine();
+        name = point.getLabel() + ".y";
+        modified = ImGui::InputText(name.c_str(), y_buffer, BUFFER_SIZE, 
+                            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue | readonly);                            
+        // bool notEdited = ImGui::InputFloat2((prefix + point.getLabel()).c_str(), pointXY, "%.1f");
+        if (!muted && modified){
+            point.setY(atof(y_buffer));
+        }
+
+        ImGui::PopItemWidth;
+    }
 }

@@ -11,7 +11,7 @@ namespace DrawConst {
     extern const float WINDOWS_HEIGHT;
     extern const float DISPLAY_SIZE;
     extern const float DISPLAY_SCALE;
-
+    
     extern const float SQUARE_SIDE_SIZE;
     extern const float INDENT_SIZE;
 }

@@ -155,8 +155,6 @@ TEST(IntersectionTest, OverlappingTriangle) {
     EXPECT_EQ(intersection.polygon, triangle1);
 }
 
-
-
 // Tests for the Point class
 TEST(PointTest, DefaultConstructor) {
     Point p;
@@ -214,4 +212,75 @@ TEST(PointTest, SubtractionOperator) {
     Point p3 = p2 - p1;
     EXPECT_EQ(p3.getX(), 2);
     EXPECT_EQ(p3.getY(), 2);
+}
+
+// Polygon Test
+
+TEST(PolygonTest, GetVector) {
+    Polygon polygon {{Point(0, 0), Point(0, 2)}};
+    std::vector<Point> vec {Point(0, 0), Point(0, 2)};
+    EXPECT_EQ(polygon.getPointsCopy(), vec);
+    EXPECT_EQ(polygon.getPointsRef(), vec);
+}
+
+TEST(PolygonTest, GetState) {
+    Polygon polygon1 {{Point(0, 0), Point(0, 2), Point(3, 4)}};
+    EXPECT_EQ(polygon1.getState(), States::PolygonState::Triangle);
+
+    Polygon polygon2 {};
+    EXPECT_EQ(polygon2.getState(), States::PolygonState::NotPolygon);
+
+    Polygon polygon3 {{Point(0, 0), Point(0, 2), Point(3, 4),
+                      Point(-42, -2.2), Point(-4, 53), Point(343, 1),
+                       Point(231.3, 432)}};
+    EXPECT_EQ(polygon3.getState(), States::PolygonState::OtherPolygon);
+}
+
+TEST(PolygonTest, EqualOperator) {
+    Polygon polygon1 {{Point(0, 0), Point(0, 2), Point(3, 4)}};
+    bool check_eq = polygon1 == Polygon({Point(0, 0), Point(0, 2), Point(3, 4)});
+    EXPECT_EQ(check_eq, true);
+
+    Polygon polygon2 {{Point(-3, 2), Point(42, 1), Point(-4, -4)}};
+    check_eq = polygon1 == polygon2;
+    EXPECT_EQ(check_eq, false);
+}
+
+TEST(PolygonTest, PolygonSize) {
+    Polygon polygon {{Point(0, 0), Point(0, 2), Point(3, 4)}};
+    EXPECT_EQ(polygon.size(), 3);
+}
+
+TEST(PolygonTest, PolygonIndex) {
+    Polygon polygon {{Point(0, 0), Point(0, 2), Point(3, 4)}};
+    EXPECT_EQ(polygon[2], Point(3, 4));
+
+    // Index out of a range
+    EXPECT_THROW({
+        try {
+            Point point = polygon[4];
+        }
+        catch(const std::exception& e) {
+            EXPECT_STREQ("Invalid index!", e.what());
+            throw;
+        }
+        }, std::runtime_error);
+}
+
+TEST(PolygonTest, EmplaceBack) {
+    Polygon polygon {{Point(0, 0), Point(0, 2)}};
+    Point point {-2, -5};
+    // Move emplace
+    polygon.emplaceBack(Point(2, 0), false, false);
+    EXPECT_EQ(polygon[2], Point(2, 0));
+    // Ref emplace
+    polygon.emplaceBack(point, false, false);
+    EXPECT_EQ(polygon[3], point);
+}
+
+TEST(PolygonTest, popBack) {
+    Polygon polygon {{Point(0, 0), Point(0, 2)}};
+    polygon.popBack();
+    Polygon newPolygon{{Point(0, 0)}};
+    EXPECT_EQ(polygon, newPolygon);
 }
