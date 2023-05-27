@@ -214,8 +214,7 @@ namespace DrawOutput {
         if (!muted){
             DisplayAddButton(polygon);            
             ImGui::SameLine();
-            DisplayDeleteButton(polygon);
-            
+            DisplayDeleteButton(polygon);       
             
         }
     }
@@ -254,9 +253,12 @@ namespace DrawOutput {
         std::string prefix = (muted) ? "  " : " ";
         float pointXY[2] = {(float)point.getX(), (float)point.getY()};
         ImGui::InputFloat2((prefix + point.getLabel()).c_str(), pointXY);
-        if (!muted) {
-            point.setX(pointXY[0]);
-            point.setY(pointXY[1]);
+        if (!muted){
+            std::string name = "Apply " + point.getLabel();
+            if (ImGui::Button(name.c_str())) {
+                point.setX(pointXY[0]);
+                point.setY(pointXY[1]);
+            }
         }
     }
 }
