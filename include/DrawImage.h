@@ -38,6 +38,5 @@ namespace DrawOutput {
     void DisplayPolygon(Geometry::Polygon &polygon, const std::string& title = "default", bool muted = false);    
     void DisplayAddButton(Geometry::Polygon &polygon);
     void DisplayDeleteButton(Geometry::Polygon &polygon);
-
 }
 #endif // TRIANGLE_INTERSECTIONS_DRAW_IMAGE_H

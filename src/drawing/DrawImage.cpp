@@ -77,6 +77,9 @@ namespace DrawOutput {
 
         glfwSetKeyCallback(window, key_callback);
 
+        Geometry::Polygon tr1Edited = tr1;
+        Geometry::Polygon tr1Edited = tr2;
+
         while (!glfwWindowShouldClose(window)) {
             glfwPollEvents();                   
 
@@ -252,13 +255,16 @@ namespace DrawOutput {
     {
         std::string prefix = (muted) ? "  " : " ";
         float pointXY[2] = {(float)point.getX(), (float)point.getY()};
-        ImGui::InputFloat2((prefix + point.getLabel()).c_str(), pointXY);
+        bool notEdited = ImGui::InputFloat2((prefix + point.getLabel()).c_str(), pointXY);
         if (!muted){
             std::string name = "Apply " + point.getLabel();
-            if (ImGui::Button(name.c_str())) {
+            ImGui::SameLine();
+            if (ImGui::Button(name.c_str()) && notEdited) {
                 point.setX(pointXY[0]);
                 point.setY(pointXY[1]);
             }
         }
+        ImGui::InputText()
     }
+
 }
