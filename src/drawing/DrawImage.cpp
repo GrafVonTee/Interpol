@@ -233,7 +233,7 @@ namespace DrawOutput {
             Geometry::Point front = polygon.getPointsRef().front();
             Geometry::Point back = polygon.getPointsRef().back();
             Geometry::Point newPoint = Geometry::Point((front.getX() + back.getX())/2 + 100, (front.getY() + back.getY())/2);
-            polygon.getPointsRef().emplace_back(newPoint);
+            polygon.emplaceBack(newPoint);
         }
         ImGui::PopStyleColor(3);
     }
@@ -246,7 +246,7 @@ namespace DrawOutput {
         label.pop_back();
         std::string name = "Delete point from " + label;
         if (ImGui::Button(name.c_str())){
-            polygon.getPointsRef().pop_back();
+            polygon.popBack();
         }
         ImGui::PopStyleColor(3);
     }

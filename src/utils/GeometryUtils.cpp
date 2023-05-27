@@ -280,14 +280,14 @@ namespace Geometry {
         m_pointList.insert(m_pointList.begin(), center);
     }
 
-    void Polygon::emplaceBack(const Point &point, bool sort=true, bool check=true) {
+    void Polygon::emplaceBack(const Point &point, bool sort, bool check) {
         m_pointList.emplace_back(point);
         if (check) this->checkPolygon(m_pointList);
         if (sort) this->sortPoints();
         m_state = States::PolygonState(this->size());
     }
 
-    void Polygon::emplaceBack(Point &&point, bool sort=true, bool check=true) noexcept {
+    void Polygon::emplaceBack(Point &&point, bool sort, bool check) noexcept {
         m_pointList.emplace_back(point);
         if (check) this->checkPolygon(m_pointList);
         if (sort) this->sortPoints();
