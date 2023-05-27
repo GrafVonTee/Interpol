@@ -134,7 +134,7 @@ namespace Math {
             bool match = false;
 
             for (size_t vertexOfSecond = 0; vertexOfSecond < second.size(); vertexOfSecond++) {
-                if (first[vertexOfSecond] == second[pointNumber]) {
+                if (first[pointNumber] == second[vertexOfSecond]) {
                     match = true;
                     break;
                 }
