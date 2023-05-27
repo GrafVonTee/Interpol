@@ -168,7 +168,7 @@ namespace Math {
         addInsideVertex(listOfInterPoints, first, second);
 
         // Checking the case, when polygons are matching.
-        if ((listOfInterPoints.size() == first.size()) && (first.size() == second.size())) {
+        if (listOfInterPoints.size() == first.size()) {
             if (arePolygonsMatched(first, second, listOfInterPoints))
                 return Intersection{States::IntersectionState::Matched, second};
             else
