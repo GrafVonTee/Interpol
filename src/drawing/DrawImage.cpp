@@ -6,24 +6,11 @@
 #include "imgui_demo.cpp"
 #include "CalculateIntersections.h"
 
-const int BUFFER_SIZE = 32;
-
-
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-    {
-        // Set the window to close when the Escape key is pressed
-        glfwSetWindowShouldClose(window, true);
-    }
-}
 
 namespace DrawOutput {
     void draw_triangles_and_intersection(Geometry::Polygon &tr1,
                                          Geometry::Polygon &tr2,
                                          Geometry::Intersection &intersection) {
-
-
 
         #if defined(IMGUI_IMPL_OPENGL_ES2)
                 const char* glsl_version = "#version 100";
@@ -75,13 +62,10 @@ namespace DrawOutput {
         // Setup Platform/Renderer backends
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init(glsl_version);
-        // ImGui_ImplGlfw_InstallCallbacks(window);
 
         // create a new window
         ImGui::SetNextWindowSize(io.DisplaySize);
         ImGui::SetNextWindowPos(ImVec2(0, 0));
-
-        // glfwSetKeyCallback(window, key_callback);
 
         while (!glfwWindowShouldClose(window)) {
             glfwPollEvents();                   
@@ -123,9 +107,7 @@ namespace DrawOutput {
                 DrawUtils::setActualPointsLabels(tr1, tr2, intersection);                
                 DisplayPolygon(intersection.polygon, "Intersection", true);
             }
-            ImGui::End();            
-
-            // ImGui::ShowDemoWindow();
+            ImGui::End();
 
             // Rendering
             ImGui::Render();
@@ -207,32 +189,33 @@ namespace DrawOutput {
             );
     }
 
-    void DisplayPolygon(Geometry::Polygon &polygon, const std::string& title, bool muted)
-    {
+    void DisplayPolygon(Geometry::Polygon &polygon, const std::string& title, bool muted) {
         std::vector<Geometry::Point> &points1 = polygon.getPointsRef();
-        if (muted)
-            points1 = polygon.getPointsRef();
+        if (muted) points1 = polygon.getPointsRef();
         ImGui::Text(title.c_str());
+
         for (Geometry::Point& point : points1) {   
             DisplayPoint(point, muted);                    
             polygon.sortPoints();
         }
-        if (!muted){
+
+        if (!muted) {
             DisplayAddButton(polygon);            
             ImGui::SameLine();
-            DisplayDeleteButton(polygon);       
-            
+            DisplayDeleteButton(polygon);
         }
     }
 
-    void DisplayAddButton(Geometry::Polygon& polygon){
+    void DisplayAddButton(Geometry::Polygon& polygon) {
         ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(2 / 7.0f, 0.6f, 0.6f));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(2 / 7.0f, 0.7f, 0.7f));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(2 / 7.0f, 0.8f, 0.8f));
+
         std::string label = polygon.getPointsRef().front().getLabel();
         label.pop_back();
         std::string name = "Add point for " + label;
-        if (ImGui::Button(name.c_str())){
+
+        if (ImGui::Button(name.c_str())) {
             Geometry::Point front = polygon.getPointsRef().front();
             Geometry::Point back = polygon.getPointsRef().back();
             Geometry::Point newPoint = Geometry::Point((front.getX() + back.getX())/2 + 100, (front.getY() + back.getY())/2);
@@ -241,26 +224,27 @@ namespace DrawOutput {
         ImGui::PopStyleColor(3);
     }
 
-    void DisplayDeleteButton(Geometry::Polygon& polygon){
+    void DisplayDeleteButton(Geometry::Polygon& polygon) {
         ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(0 / 7.0f, 0.6f, 0.6f));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(0 / 7.0f, 0.7f, 0.7f));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(0 / 7.0f, 0.8f, 0.8f));
+
         std::string label = polygon.getPointsRef().front().getLabel();
         label.pop_back();
         std::string name = "Delete point from " + label;
-        if (ImGui::Button(name.c_str())){
+
+        if (ImGui::Button(name.c_str()))
             polygon.popBack();
-        }
+
         ImGui::PopStyleColor(3);
     }
 
-    void DisplayPoint(Geometry::Point &point, bool muted)
-    {   
+    void DisplayPoint(Geometry::Point &point, bool muted) {
         int readonly = 0;
         if (muted) readonly = ImGuiInputTextFlags_ReadOnly;
 
-        char x_buffer[BUFFER_SIZE];        
-        char y_buffer[BUFFER_SIZE];
+        char x_buffer[DrawConst::BUFFER_SIZE];
+        char y_buffer[DrawConst::BUFFER_SIZE];
 
         std::stringstream stream1;
         std::stringstream stream2;
@@ -280,22 +264,16 @@ namespace DrawOutput {
 
         bool modified = false;
 
-        modified = ImGui::InputText(name.c_str(), x_buffer, BUFFER_SIZE, 
+        modified = ImGui::InputText(name.c_str(), x_buffer, DrawConst::BUFFER_SIZE,
                             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue | readonly);
 
-        if (!muted && modified){
-            point.setX(atof(x_buffer));
-        }
+        if (!muted && modified) point.setX(atof(x_buffer));
 
         ImGui::SameLine();
         name = point.getLabel() + ".y";
-        modified = ImGui::InputText(name.c_str(), y_buffer, BUFFER_SIZE, 
-                            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue | readonly);                            
-        // bool notEdited = ImGui::InputFloat2((prefix + point.getLabel()).c_str(), pointXY, "%.1f");
-        if (!muted && modified){
-            point.setY(atof(y_buffer));
-        }
+        modified = ImGui::InputText(name.c_str(), y_buffer, DrawConst::BUFFER_SIZE,
+                            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue | readonly);
 
-        ImGui::PopItemWidth;
+        if (!muted && modified) point.setY(atof(y_buffer));
     }
 }

@@ -14,6 +14,8 @@ namespace DrawConst {
     
     extern const float SQUARE_SIDE_SIZE;
     extern const float INDENT_SIZE;
+
+    extern constinit int BUFFER_SIZE;
 }
 
 #endif //TRIANGLE_INTERSECTIONS_CONSTANTSFORDRAWING_H

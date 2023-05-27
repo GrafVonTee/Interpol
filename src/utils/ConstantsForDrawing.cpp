@@ -13,4 +13,6 @@ namespace DrawConst {
 
     const float SQUARE_SIDE_SIZE = 800;
     const float INDENT_SIZE = 0;
+
+    constinit int BUFFER_SIZE = 32;
 }
