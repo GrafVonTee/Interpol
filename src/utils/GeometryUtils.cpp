@@ -124,7 +124,6 @@ namespace Geometry {
     Polygon::Polygon(Polygon &&other) noexcept {
         m_state = other.m_state;
         m_pointList = std::move(other.m_pointList);
-
         other.m_state = States::PolygonState::NotPolygon;
         other.m_pointList.clear();
     }
@@ -221,7 +220,10 @@ namespace Geometry {
                 if (points[i] == points[j])
                 {
                     std::string errorType = "Points: ";
-                    errorType = errorType + points[i].getLabel() + " and " + points[j].getLabel() + " are equal!";
+                    errorType.append(points[i].getLabel())
+                             .append(" and ")
+                             .append(points[j].getLabel())
+                             .append(" are equal!");
                     throw std::logic_error(errorType);
                 }
 
@@ -247,7 +249,7 @@ namespace Geometry {
     }
 
     // We decide that the minimal point is the point, that located below than another (has minimal Y coord).
-    // If we had a point with the same Y coord, we take the point that located lefter than another (has minimal X coord).
+    // If we had a point with the same Y coord, we take the point that located left than another (has minimal X coord).
 
     bool isMinPoint(const Point& first, const Point& second) {
         if (first.getY() < second.getY())
@@ -257,9 +259,8 @@ namespace Geometry {
         return false;
     }
 
-
     // We sort point so, that we can build a convex polygon when we iterate by points in sorted order.
-    // (We believe that it is possible to create a convex polygon with these points as vertex of this polygon)
+    // (We believe that it is possible to create a convex polygon with these points as vertex of this polygon.)
     void Polygon::sortPoints() {
 
         // At the beginning, we choose the starting point as a minimal point.
@@ -277,17 +278,17 @@ namespace Geometry {
         m_pointList.insert(m_pointList.begin(), center);
     }
 
-    void Polygon::emplaceBack(const Point &point) {
+    void Polygon::emplaceBack(const Point &point, bool sort=true, bool check=true) {
         m_pointList.emplace_back(point);
-        this->checkPolygon(m_pointList);
-        this->sortPoints();
+        if (check) this->checkPolygon(m_pointList);
+        if (sort) this->sortPoints();
         m_state = States::PolygonState(this->size());
     }
 
-    void Polygon::emplaceBack(Point &&point) noexcept {
+    void Polygon::emplaceBack(Point &&point, bool sort=true, bool check=true) noexcept {
         m_pointList.emplace_back(point);
-        this->checkPolygon(m_pointList);
-        this->sortPoints();
+        if (check) this->checkPolygon(m_pointList);
+        if (sort) this->sortPoints();
         m_state = States::PolygonState(this->size());
     }
 
