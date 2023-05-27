@@ -106,8 +106,8 @@ namespace Geometry {
         // Methods
         [[nodiscard]] size_t size() const;
         void sortPoints();
-        void emplaceBack(const Point& point);
-        void emplaceBack(Point&& point) noexcept;
+        void emplaceBack(const Point& point, bool sort, bool check);
+        void emplaceBack(Point&& point, bool sort, bool check) noexcept;
         void popBack();
 
         // Operators
