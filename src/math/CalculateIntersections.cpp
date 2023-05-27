@@ -80,7 +80,7 @@ namespace Math {
         return false;
     }
 
-    // We take first triangle (internal) and add into vector all vertexes, that located into second triangle (external)
+    // We take first polygon (internal) and add into vector all vertexes, that located into second polygon (external)
 
     void addInsideVertex(std::vector<Point> &list, const Polygon &internal, const Polygon &external) {
         for (size_t vertex = 0; vertex < internal.size(); vertex++)
@@ -90,17 +90,17 @@ namespace Math {
 
 
     LineIntersection findLinesInter(Point &firstStart, Point &firstEnd,
-                        Point &secondStart, Point &secondEnd) {
+                                    Point &secondStart, Point &secondEnd) {
 
         // We define a lot of variables, that are used a linear algebra's part of code (we solve the system linear equations).
 
         const coord_t
-            tFirstX {firstEnd.getX() - firstStart.getX()},
-            tFirstY {firstEnd.getY() - firstStart.getY()},
-            tSecondX {-(secondEnd.getX() - secondStart.getX())},
-            tSecondY {-(secondEnd.getY() - secondStart.getY())},
-            b1 {secondStart.getX() - firstStart.getX()},
-            b2 {secondStart.getY() - firstStart.getY()};
+                tFirstX {firstEnd.getX() - firstStart.getX()},
+                tFirstY {firstEnd.getY() - firstStart.getY()},
+                tSecondX {-(secondEnd.getX() - secondStart.getX())},
+                tSecondY {-(secondEnd.getY() - secondStart.getY())},
+                b1 {secondStart.getX() - firstStart.getX()},
+                b2 {secondStart.getY() - firstStart.getY()};
 
         const coord_t determinant = det(tFirstX, tSecondX, tFirstY, tSecondY);
 
@@ -127,16 +127,38 @@ namespace Math {
         }
     }
 
-    Intersection findTriangleInter(Polygon &first, Polygon &second) {
+    bool arePolygonsMatched(const Polygon &first, const Polygon &second,
+                              const std::vector<Point> &listOfInterPoints)
+    {
+        for (size_t pointNumber = 0; pointNumber < first.size(); pointNumber++) {
+            bool match = false;
+
+            for (size_t vertexOfSecond = 0; vertexOfSecond < second.size(); vertexOfSecond++) {
+                if (first[pointNumber] == second[vertexOfSecond]) {
+                    match = true;
+                    break;
+                }
+            }
+
+            // In this case, we have that all vertexes of the one polygon located into another polygon and polygons are not matching.
+            // So one polygon is nested into another.
+
+            if (!match)
+                return false;
+        }
+        return true;
+    }
+
+    Intersection findPolygonsInter(Polygon &first, Polygon &second) {
 
         // In this function we find all points, which are the vertexes of intersection polygon, and add their into <listOfInterPoints> vector.
         // We add the point only if this point is new in vector (we must avoid the duplication of intersection polygon vertexes).
 
         // The set of such points consists of two types of points:
         // 1. Points, that are the points of edge intersections.
-        // 2. Points, that are vertexes in one of the triangles and contain in another triangle.
+        // 2. Points, that are vertexes in one of the polygons and contain in another polygon.
 
-        // At the beginning, we find the second type of points and return, if one triangle is nested into another or triangles are matching.
+        // At the beginning, we find the second type of points and return, if one polygon is nested into another or polygons are matching.
 
         // Then we find all point of edges intersections, and if <listOfInterPoints> vector is empty, return that there isn't any intersection.
         // If this vector isn't empty, we return that the intersection is a polygon (it is the most general case of intersection).
@@ -145,48 +167,29 @@ namespace Math {
 
         addInsideVertex(listOfInterPoints, first, second);
 
-        // Checking the case, when triangles are matching.
-
-        if (listOfInterPoints.size() == 3) {
-
-            // The boolean, that describes triangles are matching or not.
-
-            bool match;
-
-            for (size_t pointNumber = 0; pointNumber < 3; pointNumber++) {
-                match = false;
-
-                for (size_t vertexOfSecond = 0; vertexOfSecond < 3; vertexOfSecond++) {
-                    if (first[vertexOfSecond] == second[pointNumber]) {
-                        match = true;
-                        break;
-                    }
-                }
-
-                // In this case, we have that all vertexes of the one triangle located into another triangle and triangles are not matching.
-                // So one triangle is nested into another.
-
-                if (!match)
-                    return Intersection{States::IntersectionState::Nested, Polygon(listOfInterPoints)};
-            }
-            return Intersection{States::IntersectionState::Matched, second};
+        // Checking the case, when polygons are matching.
+        if (listOfInterPoints.size() == first.size()) {
+            if (arePolygonsMatched(first, second, listOfInterPoints))
+                return Intersection{States::IntersectionState::Matched, second};
+            else
+                return Intersection{States::IntersectionState::Nested, Polygon(listOfInterPoints)};
         }
 
         bool nestedFlag = listOfInterPoints.empty();
 
         addInsideVertex(listOfInterPoints, second, first);
 
-        if (nestedFlag && listOfInterPoints.size() == 3)
+        if (nestedFlag && listOfInterPoints.size() == second.size())
             return Intersection{States::IntersectionState::Nested, Polygon(listOfInterPoints)};
 
         // Find all point of edges intersections
         LineIntersection inter;
 
-        for (size_t firstEdge = 0; firstEdge <= 2; firstEdge++) {
-            for (size_t secondEdge = 0; secondEdge <= 2; secondEdge++) {
+        for (size_t firstEdge = 0; firstEdge < first.size(); firstEdge++) {
+            for (size_t secondEdge = 0; secondEdge < second.size(); secondEdge++) {
 
-                inter = findLinesInter(first[firstEdge], first[(firstEdge + 1) % 3],
-                                          second[secondEdge],second[(secondEdge + 1) % 3]);
+                inter = findLinesInter(first[firstEdge], first[(firstEdge + 1) % first.size()],
+                                       second[secondEdge],second[(secondEdge + 1) % second.size()]);
 
                 if (inter.isImportantCase) {
                     pushBackUnique(listOfInterPoints, inter.point);

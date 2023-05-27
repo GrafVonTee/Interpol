@@ -118,7 +118,9 @@ namespace Geometry {
         if (!points.empty())
             sortPoints();
 
-        m_state = States::PolygonState(points.size());
+        m_state = States::PolygonState(
+                (points.size() < (size_t)States::PolygonState::AllStates)
+                ? points.size() : (size_t)States::PolygonState::OtherPolygon);
     }
 
     Polygon::Polygon(Polygon &&other) noexcept {

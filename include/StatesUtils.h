@@ -17,7 +17,8 @@ namespace States {
         Quadrilateral = 4,
         Pentagon = 5,
         Hexagon = 6,
-        OtherPolygon
+        OtherPolygon,
+        AllStates,
     };
 
     enum class IntersectionState {
