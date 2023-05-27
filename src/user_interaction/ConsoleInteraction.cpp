@@ -10,14 +10,14 @@ using std::cout, std::cin, std::endl, std::cerr;
 namespace Interaction {
     void greeting(const std::string &userName) {
         cout << "Greetings, " << (userName.empty() ? "Traveller" : userName) << "!" << endl;
-        cout << "This program will immerse you in the wonderful world of\n\tTriangle Intersections!" << endl;
-        cout << "All you need is entering the values of your two triangles..." << endl;
-        cout << "...and take resulted polygon!" << endl;
+        cout << "This program will immerse you in the wonderful world of\n\tPolygon Intersections!" << endl;
+        cout << "All you need is entering the values of your two polygons..." << endl;
+        cout << "...and take resulted intersection!" << endl;
         cout << endl;
     }
 
     void welcomeToGui() {
-        cout << "Well, let's take a look on your triangles and intersection between them!" << endl;
+        cout << "Well, let's take a look on your figures and intersection between them!" << endl;
         cout << "Another window has opened now, just click on the blue angle, hold and pull it to down-right side" << endl;
         cout << "You will see what you wrote" << endl;
         cout << endl;
@@ -79,7 +79,7 @@ namespace Interaction {
         int numPoints;
 
         while (true) {
-            outputStream << "Enter the number of points for the polygon " << letter << ":\n";
+            outputStream << "Enter the number of points for the polygon " << letter << ": ";
             inputStream >> numPoints;
 
             if (!inputStream) {
@@ -221,13 +221,13 @@ namespace Interaction {
         using IState = States::IntersectionState;
         switch (intersection.state) {
             case IState::NoIntersection:
-                cout << "There is no intersection between your triangles!" << endl;
+                cout << "There is no intersection between your figures!" << endl;
                 break;
             case IState::Matched:
-                cout << "Your triangles match!" << endl;
+                cout << "Your figures match!" << endl;
                 break;
             case IState::Nested:
-                cout << "One of your triangles is nested inside another!" << endl;
+                cout << "One of your figure is nested inside another!" << endl;
                 break;
             case IState::Polygon:
                 cout << "Your intersection is a polygon!" << endl;
@@ -262,6 +262,7 @@ namespace Interaction {
                 "quadrilateral",
                 "pentagon",
                 "hexagon",
+                "polygon",
         };
         return polygonTypes[(unsigned int)state];
     }
