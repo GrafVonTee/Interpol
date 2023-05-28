@@ -281,20 +281,52 @@ namespace Geometry {
     }
 
     void Polygon::emplaceBack(const Point &point, bool sort, bool check) {
-        m_pointList.emplace_back(point);
-        if (check) this->checkPolygon(m_pointList);
+        if (check) {
+            try {
+                std::vector<Point> vectorChecker = m_pointList;
+                vectorChecker.emplace_back(point);
+                this->checkPolygon(vectorChecker);
+                m_pointList = vectorChecker;
+                vectorChecker.clear();
+            }
+            catch (const std::exception& e) {
+                throw;
+            }
+        }
+        else {
+            m_pointList.emplace_back(point);
+            this->checkPolygon(m_pointList);
+        }
+
         if (sort) this->sortPoints();
         m_state = States::PolygonState(this->size());
     }
 
-    void Polygon::emplaceBack(Point &&point, bool sort, bool check) noexcept {
-        m_pointList.emplace_back(point);
-        if (check) this->checkPolygon(m_pointList);
+    void Polygon::emplaceBack(Point &&point, bool sort, bool check) {
+        if (check) {
+            try {
+                std::vector<Point> vectorChecker = m_pointList;
+                vectorChecker.emplace_back(point);
+                this->checkPolygon(vectorChecker);
+                m_pointList = vectorChecker;
+                vectorChecker.clear();
+            }
+            catch (const std::exception& e) {
+                throw;
+            }
+        }
+        else {
+            m_pointList.emplace_back(point);
+            this->checkPolygon(m_pointList);
+        }
+
         if (sort) this->sortPoints();
         m_state = States::PolygonState(this->size());
     }
 
     void Polygon::popBack() {
+        if (size() == 0)
+            throw std::underflow_error("Polygon is empty!");
         m_pointList.pop_back();
         m_state = States::PolygonState(this->size() - 1);
     }

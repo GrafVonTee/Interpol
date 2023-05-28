@@ -264,23 +264,62 @@ TEST(PolygonTest, PolygonIndex) {
             EXPECT_STREQ("Invalid index!", e.what());
             throw;
         }
-        }, std::runtime_error);
+    }, std::runtime_error);
 }
 
 TEST(PolygonTest, EmplaceBack) {
-    Polygon polygon {{Point(0, 0), Point(0, 2)}};
-    Point point {-2, -5};
+    Polygon polygon {{Point(0, 0, "A"), Point(0, 2, "B")}};
+    Point point {-2, -5, "C"};
+
     // Move emplace
-    polygon.emplaceBack(Point(2, 0), false, false);
-    EXPECT_EQ(polygon[2], Point(2, 0));
+    polygon.emplaceBack(Point(2, 0, "D"), false, false);
+    EXPECT_EQ(polygon[2], Point(2, 0, "D"));
+
     // Ref emplace
     polygon.emplaceBack(point, false, false);
     EXPECT_EQ(polygon[3], point);
+
+    // Logic error Emplace move
+    EXPECT_THROW({
+        try {
+            polygon.emplaceBack(Point(2, 0, "F"), false, true);
+        }
+        catch(const std::exception& e) {
+            EXPECT_STREQ("Points: D and F are equal!", e.what());
+            throw;
+        }
+    }, std::logic_error);
+
+    // Logic error Emplace ref
+    Point point1 {-2, -5, "F"};
+    EXPECT_THROW({
+         try {
+             polygon.emplaceBack(point1, false, true);
+         }
+         catch(const std::exception& e) {
+             EXPECT_STREQ("Points: C and F are equal!", e.what());
+             throw;
+         }
+    }, std::logic_error);
 }
 
 TEST(PolygonTest, popBack) {
     Polygon polygon {{Point(0, 0), Point(0, 2)}};
     polygon.popBack();
+
     Polygon newPolygon{{Point(0, 0)}};
     EXPECT_EQ(polygon, newPolygon);
+
+    newPolygon.popBack();
+
+    // size == 0 popBack
+    EXPECT_THROW({
+         try {
+             newPolygon.popBack();
+         }
+         catch(const std::exception& e) {
+             EXPECT_STREQ("Polygon is empty!", e.what());
+             throw;
+         }
+   }, std::underflow_error);
 }
