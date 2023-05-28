@@ -30,8 +30,8 @@ namespace DrawUtils {
     Geometry::Polygon scaleAndTranslate(const Geometry::Polygon &polygon,
                                         const scalingParameters& parameters);
 
-    void setActualPointsLabels(Geometry::Polygon &triangle1,
-                               Geometry::Polygon &triangle2,
+    void setActualPointsLabels(Geometry::Polygon &polygon1,
+                               Geometry::Polygon &polygon2,
                                Geometry::Intersection &intersection);
 }
 #endif //TRIANGLE_INTERSECTIONS_GETIMVECFROMPOLYGON_H

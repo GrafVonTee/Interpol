@@ -50,31 +50,48 @@ namespace DrawUtils {
         return newPolygon;
     }
 
-    void setAllDuplicatesSameLetter(std::vector<Geometry::Point*> &points) {
-        for (size_t i = 0; i < points.size(); ++i)
-            for (size_t j = i + 1; j < points.size(); ++j)
-                if (std::pow(points[i]->getX() - points[j]->getX(), 2) +
-                    std::pow(points[i]->getY() - points[j]->getY(), 2)
-                    <= std::numeric_limits<coord_t>::epsilon())
+    void setDuplicatesFromIntersectionSameLetter(const Geometry::Polygon &polygon1,
+                                                 const Geometry::Polygon &polygon2,
+                                                       Geometry::Polygon &intersectionPolygon)
+    {
+        std::vector<Geometry::Point> polygonPoints1 = polygon1.getPointsCopy();
+        std::vector<Geometry::Point> polygonPoints2 = polygon2.getPointsCopy();
+        std::vector<Geometry::Point> intersectionPointsVector = intersectionPolygon.getPointsRef();
 
-                    points[j]->setLabel(points[i]->getLabel());
+        std::vector<Geometry::Point> allPoints;
+        allPoints.insert(allPoints.end(), polygonPoints1.begin(), polygonPoints1.end());
+        allPoints.insert(allPoints.end(), polygonPoints2.begin(), polygonPoints2.end());
+        allPoints.insert(allPoints.end(), intersectionPointsVector.begin(), intersectionPointsVector.end());
+
+        for (Geometry::Point &intersectionPoint: intersectionPointsVector)
+            for (const Geometry::Point &comparisonPoint: allPoints)
+                if (std::pow(intersectionPoint.getX() - comparisonPoint.getX(), 2) +
+                    std::pow(intersectionPoint.getY() - comparisonPoint.getY(), 2)
+                    <= std::numeric_limits<coord_t>::epsilon())
+                {
+                    intersectionPoint.setLabel(comparisonPoint.getLabel());
+                    break;
+                }
     }
 
-    void setActualPointsLabels(Geometry::Polygon &triangle1,
-                               Geometry::Polygon &triangle2,
+    void setActualLabels(Geometry::Polygon &polygon, char polygonLetter = 0) {
+        if (polygonLetter == 0)
+            polygonLetter = polygon.getPointsRef()[0].getLabel()[0];
+
+        size_t currentLabelNumber = 1;
+        for (size_t i = 0; i < polygon.size(); i++) {
+            if (polygon[i].getLabel().empty())
+                polygon[i].setLabel(std::string(1, polygonLetter) + std::to_string(currentLabelNumber++));
+        }
+    }
+
+    void setActualPointsLabels(Geometry::Polygon &polygon1,
+                               Geometry::Polygon &polygon2,
                                Geometry::Intersection &intersection)
     {
-        std::vector<Geometry::Point*> allPoints;
-        size_t letterIndex = 1;
-        for (Geometry::Polygon* figurePtr: {&triangle1, &triangle2, &intersection.polygon}) {
-            for (Geometry::Point &point: figurePtr->getPointsRef()) {
-                if (point.getLabel().empty()) {
-                    point.setLabel("C" + std::to_string(letterIndex));
-                    letterIndex++;
-                }
-                allPoints.push_back(&point);
-            }
-        }
-        setAllDuplicatesSameLetter(allPoints);
+        setActualLabels(polygon1);
+        setActualLabels(polygon2);
+        setActualLabels(intersection.polygon, 'C');
+        setDuplicatesFromIntersectionSameLetter(polygon1, polygon2, intersection.polygon);
     }
 }
