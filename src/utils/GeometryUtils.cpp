@@ -290,7 +290,7 @@ namespace Geometry {
                 vectorChecker.clear();
             }
             catch (const std::exception& e) {
-                throw;
+                throw;  // std::logic_error("Points: NAME_1 and NAME_2 are equal!")
             }
         }
         else {
@@ -312,7 +312,7 @@ namespace Geometry {
                 vectorChecker.clear();
             }
             catch (const std::exception& e) {
-                throw;
+                throw; // std::logic_error("Points: NAME_1 and NAME_2 are equal!")
             }
         }
         else {
