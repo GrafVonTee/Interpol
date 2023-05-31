@@ -2,6 +2,7 @@
 #include "GeometryUtils.h"
 
 using namespace Geometry;
+using namespace States;
 
 TEST(PolygonTest, DefaultConstructor) {
     Polygon polygon{};
@@ -15,20 +16,23 @@ TEST(PolygonTest, ParameterizedConstructor) {
     Polygon polygon{vec};
     EXPECT_EQ(polygon.getPointsCopy(), vec);
     EXPECT_EQ(polygon.getState(), States::PolygonState::Edge);
+}
 
-    vec = {Point(1, 2, "A"),
+TEST(PolygonTest, ParameterizedConstructorError) {
+
+    std::vector<Point> vec = {Point(1, 2, "A"),
            Point(1, 2, "B"),
            Point(1, 2, "C")};
 
     EXPECT_THROW({
          try {
-             polygon = Polygon(vec);
+             Polygon polygon = Polygon(vec);
          }
          catch (const std::exception &e) {
              EXPECT_STREQ("Points: A and B are equal!", e.what());
              throw;
          }
-    }, std::logic_error);
+   }, std::logic_error);
 }
 
 TEST(PolygonTest, CopyConstructor) {
@@ -55,17 +59,39 @@ TEST(PolygonTest, GetVector) {
     EXPECT_EQ(polygon.getPointsRef(), vec);
 }
 
-TEST(PolygonTest, GetState) {
-    Polygon polygon1{{Point(0, 0), Point(0, 2), Point(3, 4)}};
-    EXPECT_EQ(polygon1.getState(), States::PolygonState::Triangle);
+namespace PolygonGetStateTests {
+    using test_cases_t = std::pair<std::vector<Point>, PolygonState>;
+    class PolygonGetStateTestInterface : public ::testing::TestWithParam<test_cases_t> {
+    protected:
+        Polygon p;
+    };
 
-    Polygon polygon2{};
-    EXPECT_EQ(polygon2.getState(), States::PolygonState::NotPolygon);
+    TEST_P(PolygonGetStateTestInterface, GetState) {
+        auto expected = std::get<1>(GetParam());
+        auto input = std::get<0>(GetParam());
 
-    Polygon polygon3{{Point(0, 0), Point(0, 2), Point(3, 4),
-                      Point(-42, -2.2), Point(-4, 53), Point(343, 1),
-                      Point(231.3, 432)}};
-    EXPECT_EQ(polygon3.getState(), States::PolygonState::OtherPolygon);
+        p = Polygon(input);
+        SCOPED_TRACE("Test");
+        EXPECT_EQ(p.getState(), expected)
+        << "Test: "
+        << p << ".getState()"
+        << "\nExpected: " << (int)expected
+        << std::endl;
+    }
+
+    INSTANTIATE_TEST_SUITE_P(
+            TestCases,
+            PolygonGetStateTestInterface,
+            ::testing::Values(
+                    std::pair(std::vector<Point>{Point(0, 0), Point(0, 2), Point(3, 4)},
+                              PolygonState::Triangle),
+
+                    std::pair(std::vector<Point>{}, PolygonState::NotPolygon),
+
+                    std::pair(std::vector<Point>{{Point(0, 0), Point(0, 2), Point(3, 4),
+                         Point(-42, -2.2), Point(-4, 53), Point(343, 1), Point(231.3, 432)}},
+                              PolygonState::OtherPolygon)
+            ));
 }
 
 TEST(PolygonTest, EqualityOperator) {
@@ -88,7 +114,7 @@ TEST(PolygonTest, InequalityOperator) {
     EXPECT_EQ(check_eq, true);
 }
 
-TEST(Polygon, AssignmentOperator) {
+TEST(PolygonTest, AssignmentOperator) {
     Polygon polygon{};
     auto new_polygon = polygon;
     EXPECT_EQ(new_polygon, polygon);
@@ -115,8 +141,12 @@ TEST(PolygonTest, PolygonSize) {
 TEST(PolygonTest, PolygonIndex) {
     Polygon polygon{{Point(0, 0), Point(0, 2), Point(3, 4)}};
     EXPECT_EQ(polygon[2], Point(3, 4));
+    EXPECT_EQ(polygon[0], Point());
+}
 
-// Index out of a range
+TEST(PolygonTest, PolygonIndexError) {
+    Polygon polygon{{Point(0, 0), Point(0, 2), Point(3, 4)}};
+
     EXPECT_THROW({
          try {
              Point point = polygon[4];
@@ -126,6 +156,16 @@ TEST(PolygonTest, PolygonIndex) {
              throw;
          }
    }, std::runtime_error);
+
+    EXPECT_THROW({
+         try {
+             Point point = polygon[-1];
+         }
+         catch (const std::exception &e) {
+             EXPECT_STREQ("Invalid index!", e.what());
+             throw;
+         }
+    }, std::runtime_error);
 }
 
 TEST(PolygonTest, EmplaceBack) {
@@ -139,26 +179,30 @@ TEST(PolygonTest, EmplaceBack) {
 // Ref emplace
     polygon.emplaceBack(point, false, false);
     EXPECT_EQ(polygon[3], point);
+}
 
-// Logic error Emplace move
+TEST(PolygonTest, emplaceBackError) {
+    Polygon polygon{{Point(0, 0, "A"), Point(0, 2, "B")}};
+
+    // Move emplace
     EXPECT_THROW({
          try {
-             polygon.emplaceBack(Point(2, 0, "F"), false, true);
+             polygon.emplaceBack(Point(0, 2, "F"), false, true);
          }
          catch (const std::exception &e) {
-             EXPECT_STREQ("Points: D and F are equal!", e.what());
+             EXPECT_STREQ("Points: B and F are equal!", e.what());
              throw;
          }
    }, std::logic_error);
 
-// Logic error Emplace ref
-    Point point1{-2, -5, "F"};
+    // Logic error Emplace ref
+    Point point1{0, 0, "E"};
     EXPECT_THROW({
          try {
              polygon.emplaceBack(point1, false, true);
          }
          catch (const std::exception &e) {
-             EXPECT_STREQ("Points: C and F are equal!", e.what());
+             EXPECT_STREQ("Points: A and E are equal!", e.what());
              throw;
          }
    }, std::logic_error);
@@ -171,9 +215,12 @@ TEST(PolygonTest, popBack) {
     Polygon newPolygon{{Point(0, 0)}};
     EXPECT_EQ(polygon, newPolygon);
 
-    newPolygon.popBack();
+    polygon.popBack();
+    EXPECT_EQ(polygon, Polygon{});
+}
 
-// size == 0 popBack
+TEST(PolygonTest, popBackError) {
+    Polygon newPolygon {};
     EXPECT_THROW({
          try {
              newPolygon.popBack();

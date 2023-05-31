@@ -86,10 +86,10 @@ namespace SetXTests {
         SCOPED_TRACE("Test");
         p.setX(input);
         EXPECT_EQ(expected, p.getX())
-                            << "Test: "
-                            << p << ".setX(" << input << ")" << ".getX()"
-                            << "\nExpected: " << expected
-                            << std::endl;
+        << "Test: "
+        << p << ".setX(" << input << ")" << ".getX()"
+        << "\nExpected: " << expected
+        << std::endl;
     }
     INSTANTIATE_TEST_SUITE_P(
             TestCases,
@@ -99,7 +99,6 @@ namespace SetXTests {
                     std::make_pair(2.5, 2.5),
                     std::make_pair(10000000, 10000000)
             ));
-
 }
 
 namespace SetYTests {

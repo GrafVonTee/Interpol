@@ -3,29 +3,77 @@
 #include "Parsing.h"
 
 using namespace Geometry;
+using namespace States;
 
-TEST(ParserTest, ValidInput) {
-    std::string input("(1.0, 2.0)");
-    std::string result(" 1.0 2.0 ");
+namespace ParsesInputTests {
+    using test_cases_t = std::pair<std::string, InputState>;
+    class ParserInputTypeTestInterface : public ::testing::TestWithParam<test_cases_t> {};
 
-    // Parse the input
-    std::string parsed = get<0>(Parsing::parsePoint(input));
+    TEST_P(ParserInputTypeTestInterface, InputTypeTest) {
+        auto expected = std::get<1>(GetParam());
+        auto input = std::get<0>(GetParam());
+        SCOPED_TRACE("Test");
 
-    // Check if the parsed points match the expected points
-    ASSERT_EQ(parsed, result);
-}
+        auto s = input;
+        auto res = Parsing::parsePoint(input);
 
-// Test the parser with invalid input (missing comma)
-TEST(ParserTest, InvalidInputMissingComma) {
-    std::string input("(1.0 2.0)");
+        ASSERT_EQ(get<1>(res), expected)
+        << "Test: "
+        << "get<1>Parsing::parsePoint(" << s << ")\n"
+        << "Expected: " << (int)expected << "\n"
+        << "Output: " << get<0>(res)
+        << std::endl;
+    }
 
-    // Parse the input
-    ASSERT_EQ(get<1>(Parsing::parsePoint(input)), States::InputState::IncorrectInput);
-}
+    INSTANTIATE_TEST_SUITE_P(
+            TestCases,
+            ParserInputTypeTestInterface,
+            ::testing::Values(
+                    std::pair("(1.0, 2.0)", InputState::Correct),
+                    std::pair("(1,0, 2,0)", InputState::IncorrectInput),
+                    std::pair("(1.0 2.0)", InputState::IncorrectInput),
+                    std::pair("1.0, 2.0)", InputState::IncorrectInput),
+                    std::pair("[1.0, 2.0]", InputState::IncorrectInput),
+                    std::pair("(1.0. 2.0)", InputState::IncorrectInput),
+                    std::pair("(1.0, 2.0", InputState::IncorrectInput),
+                    std::pair("1.0, 2.0", InputState::IncorrectInput),
 
-// Test the parser with invalid input (missing parenthesis)
-TEST(ParserTest, InvalidInputMissingParenthesis) {
-    std::string input("1.0, 2.0)");
+                    std::pair("", InputState::EmptyString),
+                    std::pair("     ", InputState::EmptyString),
+                    std::pair("                                                                                 ",
+                              InputState::EmptyString),
 
-    ASSERT_EQ(get<1>(Parsing::parsePoint(input)), States::InputState::IncorrectInput);
+                    std::pair("()", InputState::IncorrectInput),
+                    std::pair("(            312.324,               3231 )", InputState::Correct),
+                    std::pair("(3123,         123.242141241)", InputState::Correct),
+                    std::pair("(       -0.00213,        -100.081)", InputState::Correct),
+                    std::pair("(-0.00213,       100)", InputState::Correct),
+                    std::pair("(-0.00213    ,    100)", InputState::Correct),
+                    std::pair("(0.00000, 0)", InputState::Correct),
+
+                     // std::pair("( , )", InputState::IncorrectInput),
+                     // std::pair("(323, )", InputState::IncorrectInput),
+                     // std::pair("( , -0.424)", InputState::IncorrectInput),
+                     // std::pair("(-, -10)", InputState::IncorrectInput),
+                     // std::pair("(- , )", InputState::IncorrectInput),
+
+                    std::pair("( , +)", InputState::IncorrectInput),
+                    std::pair("(+, -)", InputState::IncorrectInput),
+                    std::pair("((2, 3), (2, 1))", InputState::IncorrectInput),
+                    std::pair("(10a, 10b)", InputState::IncorrectInput),
+                    std::pair("(--10, --200.32)", InputState::IncorrectInput),
+                    std::pair("(+-10, -10)", InputState::IncorrectInput),
+                    std::pair("(+10, +313.43)", InputState::Correct),
+                    std::pair("(*10, +313.43)", InputState::IncorrectInput),
+                    std::pair("(яПанк, 10)", InputState::IncorrectInput),
+                    std::pair("(-10, -)", InputState::IncorrectInput),
+                    std::pair("(-, -)", InputState::IncorrectInput),
+                    std::pair("(*, *)", InputState::IncorrectInput),
+                    std::pair("(dsfsfds321f, fdfdfsd32ds)", InputState::IncorrectInput),
+                    std::pair("(0.45, 1)", InputState::Correct),
+                    std::pair("(-0.00213, 100)", InputState::Correct),
+                    std::pair("(100000000000000000100000000000000000.04342,"
+                              "100000000000000000100000000000000000.04324)", InputState::Correct),
+                    std::pair("(100000000000000000, 10000000000000000)", InputState::Correct)
+            ));
 }
