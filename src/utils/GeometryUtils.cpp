@@ -93,7 +93,7 @@ namespace Geometry {
     }
 
     std::ostream& operator<<(std::ostream &out, const Point &point) {
-        out << "(" << point.m_x << ", " << point.m_y << ")";
+        out << "(" << point.m_x << ", " << point.m_y << ", " << point.m_label << ")";
         return out;
     }
 
@@ -111,12 +111,9 @@ namespace Geometry {
     // Polygon Implementation
     Polygon::Polygon(const std::vector<Point> &points) {
 
-        if (points.size() > 1 && !(points.size() == 2 && points[0] != points[1]))
-            checkPolygon(points);
-
+        checkPolygon(points);
         m_pointList = points;
-        if (!points.empty())
-            sortPoints();
+        sortPoints();
 
         m_state = States::PolygonState(
                 (points.size() < (size_t)States::PolygonState::AllStates)
@@ -217,6 +214,9 @@ namespace Geometry {
     }
 
     void Polygon::checkPolygon(const std::vector<Point>& points) {
+        if (!(points.size() > 1 && !(points.size() == 2 && points[0] != points[1])))
+            return;
+
         for (size_t i = 0; i < points.size(); ++i)
             for (size_t j = i + 1; j < points.size(); ++j)
                 if (points[i] == points[j])
@@ -264,6 +264,9 @@ namespace Geometry {
     // We sort point so, that we can build a convex polygon when we iterate by points in sorted order.
     // (We believe that it is possible to create a convex polygon with these points as vertex of this polygon.)
     void Polygon::sortPoints() {
+
+        if (m_pointList.empty())
+            return;
 
         // At the beginning, we choose the starting point as a minimal point.
 

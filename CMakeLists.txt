@@ -115,11 +115,12 @@ file(GLOB_RECURSE SOURCES_CONSOLE src/user_interaction/*.cpp)
 file(GLOB_RECURSE SOURCES_GUI src/drawing/*.cpp)
 file(GLOB_RECURSE SOURCES_UTILS src/utils/*.cpp)
 
+file(GLOB_RECURSE TESTS tests/*.cpp)
+
 # unit_test configuration
 add_executable(
         unit_tests
-        tests/unit_tests.cpp
-
+        ${TESTS}
         ${SOURCES_MATH}
         ${SOURCES_CONSOLE}
         ${SOURCES_GUI}
