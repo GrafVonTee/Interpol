@@ -20,8 +20,8 @@ namespace ParsesInputTests {
         ASSERT_EQ(get<1>(res), expected)
         << "Test: "
         << "get<1>Parsing::parsePoint(" << s << ")\n"
-        << "Expected: " << (int)expected << "\n"
-        << "Output: " << get<0>(res)
+        << "Expected State: " << (int)expected << "\n"
+        << "Output string: " << get<0>(res)
         << std::endl;
     }
 
