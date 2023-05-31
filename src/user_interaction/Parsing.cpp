@@ -24,9 +24,29 @@ namespace Parsing {
         return (input.empty()) ? States::InputState::EmptyString : States::InputState::Correct;
     }
 
-    bool isNumber(const std::string &s) {
-        coord_t newVariable;
-        return (std::istringstream(s) >> newVariable >> std::ws).eof();
+    bool isNumber(const std::string &string) {
+        std::string inp = string;
+        std::erase_if(inp, [](char x) { return (x == ' ') or (x == '\t') or (x == '\n'); });
+
+        std::string::const_iterator it = inp.begin();
+        bool decimalPoint = false;
+        int minSize = 0;
+
+        if (!inp.empty() && (inp[0] == '-' || inp[0] == '+')) {
+            it++;
+            minSize++;
+        }
+
+        while (it != inp.end()) {
+            if (*it == '.') {
+                if (!decimalPoint) decimalPoint = true;
+                else break;
+            }
+            else if (!std::isdigit(*it) && ((it+1 != inp.end()) || !decimalPoint))
+                break;
+            ++it;
+        }
+        return inp.size() > minSize && it == inp.end();
     }
 
     // Returns a string in format " x y "

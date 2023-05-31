@@ -51,11 +51,11 @@ namespace ParsesInputTests {
                     std::pair("(-0.00213    ,    100)", InputState::Correct),
                     std::pair("(0.00000, 0)", InputState::Correct),
 
-                     // std::pair("( , )", InputState::IncorrectInput),
-                     // std::pair("(323, )", InputState::IncorrectInput),
-                     // std::pair("( , -0.424)", InputState::IncorrectInput),
-                     // std::pair("(-, -10)", InputState::IncorrectInput),
-                     // std::pair("(- , )", InputState::IncorrectInput),
+                    std::pair("( , )", InputState::IncorrectInput),
+                    std::pair("(323, )", InputState::IncorrectInput),
+                    std::pair("( , -0.424)", InputState::IncorrectInput),
+                    std::pair("(-, -10)", InputState::IncorrectInput),
+                    std::pair("(- , )", InputState::IncorrectInput),
 
                     std::pair("( , +)", InputState::IncorrectInput),
                     std::pair("(+, -)", InputState::IncorrectInput),
