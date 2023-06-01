@@ -5,34 +5,36 @@
 
 using namespace Geometry;
 
-TEST(PointTest, DefaultConstructor) {
-    Point p;
-    EXPECT_EQ(p.getX(), 0);
-    EXPECT_EQ(p.getY(), 0);
-    EXPECT_EQ(p.getLabel(), "");
-}
+namespace ConstructorTests {
+    TEST(PointTest, DefaultConstructor) {
+        Point p;
+        EXPECT_EQ(p.getX(), 0);
+        EXPECT_EQ(p.getY(), 0);
+        EXPECT_EQ(p.getLabel(), "");
+    }
 
-TEST(PointTest, ParameterizedConstructor) {
-    Point p(1, 2, "A");
-    EXPECT_EQ(p.getX(), 1);
-    EXPECT_EQ(p.getY(), 2);
-    EXPECT_EQ(p.getLabel(), "A");
-}
+    TEST(PointTest, ParameterizedConstructor) {
+        Point p(1, 2, "A");
+        EXPECT_EQ(p.getX(), 1);
+        EXPECT_EQ(p.getY(), 2);
+        EXPECT_EQ(p.getLabel(), "A");
+    }
 
-TEST(PointTest, CopyConstructor) {
-    Point p1(1, 2, "A");
-    Point p2(p1);
-    EXPECT_EQ(p1.getX(), p2.getX());
-    EXPECT_EQ(p1.getY(), p2.getY());
-    EXPECT_EQ(p1.getLabel(), p2.getLabel());
-}
+    TEST(PointTest, CopyConstructor) {
+        Point p1(1, 2, "A");
+        Point p2(p1);
+        EXPECT_EQ(p1.getX(), p2.getX());
+        EXPECT_EQ(p1.getY(), p2.getY());
+        EXPECT_EQ(p1.getLabel(), p2.getLabel());
+    }
 
-TEST(PointTest, MoveConstructor) {
-    Point p1(1, 2, "A");
-    Point p2 {p1};
-    EXPECT_EQ(p2.getX(), 1);
-    EXPECT_EQ(p2.getY(), 2);
-    EXPECT_EQ(p2.getLabel(), "A");
+    TEST(PointTest, MoveConstructor) {
+        Point p1(1, 2, "A");
+        Point p2{p1};
+        EXPECT_EQ(p2.getX(), 1);
+        EXPECT_EQ(p2.getY(), 2);
+        EXPECT_EQ(p2.getLabel(), "A");
+    }
 }
 
 TEST(PointTest, AssignmentOperator) {
