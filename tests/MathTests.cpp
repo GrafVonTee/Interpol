@@ -23,4 +23,12 @@ namespace DeterminantTest {
         << "\nOutput: " << ans
         << std::endl;
     }
+    INSTANTIATE_TEST_SUITE_P(
+            TestCases,
+            DeterminantTestInterface,
+            ::testing::Values(
+                    std::pair(std::vector<coord_t>{0, 0, 0, 0}, 0),
+                    std::pair(std::vector<coord_t>{1, 2, 2, 1}, -3)
+            )
+    );
 }
