@@ -211,14 +211,14 @@ namespace DrawOutput {
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(2 / 7.0f, 0.7f, 0.7f));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(2 / 7.0f, 0.8f, 0.8f));
 
-        std::string label = polygon.getPointsRef().front().getLabel();
-        label.pop_back();
-        std::string name = "Add point for " + label;
+        char labelNumber = polygon.getPointsRef().front().getLabel().front();
+        std::string name = std::string("Add point for ") + labelNumber;
 
         if (ImGui::Button(name.c_str())) {
             Geometry::Point front = polygon.getPointsRef().front();
             Geometry::Point back = polygon.getPointsRef().back();
-            Geometry::Point newPoint = Geometry::Point((front.getX() + back.getX())/2 + 100, (front.getY() + back.getY())/2);
+            float offset = pow((pow(front.getX() - back.getX(), 2) + pow(front.getX() - back.getX(), 2)), 0.5);
+            Geometry::Point newPoint = Geometry::Point((front.getX() + back.getX())/2 + offset/5, (front.getY() + back.getY())/2);
             polygon.emplaceBack(newPoint);
         }
         ImGui::PopStyleColor(3);

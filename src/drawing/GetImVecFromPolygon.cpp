@@ -61,6 +61,7 @@ namespace DrawUtils {
         std::vector<Geometry::Point> allPoints;
         allPoints.insert(allPoints.end(), polygonPoints1.begin(), polygonPoints1.end());
         allPoints.insert(allPoints.end(), polygonPoints2.begin(), polygonPoints2.end());
+        // Why compare intersection points to other intersection points?
         allPoints.insert(allPoints.end(), intersectionPointsVector.begin(), intersectionPointsVector.end());
 
         for (Geometry::Point &intersectionPoint: intersectionPointsVector)
@@ -76,9 +77,12 @@ namespace DrawUtils {
 
     void setActualLabels(Geometry::Polygon &polygon, char polygonLetter = 0) {
         if (polygonLetter == 0)
-            polygonLetter = polygon.getPointsRef()[0].getLabel()[0];
+            polygonLetter = polygon.getPointsRef().front().getLabel()[0];
 
-        size_t currentLabelNumber = 1;
+        std::string currentLabel = polygon.getPointsCopy().front().getLabel();    
+        if (currentLabel.size() == 0) currentLabel.append("1"); 
+        else currentLabel = std::to_string(polygon.size());
+        int currentLabelNumber = std::stoi(currentLabel);
         for (size_t i = 0; i < polygon.size(); i++) {
             if (polygon[i].getLabel().empty())
                 polygon[i].setLabel(std::string(1, polygonLetter) + std::to_string(currentLabelNumber++));
