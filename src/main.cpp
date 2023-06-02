@@ -1,6 +1,5 @@
 #include <sstream>
 #include "DrawImage.h"
-#include "CalculateIntersections.h"
 #include "Parsing.h"
 #include "ConsoleInteraction.h"
 #include "GetImVecFromPolygon.h"
