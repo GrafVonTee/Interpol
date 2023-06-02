@@ -110,7 +110,7 @@ namespace DrawOutput {
     inline void DrawCanvas() {
         ImGui::Begin("Canvas", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
         {
-            auto& figures = Manipulator::StatesLibrary::getInstance().getStateRef();
+            const auto& figures = Manipulator::StatesLibrary::getInstance().getState();
 
             ImDrawList *drawList = ImGui::GetWindowDrawList();
             ImVec2 pos = ImGui::GetCursorScreenPos();
