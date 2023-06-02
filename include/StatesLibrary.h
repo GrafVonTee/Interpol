@@ -18,7 +18,6 @@ namespace Manipulator {
 
     public:
         StatesLibrary(const StatesLibrary &) = delete;
-
         StatesLibrary &operator=(StatesLibrary &) = delete;
 
         static StatesLibrary &getInstance() {
@@ -27,19 +26,16 @@ namespace Manipulator {
         }
 
         bool isEmpty() const { return m_states.empty(); }
-
         size_t getSize() const { return m_states.size(); }
 
         const FiguresState &getState(size_t stateIndex = -1) const;
-
         FiguresState &getStateRef(size_t stateIndex = -1);
 
         void addState(const FiguresState &state);
-
         void emplaceState(FiguresState &&state);
+        void emplaceState(FiguresState &state);
 
         void addState(const Geometry::Polygon &, const Geometry::Polygon &, const Geometry::Intersection &);
-
         void emplaceState(Geometry::Polygon &, Geometry::Polygon &, Geometry::Intersection &);
 
         void popState();

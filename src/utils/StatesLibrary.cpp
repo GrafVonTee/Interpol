@@ -37,7 +37,12 @@ namespace Manipulator {
     }
 
     void
-    StatesLibrary::emplaceState(FiguresState &&state) {
+    StatesLibrary::emplaceState(FiguresState &state) {
+        m_states.emplace_back(std::move(state));
+    }
+
+    void
+    StatesLibrary::emplaceState(FiguresState&& state) {
         m_states.emplace_back(state);
     }
 

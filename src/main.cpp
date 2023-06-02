@@ -20,20 +20,19 @@ int main() {
         output = &empty;
     }
 
-    auto [p1, p2] = Interaction::getBothPolygons(*input, *output);
-    auto intersection = Math::findPolygonsInter(p1, p2);
+    auto& statesLib = Manipulator::StatesLibrary::getInstance();
+    Manipulator::FiguresState figures = Interaction::getFiguresStateFromInput(*input, *output);
+    statesLib.emplaceState(figures);
+    figures = statesLib.getStateRef();
 
-    Manipulator::StatesLibrary::getInstance().addState(p1, p2, intersection);
-
-    DrawUtils::setActualPointsLabels(p1, p2, intersection);
-
-    Interaction::printPolygon(p1);
-    Interaction::printPolygon(p2);
-    Interaction::printIntersection(intersection);
+    DrawUtils::setActualPointsLabels(figures.polygon1,
+                                     figures.polygon2,
+                                     figures.intersection);
+    Interaction::printStateFromLibrary();
 
 
     Interaction::welcomeToGui();
-    DrawOutput::draw_triangles_and_intersection(p1, p2, intersection);
+    DrawOutput::draw_triangles_and_intersection(figures.polygon1, figures.polygon2, figures.intersection);
 
     Interaction::goodbye(userName);
     system("pause");

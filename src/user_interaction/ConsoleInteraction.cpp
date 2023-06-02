@@ -4,6 +4,8 @@
 #include "GeometryUtils.h"
 #include "ConsoleInteraction.h"
 #include "Parsing.h"
+#include "StatesLibrary.h"
+#include "CalculateIntersections.h"
 
 using std::cout, std::cin, std::endl, std::cerr;
 
@@ -251,6 +253,7 @@ namespace Interaction {
         cout << "Your polygon is a " << polygonType << " " << polygonName << " with points:" << endl;
         for (auto i = 0; i < polygon.size(); ++i)
             printPoint(polygon[i]);
+        cout << endl;
     }
 
     std::string getTypeNameOfPolygon(const States::PolygonState &state) {
@@ -290,5 +293,26 @@ namespace Interaction {
         }
         // Print the polygon
         printPolygon(polygon);
+    }
+
+    void printStateFromLibrary(size_t indexState) {
+        Manipulator::FiguresState figState;
+        if (indexState == -1)
+            figState = Manipulator::StatesLibrary::getInstance().getState();
+        else
+            figState = Manipulator::StatesLibrary::getInstance().getState(indexState);
+
+        printPolygon(figState.polygon1);
+        printPolygon(figState.polygon2);
+        printIntersection(figState.intersection);
+    }
+
+    Manipulator::FiguresState getFiguresStateFromInput(std::istream& inputStream,
+                                                       std::ostream& outputStream)
+    {
+        auto [p1, p2] = Interaction::getBothPolygons(inputStream, outputStream);
+        auto intersection = Math::findPolygonsInter(p1, p2);
+
+        return Manipulator::FiguresState{p1, p2, intersection};
     }
 }
