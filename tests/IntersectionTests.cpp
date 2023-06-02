@@ -136,7 +136,7 @@ namespace IntersectionTests {
                             TestInput({Point(-2, 2), Point(2, 2), Point(4, -2), Point(0, -4), Point(-2, -2)},
                                       {Point(-2, -2), Point(0, -4), Point(2, 2)}),
                             ExpectedOutput(3,
-                                           IntersectionState::Polygon,
+                                           IntersectionState::Nested,
                                            {Point(-2, -2), Point(2, 2), Point(0, -4)})
                     ),
                     std::pair
