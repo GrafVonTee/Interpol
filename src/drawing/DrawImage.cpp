@@ -78,7 +78,7 @@ namespace DrawOutput {
             ImGui::SetNextWindowPos(ImVec2(DrawConst::WINDOW_WIDTH / 3, 0), ImGuiCond_Once);
             ImGui::SetNextWindowSize(ImVec2(2 * DrawConst::WINDOW_WIDTH / 3, DrawConst::WINDOWS_HEIGHT), ImGuiCond_Once);
 
-            DrawEverything();
+            DrawCanvas();
 
             // Set ImGui window properties
             ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
@@ -107,7 +107,7 @@ namespace DrawOutput {
         glfwTerminate();
     }
 
-    inline void DrawEverything() {
+    inline void DrawCanvas() {
         ImGui::Begin("Canvas", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
         {
             auto& figures = Manipulator::StatesLibrary::getInstance().getStateRef();
