@@ -16,7 +16,7 @@ namespace Manipulator {
         }
     }
 
-    FiguresState &
+    FiguresState&
     StatesLibrary::getStateRef(size_t stateIndex) {
         if (isEmpty())
             throw std::range_error("Library is empty!");
