@@ -4,6 +4,7 @@
 #include "Parsing.h"
 #include "ConsoleInteraction.h"
 #include "GetImVecFromPolygon.h"
+#include "StatesLibrary.h"
 
 int main() {
     std::string userName = Interaction::getUserName();
@@ -21,6 +22,9 @@ int main() {
 
     auto [p1, p2] = Interaction::getBothPolygons(*input, *output);
     auto intersection = Math::findPolygonsInter(p1, p2);
+
+    Manipulator::StatesLibrary::getInstance().addState(p1, p2, intersection);
+
     DrawUtils::setActualPointsLabels(p1, p2, intersection);
 
     Interaction::printPolygon(p1);
