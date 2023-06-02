@@ -16,9 +16,8 @@
 #define WHITE_COLOR  IM_COL32(255, 255, 255, 255)
 
 namespace DrawOutput {
-    void draw_triangles_and_intersection(Geometry::Polygon &tr1,
-                                         Geometry::Polygon &tr2,
-                                         Geometry::Intersection &intersection);
+    void draw_polygons_and_intersection();
+
     void DrawPoints(
         ImDrawList *draw_list, 
         const Geometry::Polygon &polygon, 
@@ -38,5 +37,7 @@ namespace DrawOutput {
     void DisplayPolygon(Geometry::Polygon &polygon, const std::string& title = "default", bool muted = false);    
     void DisplayAddButton(Geometry::Polygon &polygon);
     void DisplayDeleteButton(Geometry::Polygon &polygon);
+    inline void DrawEverything();
+    inline void DrawProperties();
 }
 #endif // TRIANGLE_INTERSECTIONS_DRAW_IMAGE_H

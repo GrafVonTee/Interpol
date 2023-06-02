@@ -31,7 +31,7 @@ int main() {
 
 
     Interaction::welcomeToGui();
-    DrawOutput::draw_triangles_and_intersection(figures.polygon1, figures.polygon2, figures.intersection);
+    DrawOutput::draw_polygons_and_intersection();
 
     Interaction::goodbye(userName);
     system("pause");

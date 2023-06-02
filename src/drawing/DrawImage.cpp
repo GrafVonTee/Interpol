@@ -5,12 +5,11 @@
 #include "ConstantsForDrawing.h"
 #include "imgui_demo.cpp"
 #include "CalculateIntersections.h"
+#include "StatesLibrary.h"
 
 
 namespace DrawOutput {
-    void draw_triangles_and_intersection(Geometry::Polygon &tr1,
-                                         Geometry::Polygon &tr2,
-                                         Geometry::Intersection &intersection) {
+    void draw_polygons_and_intersection() {
 
         #if defined(IMGUI_IMPL_OPENGL_ES2)
                 const char* glsl_version = "#version 100";
@@ -79,35 +78,13 @@ namespace DrawOutput {
             ImGui::SetNextWindowPos(ImVec2(DrawConst::WINDOW_WIDTH / 3, 0), ImGuiCond_Once);
             ImGui::SetNextWindowSize(ImVec2(2 * DrawConst::WINDOW_WIDTH / 3, DrawConst::WINDOWS_HEIGHT), ImGuiCond_Once);
 
-            ImGui::Begin("Canvas", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-            {
-                ImDrawList *drawList = ImGui::GetWindowDrawList();
-                ImVec2 pos = ImGui::GetCursorScreenPos();
-
-                DrawUtils::scalingParameters parameters = DrawUtils::findParameters(tr1, tr2, DrawConst::SQUARE_SIDE_SIZE);
-
-                DrawPolygon(drawList, tr1, parameters, pos, RED_COLOR);
-                DrawPolygon(drawList, tr2, parameters, pos, GREEN_COLOR);
-                DrawPolygon(drawList, intersection.polygon, parameters, pos, YELLOW_COLOR);
-
-                for (const Geometry::Polygon& figurePtr : {tr1, tr2, intersection.polygon})
-                    DrawPoints(drawList, figurePtr, parameters, pos, WHITE_COLOR);
-            }
-            ImGui::End();
+            DrawEverything();
 
             // Set ImGui window properties
             ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
             ImGui::SetNextWindowSize(ImVec2(DrawConst::WINDOW_WIDTH / 3, DrawConst::WINDOWS_HEIGHT), ImGuiCond_Once);
             
-            ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-            {
-                DisplayPolygon(tr1, "Polygon 1");
-                DisplayPolygon(tr2, "Polygon 2");
-                intersection = Math::findPolygonsInter(tr1, tr2);
-                DrawUtils::setActualPointsLabels(tr1, tr2, intersection);                
-                DisplayPolygon(intersection.polygon, "Intersection", true);
-            }
-            ImGui::End();
+            DrawProperties();
 
             // Rendering
             ImGui::Render();
@@ -130,11 +107,51 @@ namespace DrawOutput {
         glfwTerminate();
     }
 
+    inline void DrawEverything() {
+        ImGui::Begin("Canvas", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+        {
+            auto& figures = Manipulator::StatesLibrary::getInstance().getStateRef();
+
+            ImDrawList *drawList = ImGui::GetWindowDrawList();
+            ImVec2 pos = ImGui::GetCursorScreenPos();
+
+            DrawUtils::scalingParameters parameters = DrawUtils::findParameters(figures.polygon1,
+                                                                                figures.polygon2,
+                                                                                DrawConst::SQUARE_SIDE_SIZE);
+
+            DrawPolygon(drawList, figures.polygon1, parameters, pos, RED_COLOR);
+            DrawPolygon(drawList, figures.polygon2, parameters, pos, GREEN_COLOR);
+            DrawPolygon(drawList, figures.intersection.polygon, parameters, pos, YELLOW_COLOR);
+
+            for (const Geometry::Polygon& figurePtr : {figures.polygon1, figures.polygon2, figures.intersection.polygon})
+                DrawPoints(drawList, figurePtr, parameters, pos, WHITE_COLOR);
+        }
+        ImGui::End();
+    }
+
+    inline void DrawProperties() {
+        ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+        {
+            auto& figures = Manipulator::StatesLibrary::getInstance().getStateRef();
+
+            DisplayPolygon(figures.polygon1, "Polygon 1");
+            DisplayPolygon(figures.polygon2, "Polygon 2");
+
+            // Needed to rebuild
+            figures.intersection = Math::findPolygonsInter(figures.polygon1, figures.polygon2);
+            DrawUtils::setActualPointsLabels(figures.polygon1, figures.polygon2, figures.intersection);
+            // Needed to rebuild
+
+            DisplayPolygon(figures.intersection.polygon, "Intersection", true);
+        }
+        ImGui::End();
+    }
+
     void DrawPoints(
         ImDrawList *drawList,
         const Geometry::Polygon& polygon, 
         const DrawUtils::scalingParameters& parameters, 
-        const ImVec2& offset, 
+        const ImVec2& offset,
         const ImU32& col)
     {
         Geometry::Polygon drawnPolygon = DrawUtils::scaleAndTranslate(polygon, parameters);
