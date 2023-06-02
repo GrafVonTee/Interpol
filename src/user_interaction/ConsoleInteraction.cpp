@@ -18,8 +18,6 @@ namespace Interaction {
 
     void welcomeToGui() {
         cout << "Well, let's take a look on your figures and intersection between them!" << endl;
-        cout << "Another window has opened now, just click on the blue angle, hold and pull it to down-right side" << endl;
-        cout << "You will see what you wrote" << endl;
         cout << endl;
     }
 
