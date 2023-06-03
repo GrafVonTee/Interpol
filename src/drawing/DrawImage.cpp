@@ -222,9 +222,9 @@ namespace DrawOutput {
         ImGui::Text(title.c_str());
 
         for (Geometry::Point& point : points1) {   
-            DisplayPoint(point, muted);                    
-            polygon.sortPoints();
+            DisplayPoint(point, muted);
         }
+        polygon.sortPoints();
 
         if (!muted) {
             DisplayAddButton(polygon);            

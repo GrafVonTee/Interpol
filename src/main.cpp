@@ -21,15 +21,8 @@ int main() {
     }
 
     auto& statesLib = Manipulator::StatesLibrary::getInstance();
-    Manipulator::FiguresState figures = Interaction::getFiguresStateFromInput(*input, *output);
-    statesLib.emplaceState(figures);
-    figures = statesLib.getStateRef();
-
-    DrawUtils::setActualPointsLabels(figures.polygon1,
-                                     figures.polygon2,
-                                     figures.intersection);
+    statesLib.emplaceState(Interaction::getFiguresStateFromInput(*input, *output));
     Interaction::printStateFromLibrary();
-
 
     Interaction::welcomeToGui();
     DrawOutput::draw_polygons_and_intersection();

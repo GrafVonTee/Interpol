@@ -68,8 +68,6 @@ namespace DrawUtils {
         std::vector<Geometry::Point> allPoints;
         allPoints.insert(allPoints.end(), polygonPoints1.begin(), polygonPoints1.end());
         allPoints.insert(allPoints.end(), polygonPoints2.begin(), polygonPoints2.end());
-        // Why compare intersection points to other intersection points?
-        allPoints.insert(allPoints.end(), intersectionPointsVector.begin(), intersectionPointsVector.end());
 
         for (Geometry::Point &intersectionPoint: intersectionPointsVector)
             for (const Geometry::Point &comparisonPoint: allPoints)
@@ -82,17 +80,20 @@ namespace DrawUtils {
                 }
     }
 
-    void setActualLabels(Geometry::Polygon &polygon, char polygonLetter = 0) {
+    void setActualLabels(Geometry::Polygon &polygon, char polygonLetter = 0, bool isIntersection = false) {
+        if (polygon.size() == 0)
+            return;
+
         if (polygonLetter == 0)
             polygonLetter = polygon.getPointsRef().front().getLabel()[0];
 
-        std::string currentLabel = polygon.getPointsCopy().front().getLabel();    
-        if (currentLabel.size() == 0) currentLabel.append("1"); 
-        else currentLabel = std::to_string(polygon.size());
-        int currentLabelNumber = std::stoi(currentLabel);
+        int currentLabelNumber = 1;
         for (size_t i = 0; i < polygon.size(); i++) {
             if (polygon[i].getLabel().empty())
                 polygon[i].setLabel(std::string(1, polygonLetter) + std::to_string(currentLabelNumber++));
+            if (isIntersection)
+                currentLabelNumber--;
+            currentLabelNumber++;
         }
     }
 
@@ -102,8 +103,7 @@ namespace DrawUtils {
     {
         setActualLabels(polygon1);
         setActualLabels(polygon2);
-        if (intersection.state != States::IntersectionState::NoIntersection)
-            setActualLabels(intersection.polygon, 'C');
         setDuplicatesFromIntersectionSameLetter(polygon1, polygon2, intersection.polygon);
+        setActualLabels(intersection.polygon, 'C', true);
     }
 }

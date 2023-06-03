@@ -89,8 +89,8 @@ namespace Math {
     }
 
 
-    LineIntersection findLinesInter(Point &firstStart, Point &firstEnd,
-                                    Point &secondStart, Point &secondEnd) {
+    LineIntersection findLinesInter(const Point &firstStart,  const Point &firstEnd,
+                                    const Point &secondStart, const Point &secondEnd) {
 
         // We define a lot of variables, that are used a linear algebra's part of code (we solve the system linear equations).
 
@@ -149,7 +149,7 @@ namespace Math {
         return true;
     }
 
-    Intersection findPolygonsInter(Polygon &first, Polygon &second) {
+    Intersection findPolygonsInter(const Polygon &first, const Polygon &second) {
 
         // In this function we find all points, which are the vertexes of intersection polygon, and add their into <listOfInterPoints> vector.
         // We add the point only if this point is new in vector (we must avoid the duplication of intersection polygon vertexes).
