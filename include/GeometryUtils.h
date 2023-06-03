@@ -63,6 +63,18 @@ namespace Geometry {
         Point& operator=(Point &&other) noexcept;
 
         friend std::ostream& operator<<(std::ostream &out, const Point &point);
+
+        
+        struct HashFunction
+        {
+            size_t operator()(const Point& point) const
+            {
+                size_t xHash = std::hash<coord_t>()(point.getX());
+                size_t yHash = std::hash<coord_t>()(point.getY()) << 1;
+                return xHash ^ yHash;
+            }
+        };
+        
     };
 
     class Polygon {
@@ -139,6 +151,7 @@ namespace Geometry {
         States::IntersectionState state = States::IntersectionState::NoIntersection;
         Polygon polygon;
     };
+
 }
 
 #endif //TRIANGLE_INTERSECTIONS_GEOMETRYUTILS_H

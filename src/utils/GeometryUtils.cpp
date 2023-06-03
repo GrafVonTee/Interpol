@@ -332,5 +332,5 @@ namespace Geometry {
             throw std::underflow_error("Polygon is empty!");
         m_pointList.pop_back();
         m_state = States::PolygonState(this->size() - 1);
-    }
+    }    
 }

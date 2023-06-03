@@ -2,6 +2,21 @@
 #define TRIANGLE_INTERSECTIONS_CONSTANTSFORDRAWING_H
 
 namespace DrawConst {
+
+    struct scalingParameters {
+        float Hue;
+        float Saturation;
+        float Value;
+    };
+
+    extern const scalingParameters HSVGreenDefault;
+    extern const scalingParameters HSVGreenHovered;
+    extern const scalingParameters HSVGreenActive;
+
+    extern const scalingParameters HSVRedDefault;
+    extern const scalingParameters HSVRedHovered;
+    extern const scalingParameters HSVRedActive;
+
     extern const float LETTER_FONT_SIZE;
     extern const float LINE_THICKNESS;
     extern const float INTERSECTION_POINT_SIZE;

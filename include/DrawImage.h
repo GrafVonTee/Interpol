@@ -18,9 +18,9 @@
 namespace DrawOutput {
     void draw_polygons_and_intersection();
 
-    void DrawPoints(
+    void DrawPoint(
         ImDrawList *draw_list, 
-        const Geometry::Polygon &polygon, 
+        const Geometry::Point& point, 
         const DrawUtils::scalingParameters& parameters,
         const ImVec2& offset = ImVec2(0, 0), 
         const ImU32& col = WHITE_COLOR
@@ -39,5 +39,6 @@ namespace DrawOutput {
     void DisplayDeleteButton(Geometry::Polygon &polygon);
     inline void DrawCanvas();
     inline void DrawProperties();
+    void updateFigures();
 }
 #endif // TRIANGLE_INTERSECTIONS_DRAW_IMAGE_H
