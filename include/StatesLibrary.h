@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TRIANGLE_INTERSECTIONS_STATES_LIBRARY_H
+#define TRIANGLE_INTERSECTIONS_STATES_LIBRARY_H
 
 #include <vector>
 #include "GeometryUtils.h"
@@ -46,3 +47,5 @@ namespace Manipulator {
         void popState();
     };
 }
+
+#endif //TRIANGLE_INTERSECTIONS_STATES_LIBRARY_H

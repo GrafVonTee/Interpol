@@ -50,6 +50,13 @@ namespace DrawUtils {
         return newPolygon;
     }
 
+    Geometry::Point scaleAndTranslatePoint(const Geometry::Point &point, const scalingParameters& parameters) {
+        Geometry::Point newPoint = point;
+        newPoint.setX((point.getX() - parameters.min_x) * parameters.scale_x + parameters.delta_x);
+        newPoint.setY((point.getY() - parameters.min_y) * parameters.scale_y + parameters.delta_y);
+        return newPoint;
+    }
+
     void setDuplicatesFromIntersectionSameLetter(const Geometry::Polygon &polygon1,
                                                  const Geometry::Polygon &polygon2,
                                                        Geometry::Polygon &intersectionPolygon)

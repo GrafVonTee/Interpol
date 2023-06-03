@@ -8,7 +8,8 @@
 int main() {
     std::string userName = Interaction::getUserName();
     Interaction::greeting(userName);
-    std::istringstream demoPoints("3\n(200.0, 900.0)\n(200.0, 200.0)\n(900.0, 100.0)\n3\n(100.0, 800.0)\n(500.0, 300.0)\n(700.0, 500.0)\n");
+    // std::istringstream demoPoints("3\n(200.0, 900.0)\n(200.0, 200.0)\n(900.0, 100.0)\n3\n(100.0, 800.0)\n(500.0, 300.0)\n(700.0, 500.0)\n");
+    std::istringstream demoPoints("6\n(0, 900.0)\n(800.0, 800.0)\n(900.0, 400.0)\n(800.0, 100.0)\n(500.0, 0)\n(100.0, 100.0)\n6\n(900.0, 0)\n(0, 200.0)\n(0, 500.0)\n(100.0, 800.0)\n(400.0, 900.0)\n(700.0, 900.0)\n");
     std::ostringstream empty;
 
     std::istream *input = &std::cin;
