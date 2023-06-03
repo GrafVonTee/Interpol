@@ -1,9 +1,9 @@
 #include <sstream>
 #include "DrawImage.h"
-#include "CalculateIntersections.h"
 #include "Parsing.h"
 #include "ConsoleInteraction.h"
 #include "GetImVecFromPolygon.h"
+#include "StatesLibrary.h"
 
 int main() {
     std::string userName = Interaction::getUserName();
@@ -19,17 +19,19 @@ int main() {
         output = &empty;
     }
 
-    auto [p1, p2] = Interaction::getBothPolygons(*input, *output);
-    auto intersection = Math::findPolygonsInter(p1, p2);
-    DrawUtils::setActualPointsLabels(p1, p2, intersection);
+    auto& statesLib = Manipulator::StatesLibrary::getInstance();
+    Manipulator::FiguresState figures = Interaction::getFiguresStateFromInput(*input, *output);
+    statesLib.emplaceState(figures);
+    figures = statesLib.getStateRef();
 
-    Interaction::printPolygon(p1);
-    Interaction::printPolygon(p2);
-    Interaction::printIntersection(intersection);
+    DrawUtils::setActualPointsLabels(figures.polygon1,
+                                     figures.polygon2,
+                                     figures.intersection);
+    Interaction::printStateFromLibrary();
 
 
     Interaction::welcomeToGui();
-    DrawOutput::draw_triangles_and_intersection(p1, p2, intersection);
+    DrawOutput::draw_polygons_and_intersection();
 
     Interaction::goodbye(userName);
     system("pause");
