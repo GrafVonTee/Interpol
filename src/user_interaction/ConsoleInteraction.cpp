@@ -6,6 +6,7 @@
 #include "Parsing.h"
 #include "StatesLibrary.h"
 #include "CalculateIntersections.h"
+#include "GetImVecFromPolygon.h"
 
 using std::cout, std::cin, std::endl, std::cerr;
 
@@ -312,6 +313,9 @@ namespace Interaction {
     {
         auto [p1, p2] = Interaction::getBothPolygons(inputStream, outputStream);
         auto intersection = Math::findPolygonsInter(p1, p2);
+        DrawUtils::setActualPointsLabels(p1,
+                                         p2,
+                                         intersection);
 
         return Manipulator::FiguresState{p1, p2, intersection};
     }

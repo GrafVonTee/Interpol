@@ -38,6 +38,11 @@ namespace Manipulator {
         void addState(const Geometry::Polygon &, const Geometry::Polygon &, const Geometry::Intersection &);
         void emplaceState(Geometry::Polygon &, Geometry::Polygon &, Geometry::Intersection &);
 
+        static void addInputState(const Geometry::Polygon &, const Geometry::Polygon &);
+        static void emplaceInputState(Geometry::Polygon &, Geometry::Polygon &);
+
+        void updateState();
+
         void popState();
     };
 }

@@ -43,8 +43,5 @@ namespace Interaction {
     void printStateFromLibrary(size_t indexState = -1);
 
     std::string getTypeNameOfPolygon(const States::PolygonState &state);
-
-    void askSortingaskSorting(Geometry::Polygon& polygon,
-                              std::ostream& out = std::cout, std::istream& in = std::cin);
 }
 #endif //TRIANGLE_INTERSECTIONS_CONSOLE_INTERACTION_H
