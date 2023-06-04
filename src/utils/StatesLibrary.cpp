@@ -11,6 +11,33 @@ namespace Manipulator {
         if (stateIndex == -1)
             return m_states.back();
 
+        if (stateIndex == -2)
+            return m_states.at(m_states.size() - 2);
+
+        if (stateIndex == -3)
+            return m_states.at(m_states.size() - 3);
+
+        try {
+            return m_states.at(stateIndex);
+        } catch (const std::range_error &err) {
+            throw std::range_error("Invalid index of state!");
+        }
+    }
+
+    FiguresState
+    StatesLibrary::getStateCopy(size_t stateIndex){
+        if (isEmpty())
+            throw std::range_error("Library is empty!");
+
+        if (stateIndex == -1)
+            return m_states.back();
+        
+        if (stateIndex == -2)
+            return m_states.at(m_states.size() - 2);
+
+        if (stateIndex == -3)
+            return m_states.at(m_states.size() - 3);
+
         try {
             return m_states.at(stateIndex);
         } catch (const std::range_error &err) {
@@ -26,6 +53,11 @@ namespace Manipulator {
         if (stateIndex == -1)
             return m_states.back();
 
+        if (stateIndex == -2)
+            return m_states.at(m_states.size() - 2);
+
+        if (stateIndex == -3)
+            return m_states.at(m_states.size() - 3);
         try {
             return m_states.at(stateIndex);
         } catch (const std::range_error &err) {

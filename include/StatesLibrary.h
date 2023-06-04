@@ -30,6 +30,7 @@ namespace Manipulator {
         size_t getSize() const { return m_states.size(); }
 
         const FiguresState &getState(size_t stateIndex = -1) const;
+        FiguresState getStateCopy(size_t stateIndex = -1);
         FiguresState &getStateRef(size_t stateIndex = -1);
 
         void addState(const FiguresState &state);
