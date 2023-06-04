@@ -97,6 +97,8 @@ namespace Manipulator {
     void
     StatesLibrary::updateState() {
         auto &manipulator = StatesLibrary::getInstance();
+        if (manipulator.isEmpty())
+            return;
         auto &state = manipulator.getStateRef();
         state.intersection = Math::findPolygonsInter(state.polygon1, state.polygon2);
         DrawUtils::setActualPointsLabels(state.polygon1,

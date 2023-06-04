@@ -93,7 +93,7 @@ namespace Geometry {
     }
 
     std::ostream& operator<<(std::ostream &out, const Point &point) {
-        out << "(" << point.m_x << ", " << point.m_y << ", " << point.m_label << ")";
+        out << "(" << point.m_x << ", " << point.m_y << ")";
         return out;
     }
 

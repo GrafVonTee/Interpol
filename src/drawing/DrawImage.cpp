@@ -168,7 +168,7 @@ namespace DrawOutput {
         const ImU32& col)
     {
         Geometry::Point drawnPoint = DrawUtils::scaleAndTranslatePoint(point, parameters);
-        ImVec2 relativePoint = ImVec2(offset.x + (float) point.getX(), offset.y + (float) point.getY());
+        ImVec2 relativePoint = DrawUtils::getImVec2(drawnPoint, offset);
         drawList->AddCircleFilled(
             relativePoint,
             DrawConst::POINT_SIZE,
