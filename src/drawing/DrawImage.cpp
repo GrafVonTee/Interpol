@@ -4,10 +4,11 @@
 #include "DrawImage.h"
 #include "GetImVecFromPolygon.h"
 #include "ConstantsForDrawing.h"
-// Enable for imgui demo window
-// #include "imgui_demo.cpp"
 #include "CalculateIntersections.h"
+#include "ConsoleInteraction.h"
 #include "StatesLibrary.h"
+// // Enable for imgui demo window
+// #include "imgui_demo.cpp"
 
 
 namespace DrawOutput {
@@ -146,18 +147,32 @@ namespace DrawOutput {
 
     inline void DrawProperties() {
 
+        Manipulator::StatesLibrary::getInstance().addState(Manipulator::StatesLibrary::getInstance().getStateCopy());
+        auto unmodifiedFigures = Manipulator::StatesLibrary::getInstance().getStateCopy();
         auto& figures = Manipulator::StatesLibrary::getInstance().getStateRef();
-        // with this set to true, intersections can't be modified
+
+        // with this set to true, polygon can't be modified
         bool muted = true;
 
         ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
         {
-
             DisplayPolygon(figures.polygon1, "Polygon 1");
             DisplayPolygon(figures.polygon2, "Polygon 2");
+            // intersections are forbidden from getting moddified
             DisplayPolygon(figures.intersection.polygon, "Intersection", muted);
+            DisplayRevertButton();
         }
         ImGui::End();
+
+        // check if new state varies from copied state and if it does, preserve it and print it to console
+        if ((unmodifiedFigures.polygon1 == figures.polygon1)&&(unmodifiedFigures.polygon2 == figures.polygon2)
+            &&(unmodifiedFigures.intersection.polygon == figures.intersection.polygon)){
+                Manipulator::StatesLibrary::getInstance().popState();
+            }
+        else{
+            // this causes a crash if more than 1 point is added to a polygon
+            // Interaction::printStateFromLibrary();
+        }
     }
 
     void DrawPoint(
@@ -234,6 +249,18 @@ namespace DrawOutput {
         }
     }
 
+    void DisplayRevertButton(){
+        ImGui::BeginDisabled(Manipulator::StatesLibrary::getInstance().getSize() <= 2);
+            if (ImGui::Button("Revert last change")) {
+                auto state = Manipulator::StatesLibrary::getInstance().getStateCopy(-3);
+                Manipulator::StatesLibrary::getInstance().popState();
+                Manipulator::StatesLibrary::getInstance().popState();                
+                Manipulator::StatesLibrary::getInstance().popState();
+                Manipulator::StatesLibrary::getInstance().addState(state);
+            }
+        ImGui::EndDisabled();
+    }
+
     void DisplayAddButton(Geometry::Polygon& polygon) {
         // HSV stands for Hue/Saturation/Value
         ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(DrawConst::HSVGreenDefault.Hue, 
@@ -254,7 +281,7 @@ namespace DrawOutput {
             float offset = pow((pow(front.getX() - back.getX(), 2) + pow(front.getX() - back.getX(), 2)), 0.5);
             Geometry::Point newPoint = Geometry::Point((front.getX() + back.getX())/2 + offset/5, (front.getY() + back.getY())/2);
             polygon.emplaceBack(newPoint);
-            updateFigures();
+            Manipulator::StatesLibrary::getInstance().updateState();
         }
         ImGui::PopStyleColor(3);
     }
@@ -269,24 +296,17 @@ namespace DrawOutput {
                                                             DrawConst::HSVRedActive.Saturation, DrawConst::HSVRedActive.Value));
         
         ImGui::BeginDisabled((polygon.size() < 3));
-        std::string label = polygon.getPointsRef().front().getLabel();
-        label.pop_back();
-        std::string name = "Delete point from " + label;
+            std::string label = polygon.getPointsRef().front().getLabel();
+            label.pop_back();
+            std::string name = "Delete point from " + label;
 
-        if (ImGui::Button(name.c_str())){
-            polygon.popBack();
-            updateFigures();
-        }       
+            if (ImGui::Button(name.c_str())){
+                polygon.popBack();
+                Manipulator::StatesLibrary::getInstance().updateState();
+            }       
         ImGui::EndDisabled();
 
         ImGui::PopStyleColor(3);
-    }
-
-    // update the library
-    void updateFigures(){
-        auto& figures = Manipulator::StatesLibrary::getInstance().getStateRef();
-        figures.intersection = Math::findPolygonsInter(figures.polygon1, figures.polygon2);
-        DrawUtils::setActualPointsLabels(figures.polygon1, figures.polygon2, figures.intersection);
     }
 
     void DisplayPoint(Geometry::Point &point, bool muted) {
@@ -321,7 +341,7 @@ namespace DrawOutput {
 
         if (!muted && modified){ 
             point.setX(atof(x_buffer));
-            updateFigures();
+            Manipulator::StatesLibrary::getInstance().updateState();
         }
 
         ImGui::SameLine();
@@ -331,7 +351,7 @@ namespace DrawOutput {
 
         if (!muted && modified){
             point.setY(atof(y_buffer));
-            updateFigures();
+            Manipulator::StatesLibrary::getInstance().updateState();
         }
     }
 }
