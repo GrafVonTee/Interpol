@@ -147,27 +147,28 @@ namespace DrawOutput {
 
     inline void DrawProperties() {
 
-        Manipulator::StatesLibrary::getInstance().addState(Manipulator::StatesLibrary::getInstance().getStateCopy());
-        auto unmodifiedFigures = Manipulator::StatesLibrary::getInstance().getStateCopy();
-        auto& figures = Manipulator::StatesLibrary::getInstance().getStateRef();
+        Manipulator::StatesLibrary &library = Manipulator::StatesLibrary::getInstance();
+        library.addState(library.getStateCopy());
+        auto unmodifiedFigures = library.getStateCopy();
+        auto& figures = library.getStateRef();
 
         // with this set to true, polygon can't be modified
         bool muted = true;
 
         ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-        {
+        {               
+            DisplayRevertButton();
             DisplayPolygon(figures.polygon1, "Polygon 1");
             DisplayPolygon(figures.polygon2, "Polygon 2");
             // intersections are forbidden from getting moddified
             DisplayPolygon(figures.intersection.polygon, "Intersection", muted);
-            DisplayRevertButton();
         }
         ImGui::End();
 
         // check if new state varies from copied state and if it does, preserve it and print it to console
         if ((unmodifiedFigures.polygon1 == figures.polygon1)&&(unmodifiedFigures.polygon2 == figures.polygon2)
             &&(unmodifiedFigures.intersection.polygon == figures.intersection.polygon)){
-                Manipulator::StatesLibrary::getInstance().popState();
+                library.popState();
             }
         else{
             // this causes a crash if more than 1 point is added to a polygon
@@ -250,13 +251,11 @@ namespace DrawOutput {
     }
 
     void DisplayRevertButton(){
-        ImGui::BeginDisabled(Manipulator::StatesLibrary::getInstance().getSize() <= 2);
+        Manipulator::StatesLibrary &library = Manipulator::StatesLibrary::getInstance();
+        ImGui::BeginDisabled(library.getSize() <= 2);
             if (ImGui::Button("Revert last change")) {
-                auto state = Manipulator::StatesLibrary::getInstance().getStateCopy(-3);
-                Manipulator::StatesLibrary::getInstance().popState();
-                Manipulator::StatesLibrary::getInstance().popState();                
-                Manipulator::StatesLibrary::getInstance().popState();
-                Manipulator::StatesLibrary::getInstance().addState(state);
+                library.popState();
+                library.popState();
             }
         ImGui::EndDisabled();
     }
