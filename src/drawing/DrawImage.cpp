@@ -157,11 +157,12 @@ namespace DrawOutput {
 
         ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
         {               
-            DisplayRevertButton();
             DisplayPolygon(figures.polygon1, "Polygon 1");
             DisplayPolygon(figures.polygon2, "Polygon 2");
             // intersections are forbidden from getting moddified
             DisplayPolygon(figures.intersection.polygon, "Intersection", muted);
+            
+            DisplayRevertButton();
         }
         ImGui::End();
 
