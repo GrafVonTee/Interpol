@@ -40,42 +40,6 @@ namespace Interaction {
         return userName;
     }
 
-    triangle_result_t getTriangle(const std::string &letter,
-                                  std::istream& inputStream,
-                                  std::ostream& outputStream) {
-
-        // Get points until both of them become correct
-        outputStream << "Let\'s enter your triangle!" << endl;
-        std::vector<Geometry::Point> points;
-        constexpr short numberOfPoints = 3;
-        for (auto i = 0; i < numberOfPoints; i++) {
-            Geometry::Point point;
-            States::InputState state;
-            std::string pointLetter = letter + std::to_string(i+1);
-            do {
-                auto [tuple_point, tuple_state] = getPoint(
-                        pointLetter,
-                        inputStream, outputStream);
-                point = tuple_point;
-                state = tuple_state;
-            } while (state != States::InputState::Correct);
-            points.push_back(point);
-        }
-
-        // Check entered points can actually form triangle
-        Geometry::Polygon polygon;
-        States::InputState state = States::InputState::Correct;
-        try {
-            polygon = Geometry::Polygon(points);
-        } catch (const std::logic_error& e) {
-            cerr << e.what() << endl;
-            polygon = Geometry::Polygon();
-            state = States::InputState::IncorrectInput;
-        }
-
-        return std::make_tuple(polygon, state);
-    }
-
     polygon_result_t getPolygon(const std::string& letter, std::istream& inputStream, std::ostream& outputStream) {
         int numPoints;
 
@@ -92,11 +56,10 @@ namespace Interaction {
 
             inputStream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-            if (numPoints <= 0) {
+            if (numPoints <= 0)
                 outputStream << "Invalid number of points. Please enter a positive integer.\n";
-            } else {
+            else
                 break;
-            }
         }
 
         std::vector<Geometry::Point> points;
@@ -138,7 +101,6 @@ namespace Interaction {
         outputStream << "Please, enter new point " << letter << " in \'(x, y)\' format: ";
         std::string inputStr;
         std::getline(inputStream, inputStr);
-        // cin.ignore();
 
         auto [resulted, state] = Parsing::parsePoint(inputStr);
 
@@ -179,19 +141,6 @@ namespace Interaction {
 
     void printPoint(const Geometry::Point &point) {
         cout << "Point " << point.getLabel() << " = " << point << endl;
-    }
-
-    void printTriangle(const Geometry::Polygon &triangle) {
-        std::string nameOfTriangle;
-        for (size_t i = 0; i < triangle.size() - 1; ++i)
-            nameOfTriangle += triangle[i].getLabel() + ",";
-        nameOfTriangle += triangle[2].getLabel();
-
-        cout << "Triangle " << nameOfTriangle
-             << " with points:" << endl;
-        for (auto i = 0; i < triangle.size(); ++i)
-            printPoint(triangle[i]);
-        cout << endl;
     }
 
     void printIntersection(const Geometry::Intersection &intersection) {
@@ -262,9 +211,8 @@ namespace Interaction {
                 std::string pointLabel = std::string(1, startingLetter) + std::to_string(i + 1);
 
                 // Update the point label if it doesn't start with the correct letter
-                if (polygon[i].getLabel()[0] != startingLetter) {
+                if (polygon[i].getLabel()[0] != startingLetter)
                     polygon[i].setLabel(pointLabel);
-                }
             }
         }
         // Print the polygon

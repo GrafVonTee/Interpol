@@ -23,4 +23,10 @@ namespace DrawConst {
     const float SQUARE_SIDE_SIZE = 800;
 
     constinit int BUFFER_SIZE = 32;
+
+    const ImU32& RED_COLOR = IM_COL32(186, 36,  66, 255);
+    const ImU32& GREEN_COLOR = IM_COL32(40,  156, 80, 255);
+    const ImU32& YELLOW_COLOR = IM_COL32(204, 189, 12, 255);
+    const ImU32& WHITE_COLOR = IM_COL32(255, 255, 255, 255);
+
 }

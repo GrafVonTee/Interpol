@@ -5,8 +5,8 @@
 #include "GetImVecFromPolygon.h"
 #include "ConstantsForDrawing.h"
 #include "CalculateIntersections.h"
-#include "ConsoleInteraction.h"
 #include "StatesLibrary.h"
+
 // // Enable for imgui demo window
 // #include "imgui_demo.cpp"
 
@@ -128,9 +128,9 @@ namespace DrawOutput {
                                                                                 figures.polygon2,
                                                                                 DrawConst::SQUARE_SIDE_SIZE);
 
-            DrawPolygon(drawList, figures.polygon1, parameters, pos, RED_COLOR);
-            DrawPolygon(drawList, figures.polygon2, parameters, pos, GREEN_COLOR);
-            DrawPolygon(drawList, figures.intersection.polygon, parameters, pos, YELLOW_COLOR);
+            DrawPolygon(drawList, figures.polygon1, parameters, pos, DrawConst::RED_COLOR);
+            DrawPolygon(drawList, figures.polygon2, parameters, pos, DrawConst::GREEN_COLOR);
+            DrawPolygon(drawList, figures.intersection.polygon, parameters, pos, DrawConst::YELLOW_COLOR);
 
             std::unordered_set<Geometry::Point, Geometry::Point::HashFunction> s;
             for (const Geometry::Polygon& figurePtr : {figures.polygon1, figures.polygon2, figures.intersection.polygon}){
@@ -139,7 +139,7 @@ namespace DrawOutput {
             }
 
             for (const Geometry::Point& pointPtr : s){
-                DrawPoint(drawList, pointPtr, parameters, pos, WHITE_COLOR);
+                DrawPoint(drawList, pointPtr, parameters, pos, DrawConst::WHITE_COLOR);
             }
         }
         ImGui::End();
@@ -159,7 +159,7 @@ namespace DrawOutput {
         {               
             DisplayPolygon(figures.polygon1, "Polygon 1");
             DisplayPolygon(figures.polygon2, "Polygon 2");
-            // intersections are forbidden from getting moddified
+            // intersections are forbidden from getting modified
             DisplayPolygon(figures.intersection.polygon, "Intersection", muted);
             
             DisplayRevertButton();
@@ -236,7 +236,7 @@ namespace DrawOutput {
     void DisplayPolygon(Geometry::Polygon &polygon, const std::string& title, bool muted) {
         std::vector<Geometry::Point> &points1 = polygon.getPointsRef();
         if (muted) points1 = polygon.getPointsRef();
-        ImGui::Text(title.c_str());
+        ImGui::Text("%s", title.c_str());
 
         for (Geometry::Point& point : points1) {   
             DisplayPoint(point, muted);
@@ -278,7 +278,7 @@ namespace DrawOutput {
             Geometry::Point front = polygon.getPointsRef().front();
             Geometry::Point back = polygon.getPointsRef().back();
             // offset the new point from the middle of section 
-            float offset = pow((pow(front.getX() - back.getX(), 2) + pow(front.getX() - back.getX(), 2)), 0.5);
+            auto offset = (float)pow((pow(front.getX() - back.getX(), 2) + pow(front.getX() - back.getX(), 2)), 0.5);
             Geometry::Point newPoint = Geometry::Point((front.getX() + back.getX())/2 + offset/5, (front.getY() + back.getY())/2);
             polygon.emplaceBack(newPoint);
             Manipulator::StatesLibrary::getInstance().updateState();

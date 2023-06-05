@@ -1,6 +1,8 @@
 #ifndef TRIANGLE_INTERSECTIONS_CONSTANTSFORDRAWING_H
 #define TRIANGLE_INTERSECTIONS_CONSTANTSFORDRAWING_H
 
+#include "imgui.h"
+
 namespace DrawConst {
 
     struct scalingParameters {
@@ -28,9 +30,11 @@ namespace DrawConst {
     extern const float DISPLAY_SCALE;
     
     extern const float SQUARE_SIDE_SIZE;
-    extern const float INDENT_SIZE;
-
     extern constinit int BUFFER_SIZE;
-}
 
+    extern const ImU32& RED_COLOR;
+    extern const ImU32& GREEN_COLOR;
+    extern const ImU32& YELLOW_COLOR;
+    extern const ImU32& WHITE_COLOR;
+}
 #endif //TRIANGLE_INTERSECTIONS_CONSTANTSFORDRAWING_H

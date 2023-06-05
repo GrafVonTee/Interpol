@@ -2,7 +2,6 @@
 #include "DrawImage.h"
 #include "Parsing.h"
 #include "ConsoleInteraction.h"
-#include "GetImVecFromPolygon.h"
 #include "StatesLibrary.h"
 
 const std::string hexAndHex = std::string("6\n")

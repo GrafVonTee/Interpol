@@ -9,11 +9,7 @@
 #include "imgui_impl_opengl3.h"
 #include "GeometryUtils.h"
 #include "GetImVecFromPolygon.h"
-
-#define RED_COLOR    IM_COL32(186, 36,  66, 255)
-#define GREEN_COLOR  IM_COL32(40,  156, 80, 255)
-#define YELLOW_COLOR IM_COL32(204, 189, 12, 255)
-#define WHITE_COLOR  IM_COL32(255, 255, 255, 255)
+#include "ConstantsForDrawing.h"
 
 namespace DrawOutput {
     void draw_polygons_and_intersection();
@@ -23,14 +19,14 @@ namespace DrawOutput {
         const Geometry::Point& point, 
         const DrawUtils::scalingParameters& parameters,
         const ImVec2& offset = ImVec2(0, 0), 
-        const ImU32& col = WHITE_COLOR
+        const ImU32& col = DrawConst::WHITE_COLOR
     );
     void DrawPolygon(
         ImDrawList *draw_list, 
         const Geometry::Polygon& polygon, 
         const DrawUtils::scalingParameters& parameters, 
         const ImVec2& offset = ImVec2(0, 0), 
-        const ImU32& col = WHITE_COLOR
+        const ImU32& col = DrawConst::WHITE_COLOR
     );
     // set muted to "true" if you don't want your point to be editable
     void DisplayPoint(Geometry::Point &point, bool muted = false);
