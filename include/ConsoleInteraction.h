@@ -26,8 +26,8 @@ namespace Interaction {
     triangle_result_t getTriangle(const std::string &letter,
                                   std::istream& inputStream = std::cin,
                                   std::ostream& outputStream = std::cout);
-  
-    polygon_result_t getPolygon(const char letter,
+
+    polygon_result_t getPolygon(char letter,
                                 std::istream& inputStream = std::cin,
                                 std::ostream& outputStream = std::cout);
     polygon_pair_t getBothPolygons(std::istream& inputStream = std::cin,

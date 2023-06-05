@@ -237,10 +237,10 @@ TEST(PolygonTest, OutOperator) {
     testing::internal::CaptureStdout();
     std::cout << polygon << std::endl;
     std::string output = testing::internal::GetCapturedStdout();
-    EXPECT_EQ(output, "Polygon[(0, 0, ), (0, 2, )]\n");
+    EXPECT_EQ(output, "Polygon[(0, 0), (0, 2)]\n");
 
     testing::internal::CaptureStdout();
     std::cout << polygon;
     output = testing::internal::GetCapturedStdout();
-    EXPECT_EQ(output, "Polygon[(0, 0, ), (0, 2, )]");
+    EXPECT_EQ(output, "Polygon[(0, 0), (0, 2)]");
 }

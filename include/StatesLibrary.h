@@ -26,10 +26,10 @@ namespace Manipulator {
             return instance;
         }
 
-        bool isEmpty() const { return m_states.empty(); }
-        size_t getSize() const { return m_states.size(); }
+        [[nodiscard]] bool isEmpty() const { return m_states.empty(); }
+        [[nodiscard]] size_t getSize() const { return m_states.size(); }
 
-        const FiguresState &getState(size_t stateIndex = -1) const;
+        [[nodiscard]] const FiguresState &getState(size_t stateIndex = -1) const;
         FiguresState getStateCopy(size_t stateIndex = -1);
         FiguresState &getStateRef(size_t stateIndex = -1);
 
@@ -43,10 +43,8 @@ namespace Manipulator {
         static void addInputState(const Geometry::Polygon &, const Geometry::Polygon &);
         static void emplaceInputState(Geometry::Polygon &, Geometry::Polygon &);
 
-        void updateState();
-
+        static void updateState();
         void popState();
     };
 }
-
 #endif //TRIANGLE_INTERSECTIONS_STATES_LIBRARY_H

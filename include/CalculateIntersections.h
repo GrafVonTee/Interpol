@@ -9,7 +9,8 @@
 
 namespace Math {
 
-// Important case - it is when 2 lines not parallel and sections have intersection. If case is important, we get coords of intersection point, else we get (0,0) point
+// Important case - it is when 2 lines not parallel and sections have intersection.
+// If case is important, we get coords of intersection point, else we get (0,0) point
     struct LineIntersection{
         Geometry::Point point;
         bool isImportantCase;
@@ -27,7 +28,8 @@ namespace Math {
     // Adding into vector all vertex of "internal" polygon which is locating into "external polygon"
     void addInsideVertex(std::vector<Geometry::Point>& list, const Geometry::Polygon& internal, const Geometry::Polygon& external);
 
-    // Important case - it is when 2 lines not parallel and sections have intersection. If case is important, we get coords of intersection point, else we get (0,0) point
+    // Important case - it is when 2 lines not parallel and sections have intersection.
+    // If case is important, we get coords of intersection point, else we get (0,0) point
     LineIntersection findLinesInter(const Geometry::Point &firstStart,  const Geometry::Point &firstEnd,
                                     const Geometry::Point &secondStart, const Geometry::Point &secondEnd);
 

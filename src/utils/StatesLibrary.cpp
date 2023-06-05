@@ -126,8 +126,7 @@ namespace Manipulator {
         StatesLibrary::getInstance().emplaceState(poly1, poly2, intersection);
     }
 
-    void
-    StatesLibrary::updateState() {
+    void StatesLibrary::updateState() {
         auto &manipulator = StatesLibrary::getInstance();
         if (manipulator.isEmpty())
             return;

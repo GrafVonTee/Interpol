@@ -236,7 +236,7 @@ TEST(PointTest, OutOperator) {
     testing::internal::CaptureStdout();
     std::cout << p;
     std::string output = testing::internal::GetCapturedStdout();
-    EXPECT_EQ(output, "(1, 2, A)")
+    EXPECT_EQ(output, "(1, 2)")
     << "Test: "
     <<  "std::cout << " << output
     << "\nExpected: " << output
@@ -246,7 +246,7 @@ TEST(PointTest, OutOperator) {
     p = Point();
     std::cout << p << std::endl;
     output = testing::internal::GetCapturedStdout();
-    EXPECT_EQ(output, "(0, 0, )\n")
+    EXPECT_EQ(output, "(0, 0)\n")
     << "Test: "
     <<  "std::cout << " << output
     << "\nExpected: " << output << "\n"

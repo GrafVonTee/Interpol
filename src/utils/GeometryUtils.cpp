@@ -5,6 +5,8 @@
 #include <utility>
 #include "GeometryUtils.h"
 
+using namespace States;
+
 namespace Geometry {
     Point::Point(const coord_t &x, const coord_t &y)
             : m_x(x), m_y(y) {}
@@ -115,19 +117,20 @@ namespace Geometry {
         m_pointList = points;
         sortPoints();
 
-        m_state = States::PolygonState(
-                (points.size() < (size_t)States::PolygonState::AllStates)
-                ? points.size() : (size_t)States::PolygonState::OtherPolygon);
+        m_state = PolygonState(
+                (points.size() < (size_t)PolygonState::AllStates)
+                ? points.size() : (size_t)PolygonState::OtherPolygon
+        );
     }
 
     Polygon::Polygon(Polygon &&other) noexcept {
         m_state = other.m_state;
         m_pointList = std::move(other.m_pointList);
-        other.m_state = States::PolygonState::NotPolygon;
+        other.m_state = PolygonState::NotPolygon;
         other.m_pointList.clear();
     }
 
-    States::PolygonState Polygon::getState() const {
+    PolygonState Polygon::getState() const {
         return m_state;
     }
 
@@ -180,7 +183,7 @@ namespace Geometry {
         if (this != &other) {
             m_pointList = std::move(other.m_pointList);
             m_state = other.m_state;
-            other.m_state = States::PolygonState::NotPolygon;
+            other.m_state = PolygonState::NotPolygon;
         }
         return *this;
     }
@@ -302,7 +305,7 @@ namespace Geometry {
         }
 
         if (sort) this->sortPoints();
-        m_state = States::PolygonState(this->size());
+        m_state = PolygonState(this->size());
     }
 
     void Polygon::emplaceBack(Point &&point, bool sort, bool check) {
@@ -324,13 +327,13 @@ namespace Geometry {
         }
 
         if (sort) this->sortPoints();
-        m_state = States::PolygonState(this->size());
+        m_state = PolygonState(this->size());
     }
 
     void Polygon::popBack() {
         if (size() == 0)
             throw std::underflow_error("Polygon is empty!");
         m_pointList.pop_back();
-        m_state = States::PolygonState(this->size() - 1);
+        m_state = PolygonState(this->size() - 1);
     }    
 }

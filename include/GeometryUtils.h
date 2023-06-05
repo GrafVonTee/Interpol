@@ -59,12 +59,6 @@ namespace Geometry {
         bool operator==(Point&& other) const noexcept;
         bool operator!=(Point&& other) const noexcept;
 
-        Point& operator=(const Point &other);
-        Point& operator=(Point &&other) noexcept;
-
-        friend std::ostream& operator<<(std::ostream &out, const Point &point);
-
-        
         struct HashFunction
         {
             size_t operator()(const Point& point) const
@@ -74,7 +68,13 @@ namespace Geometry {
                 return xHash ^ yHash;
             }
         };
-        
+
+
+
+        Point& operator=(const Point &other);
+        Point& operator=(Point &&other) noexcept;
+
+        friend std::ostream& operator<<(std::ostream &out, const Point &point);
     };
 
     class Polygon {

@@ -157,29 +157,6 @@ namespace Interaction {
         }
     }
 
-    triangle_pair_t getBothTriangles(std::istream &inputStream,
-                                     std::ostream& outputStream) {
-        // Get triangles until both of them become correct
-
-        outputStream << "The first thing you need is defining your two triangles (1 and 2)!" << endl;
-        Geometry::Polygon triangle1, triangle2;
-        States::InputState state;
-        for (int i = 1; i <= 2; ++i) {
-            do {
-                outputStream << endl;
-                std::string letterTriangle = (i == 1) ? "A" : "B";
-                auto [tuple_triangle, tuple_state] = getTriangle(letterTriangle, inputStream, outputStream);
-                if (i == 1)
-                    triangle1 = tuple_triangle;
-                else
-                    triangle2 = tuple_triangle;
-                state = tuple_state;
-            } while (state != States::InputState::Correct);
-        }
-
-        return std::make_tuple(triangle1, triangle2);
-    }
-
     polygon_pair_t getBothPolygons(std::istream& inputStream, std::ostream& outputStream) {
         outputStream << "The first thing you need is to define your two polygons (1 and 2)!" << std::endl;
         Geometry::Polygon polygon1, polygon2;

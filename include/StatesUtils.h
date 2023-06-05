@@ -5,7 +5,6 @@ namespace States {
     enum class InputState {
         IncorrectInput,
         EmptyString,
-        EqualPoints,
         Correct
     };
 
