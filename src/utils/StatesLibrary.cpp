@@ -3,8 +3,11 @@
 #include "GetImVecFromPolygon.h"
 
 namespace Manipulator {
-    const FiguresState &
-    StatesLibrary::getStateView(size_t stateIndex) const {
+    bool StatesLibrary::isEmpty() const { return m_states.empty(); }
+
+    size_t StatesLibrary::getSize() const { return m_states.size(); }
+
+    const FiguresState& StatesLibrary::getStateView(size_t stateIndex) const {
         if (isEmpty())
             throw std::underflow_error("Library is empty! Nothing to get.");
 
@@ -18,8 +21,7 @@ namespace Manipulator {
         }
     }
 
-    FiguresState
-    StatesLibrary::getStateCopy(size_t stateIndex) const {
+    FiguresState StatesLibrary::getStateCopy(size_t stateIndex) const {
         if (isEmpty())
             throw std::underflow_error("Library is empty! Nothing to get.");
 
@@ -33,8 +35,7 @@ namespace Manipulator {
         }
     }
 
-    FiguresState &
-    StatesLibrary::getStateRef(size_t stateIndex) {
+    FiguresState& StatesLibrary::getStateRef(size_t stateIndex) {
         if (isEmpty())
             throw std::underflow_error("Library is empty! Nothing to get.");
 
@@ -48,13 +49,11 @@ namespace Manipulator {
         }
     }
 
-    void
-    StatesLibrary::addState(const FiguresState &state) {
+    void StatesLibrary::addState(const FiguresState &state) {
         m_states.push_back(state);
     }
 
-    void
-    StatesLibrary::emplaceState(FiguresState &state) {
+    void StatesLibrary::emplaceState(FiguresState &state) {
         m_states.emplace_back(std::move(state));
     }
 
@@ -63,15 +62,13 @@ namespace Manipulator {
         m_states.emplace_back(state);
     }
 
-    void
-    StatesLibrary::addState(const Geometry::Polygon &poly1,
+    void StatesLibrary::addState(const Geometry::Polygon &poly1,
                             const Geometry::Polygon &poly2,
                             const Geometry::Intersection &inter) {
         m_states.push_back(FiguresState{poly1, poly2, inter});
     }
 
-    void
-    StatesLibrary::emplaceState(Geometry::Polygon &poly1,
+    void StatesLibrary::emplaceState(Geometry::Polygon &poly1,
                                 Geometry::Polygon &poly2,
                                 Geometry::Intersection &inter) {
         m_states.emplace_back(FiguresState{
@@ -81,16 +78,14 @@ namespace Manipulator {
         });
     }
 
-    void
-    StatesLibrary::popState() {
+    void StatesLibrary::popState() {
         if (isEmpty())
             throw std::underflow_error("Library is empty! Nothing to pop.");
 
         m_states.pop_back();
     }
 
-    void
-    StatesLibrary::addInputState(const Geometry::Polygon &polygon1, const Geometry::Polygon &polygon2) {
+    void StatesLibrary::addInputState(const Geometry::Polygon &polygon1, const Geometry::Polygon &polygon2) {
         auto poly1 = polygon1;
         auto poly2 = polygon2;
         auto intersection = Math::findPolygonsInter(poly1, poly2);
@@ -100,8 +95,7 @@ namespace Manipulator {
         StatesLibrary::getInstance().addState(poly1, poly2, intersection);
     }
 
-    void
-    StatesLibrary::emplaceInputState(Geometry::Polygon &poly1, Geometry::Polygon &poly2) {
+    void StatesLibrary::emplaceInputState(Geometry::Polygon &poly1, Geometry::Polygon &poly2) {
         auto intersection = Math::findPolygonsInter(poly1, poly2);
         DrawUtils::setActualPointsLabels(poly1,
                                          poly2,

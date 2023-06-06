@@ -12,7 +12,7 @@
 #include "ConstantsForDrawing.h"
 
 namespace DrawOutput {
-    void draw_polygons_and_intersection();
+    void drawPolygonsAndIntersection();
 
     void DrawPoint(
         ImDrawList *draw_list, 

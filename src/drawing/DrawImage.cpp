@@ -10,9 +10,11 @@
 // // Enable for imgui demo window
 // #include "imgui_demo.cpp"
 
+using figures_state_t = Manipulator::FiguresState;
+
 
 namespace DrawOutput {
-    void draw_polygons_and_intersection() {
+    void drawPolygonsAndIntersection() {
 
         #if defined(IMGUI_IMPL_OPENGL_ES2)
                 const char* glsl_version = "#version 100";
@@ -70,7 +72,7 @@ namespace DrawOutput {
         ImGui::SetNextWindowPos(ImVec2(0, 0));
 
         auto& statesLib = Manipulator::StatesLibrary::getInstance();
-        Manipulator::FiguresState figures = statesLib.getStateRef();
+        figures_state_t figures = statesLib.getStateRef();
 
         while (!glfwWindowShouldClose(window)) {
 
@@ -116,7 +118,7 @@ namespace DrawOutput {
 
     inline void DrawCanvas() {
 
-        const auto& figures = Manipulator::StatesLibrary::getInstance().getStateView();
+        const figures_state_t& figures = Manipulator::StatesLibrary::getInstance().getStateView();
         
         ImGui::Begin("Canvas", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
         {
@@ -148,7 +150,7 @@ namespace DrawOutput {
     inline void DrawProperties() {
 
         Manipulator::StatesLibrary &library = Manipulator::StatesLibrary::getInstance();
-        auto figures = library.getStateCopy();
+        figures_state_t figures = library.getStateCopy();
 
         // with this set to true, polygon can't be modified
         bool muted = true;
@@ -233,10 +235,10 @@ namespace DrawOutput {
         ImGui::Text("%s", title.c_str());
 
         bool anyPointChanged = false;
-        for (Geometry::Point& point : points1) {   
+        for (Geometry::Point& point : points1)
             if (DisplayPoint(point, muted))
                 anyPointChanged = true;
-        }
+
         polygon.sortPoints();
         if (anyPointChanged)
             Manipulator::StatesLibrary::getInstance().updateStateWith(polygon, figname);

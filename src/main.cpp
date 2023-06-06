@@ -47,7 +47,7 @@ int main() {
     Interaction::printStateFromLibrary();
 
     Interaction::welcomeToGui();
-    DrawOutput::draw_polygons_and_intersection();
+    DrawOutput::drawPolygonsAndIntersection();
 
     Interaction::goodbye(userName);
     system("pause");

@@ -27,8 +27,8 @@ namespace Manipulator {
             return instance;
         }
 
-        bool isEmpty() const { return m_states.empty(); }
-        size_t getSize() const { return m_states.size(); }
+        bool isEmpty() const;
+        size_t getSize() const;
 
         const FiguresState& getStateView(size_t stateIndex = -1) const;
         FiguresState getStateCopy(size_t stateIndex = -1) const;
