@@ -26,5 +26,11 @@ namespace States {
         Matched,
         Polygon
     };
+
+    enum class FigureName {
+        Polygon1,
+        Polygon2,
+        Intersection,
+    };
 }
 #endif // TRIANGLE_INTERSECTIONS_STATESUTILS_H

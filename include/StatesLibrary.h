@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "GeometryUtils.h"
+#include "StatesUtils.h"
 
 namespace Manipulator {
     struct FiguresState {
@@ -26,11 +27,11 @@ namespace Manipulator {
             return instance;
         }
 
-        [[nodiscard]] bool isEmpty() const { return m_states.empty(); }
-        [[nodiscard]] size_t getSize() const { return m_states.size(); }
+        bool isEmpty() const { return m_states.empty(); }
+        size_t getSize() const { return m_states.size(); }
 
-        [[nodiscard]] const FiguresState &getState(size_t stateIndex = -1) const;
-        FiguresState getStateCopy(size_t stateIndex = -1);
+        const FiguresState& getStateView(size_t stateIndex = -1) const;
+        FiguresState getStateCopy(size_t stateIndex = -1) const;
         FiguresState &getStateRef(size_t stateIndex = -1);
 
         void addState(const FiguresState &state);
@@ -40,10 +41,12 @@ namespace Manipulator {
         void addState(const Geometry::Polygon &, const Geometry::Polygon &, const Geometry::Intersection &);
         void emplaceState(Geometry::Polygon &, Geometry::Polygon &, Geometry::Intersection &);
 
-        static void addInputState(const Geometry::Polygon &, const Geometry::Polygon &);
-        static void emplaceInputState(Geometry::Polygon &, Geometry::Polygon &);
+        void addInputState(const Geometry::Polygon &, const Geometry::Polygon &);
+        void emplaceInputState(Geometry::Polygon &, Geometry::Polygon &);
 
-        static void updateState();
+        void updateState();
+        void updateStateWith(const Geometry::Polygon &, States::FigureName);
+
         void popState();
     };
 }

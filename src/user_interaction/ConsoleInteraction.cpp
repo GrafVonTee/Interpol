@@ -222,9 +222,9 @@ namespace Interaction {
     void printStateFromLibrary(size_t indexState) {
         Manipulator::FiguresState figState;
         if (indexState == -1)
-            figState = Manipulator::StatesLibrary::getInstance().getState();
+            figState = Manipulator::StatesLibrary::getInstance().getStateView();
         else
-            figState = Manipulator::StatesLibrary::getInstance().getState(indexState);
+            figState = Manipulator::StatesLibrary::getInstance().getStateView(indexState);
 
         printPolygon(figState.polygon1);
         printPolygon(figState.polygon2);

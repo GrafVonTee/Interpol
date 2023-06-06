@@ -37,7 +37,7 @@ namespace DrawOutput {
 
         // Create a GLFW window
         GLFWwindow *window = glfwCreateWindow((int) DrawConst::WINDOW_WIDTH, (int) DrawConst::WINDOWS_HEIGHT,
-                                              "Triangle Intersection",
+                                              "Polygon Intersection",
                                               nullptr, nullptr);
 
         // Make the OpenGL context current
@@ -116,7 +116,7 @@ namespace DrawOutput {
 
     inline void DrawCanvas() {
 
-        const auto& figures = Manipulator::StatesLibrary::getInstance().getState();
+        const auto& figures = Manipulator::StatesLibrary::getInstance().getStateView();
         
         ImGui::Begin("Canvas", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
         {
@@ -148,33 +148,21 @@ namespace DrawOutput {
     inline void DrawProperties() {
 
         Manipulator::StatesLibrary &library = Manipulator::StatesLibrary::getInstance();
-        library.addState(library.getStateCopy());
-        auto unmodifiedFigures = library.getStateCopy();
-        auto& figures = library.getStateRef();
+        auto figures = library.getStateCopy();
 
         // with this set to true, polygon can't be modified
         bool muted = true;
 
         ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-        {               
-            DisplayPolygon(figures.polygon1, "Polygon 1");
-            DisplayPolygon(figures.polygon2, "Polygon 2");
-            // intersections are forbidden from getting modified
-            DisplayPolygon(figures.intersection.polygon, "Intersection", muted);
-            
+        {
             DisplayRevertButton();
+
+            DisplayPolygon(figures.polygon1, "Polygon 1", States::FigureName::Polygon1);
+            DisplayPolygon(figures.polygon2, "Polygon 2", States::FigureName::Polygon2);
+            // intersections are forbidden from getting modified
+            DisplayPolygon(figures.intersection.polygon, "Intersection", States::FigureName::Intersection, muted);
         }
         ImGui::End();
-
-        // check if new state varies from copied state and if it does, preserve it and print it to console
-        if ((unmodifiedFigures.polygon1 == figures.polygon1)&&(unmodifiedFigures.polygon2 == figures.polygon2)
-            &&(unmodifiedFigures.intersection.polygon == figures.intersection.polygon)){
-                library.popState();
-            }
-        else{
-            // this causes a crash if more than 1 point is added to a polygon
-            // Interaction::printStateFromLibrary();
-        }
     }
 
     void DrawPoint(
@@ -233,42 +221,63 @@ namespace DrawOutput {
             );
     }
 
-    void DisplayPolygon(Geometry::Polygon &polygon, const std::string& title, bool muted) {
+    void DisplayPolygon(
+            Geometry::Polygon &polygon,
+            const std::string& title,
+            States::FigureName figname,
+            bool muted)
+    {
         std::vector<Geometry::Point> &points1 = polygon.getPointsRef();
+        // ??? copy-paste?
         if (muted) points1 = polygon.getPointsRef();
         ImGui::Text("%s", title.c_str());
 
+        bool anyPointChanged = false;
         for (Geometry::Point& point : points1) {   
-            DisplayPoint(point, muted);
+            if (DisplayPoint(point, muted))
+                anyPointChanged = true;
         }
         polygon.sortPoints();
+        if (anyPointChanged)
+            Manipulator::StatesLibrary::getInstance().updateStateWith(polygon, figname);
 
         if (!muted) {
-            DisplayAddButton(polygon);            
+            DisplayAddButton(polygon, figname);
             ImGui::SameLine();
             // if (polygon.size() >= 3)
-            DisplayDeleteButton(polygon);
+            DisplayDeleteButton(polygon, figname);
         }
     }
 
-    void DisplayRevertButton(){
+    void DisplayRevertButton() {
         Manipulator::StatesLibrary &library = Manipulator::StatesLibrary::getInstance();
-        ImGui::BeginDisabled(library.getSize() <= 2);
+        ImGui::BeginDisabled(library.getSize() <= 1);
             if (ImGui::Button("Revert last change")) {
-                library.popState();
                 library.popState();
             }
         ImGui::EndDisabled();
     }
 
-    void DisplayAddButton(Geometry::Polygon& polygon) {
+    void DisplayAddButton(Geometry::Polygon& polygon, States::FigureName figname) {
         // HSV stands for Hue/Saturation/Value
-        ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(DrawConst::HSVGreenDefault.Hue, 
-                                                            DrawConst::HSVGreenDefault.Saturation, DrawConst::HSVGreenDefault.Value));
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(DrawConst::HSVGreenHovered.Hue, 
-                                                            DrawConst::HSVGreenHovered.Saturation, DrawConst::HSVGreenHovered.Value));
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(DrawConst::HSVGreenActive.Hue, 
-                                                            DrawConst::HSVGreenActive.Saturation, DrawConst::HSVGreenActive.Value));
+        ImGui::PushStyleColor(ImGuiCol_Button,
+                              (ImVec4)ImColor::HSV(DrawConst::HSVGreenDefault.Hue,
+                                                   DrawConst::HSVGreenDefault.Saturation,
+                                                   DrawConst::HSVGreenDefault.Value
+                                                   )
+                             );
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
+                              (ImVec4)ImColor::HSV(DrawConst::HSVGreenHovered.Hue,
+                                                   DrawConst::HSVGreenHovered.Saturation,
+                                                   DrawConst::HSVGreenHovered.Value
+                                                   )
+                             );
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive,
+                              (ImVec4)ImColor::HSV(DrawConst::HSVGreenActive.Hue,
+                                                   DrawConst::HSVGreenActive.Saturation,
+                                                   DrawConst::HSVGreenActive.Value
+                                                   )
+                              );
         
         // Name the button in the format "Add point for PolygonName"
         char labelNumber = polygon.getPointsRef().front().getLabel().front();
@@ -281,19 +290,31 @@ namespace DrawOutput {
             auto offset = (float)pow((pow(front.getX() - back.getX(), 2) + pow(front.getX() - back.getX(), 2)), 0.5);
             Geometry::Point newPoint = Geometry::Point((front.getX() + back.getX())/2 + offset/5, (front.getY() + back.getY())/2);
             polygon.emplaceBack(newPoint);
-            Manipulator::StatesLibrary::getInstance().updateState();
+            Manipulator::StatesLibrary::getInstance().updateStateWith(polygon, figname);
         }
         ImGui::PopStyleColor(3);
     }
 
-    void DisplayDeleteButton(Geometry::Polygon& polygon) {
+    void DisplayDeleteButton(Geometry::Polygon& polygon, States::FigureName figname) {
         // HSV stands for Hue/Saturation/Value        
-        ImGui::PushStyleColor(ImGuiCol_Button, (ImVec4)ImColor::HSV(DrawConst::HSVRedDefault.Hue, 
-                                                            DrawConst::HSVRedDefault.Saturation, DrawConst::HSVRedDefault.Value));
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, (ImVec4)ImColor::HSV(DrawConst::HSVRedHovered.Hue, 
-                                                            DrawConst::HSVRedHovered.Saturation, DrawConst::HSVRedHovered.Value));
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, (ImVec4)ImColor::HSV(DrawConst::HSVRedActive.Hue, 
-                                                            DrawConst::HSVRedActive.Saturation, DrawConst::HSVRedActive.Value));
+        ImGui::PushStyleColor(ImGuiCol_Button,
+                              (ImVec4)ImColor::HSV(DrawConst::HSVRedDefault.Hue,
+                                                   DrawConst::HSVRedDefault.Saturation,
+                                                   DrawConst::HSVRedDefault.Value
+                                                   )
+                             );
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
+                              (ImVec4)ImColor::HSV(DrawConst::HSVRedHovered.Hue,
+                                                   DrawConst::HSVRedHovered.Saturation,
+                                                   DrawConst::HSVRedHovered.Value
+                                                   )
+                              );
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive,
+                              (ImVec4)ImColor::HSV(DrawConst::HSVRedActive.Hue,
+                                                   DrawConst::HSVRedActive.Saturation,
+                                                   DrawConst::HSVRedActive.Value
+                                                   )
+                             );
         
         ImGui::BeginDisabled((polygon.size() < 3));
             std::string label = polygon.getPointsRef().front().getLabel();
@@ -302,14 +323,14 @@ namespace DrawOutput {
 
             if (ImGui::Button(name.c_str())){
                 polygon.popBack();
-                Manipulator::StatesLibrary::getInstance().updateState();
+                Manipulator::StatesLibrary::getInstance().updateStateWith(polygon, figname);
             }       
         ImGui::EndDisabled();
 
         ImGui::PopStyleColor(3);
     }
 
-    void DisplayPoint(Geometry::Point &point, bool muted) {
+    bool DisplayPoint(Geometry::Point &point, bool muted) {
 
         int readonly = ImGuiInputTextFlags_None;
         if (muted) readonly = ImGuiInputTextFlags_ReadOnly;
@@ -335,6 +356,7 @@ namespace DrawOutput {
         ImGui::PushItemWidth(150);
 
         bool modified = false;
+        bool changed = false;
 
         modified = ImGui::InputText(name.c_str(), x_buffer, DrawConst::BUFFER_SIZE,
                             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue | readonly);
@@ -342,6 +364,7 @@ namespace DrawOutput {
         if (!muted && modified){ 
             point.setX(atof(x_buffer));
             Manipulator::StatesLibrary::getInstance().updateState();
+            changed = true;
         }
 
         ImGui::SameLine();
@@ -352,6 +375,9 @@ namespace DrawOutput {
         if (!muted && modified){
             point.setY(atof(y_buffer));
             Manipulator::StatesLibrary::getInstance().updateState();
+            changed = true;
         }
+
+        return changed;
     }
 }
