@@ -7,7 +7,7 @@ using namespace States;
 
 namespace ParsesInputTests {
     using test_cases_t = std::pair<std::string, InputState>;
-    class ParserInputTypeTestInterface : public ::testing::TestWithParam<test_cases_t> {};
+    class ParserInputTypeTestInterface : public testing::TestWithParam<test_cases_t> {};
 
     TEST_P(ParserInputTypeTestInterface, InputTypeTest) {
         auto expected = std::get<1>(GetParam());
