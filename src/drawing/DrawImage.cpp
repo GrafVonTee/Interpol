@@ -326,7 +326,7 @@ namespace DrawOutput {
         modified = ImGui::InputText(fieldName.c_str(), x_buffer, DrawConst::BUFFER_SIZE,
                             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue);
 
-        if (modified){ 
+        if ((modified)and(newPoint.getX()!=atof(x_buffer))){ 
             newPoint.setX(atof(x_buffer));
         }
 
@@ -335,7 +335,7 @@ namespace DrawOutput {
         modified = ImGui::InputText(fieldName.c_str(), y_buffer, DrawConst::BUFFER_SIZE,
                             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue);
 
-        if (modified){
+        if ((modified)and(newPoint.getY()!=atof(y_buffer))){
             newPoint.setY(atof(y_buffer));
         }
         // HSV stands for Hue/Saturation/Value
@@ -432,7 +432,7 @@ namespace DrawOutput {
         modified = ImGui::InputText(name.c_str(), x_buffer, DrawConst::BUFFER_SIZE,
                             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue | readonly);
 
-        if (!muted && modified){ 
+        if (!muted && modified && (point.getX()!=atof(x_buffer))){ 
             point.setX(atof(x_buffer));
             // Manipulator::StatesLibrary::getInstance().updateState();
             changed = true;
@@ -443,7 +443,7 @@ namespace DrawOutput {
         modified = ImGui::InputText(name.c_str(), y_buffer, DrawConst::BUFFER_SIZE,
                             ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue | readonly);
 
-        if (!muted && modified){
+        if (!muted && modified && (point.getY()!=atof(y_buffer))){
             point.setY(atof(y_buffer));
             // Manipulator::StatesLibrary::getInstance().updateState();
             changed = true;
