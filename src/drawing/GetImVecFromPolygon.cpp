@@ -80,20 +80,40 @@ namespace DrawUtils {
                 }
     }
 
-    void setActualLabels(Geometry::Polygon &polygon, char polygonLetter = 0, bool isIntersection = false) {
+    size_t *checkAvailableLabels(Geometry::Polygon &polygon){
+        size_t *labelChoices = new size_t[polygon.size()]; 
+        for (size_t i = 0; i < polygon.size(); i++){
+            labelChoices[i] = i + 1; 
+        }
+        for (size_t i = 0; i < polygon.size(); i++) {
+            if (!polygon[i].getLabel().empty()){
+                std::string label = polygon[i].getLabel();
+                label.erase(label.begin());
+                size_t labelNumber = stoi(label);
+                labelChoices[labelNumber - 1] = -1; // -1 stands for taken label number
+            }
+        }
+        return labelChoices;
+    }
+
+    void setActualLabels(Geometry::Polygon &polygon, char polygonLetter, bool isIntersection) {
         if (polygon.size() == 0)
             return;
 
         if (polygonLetter == 0)
             polygonLetter = polygon.getPointsRef().front().getLabel()[0];
 
-        int currentLabelNumber = 1;
+        size_t *labelChoices = checkAvailableLabels(polygon);        
+        // labeling with regard to possible missing numbers in point labels
         for (size_t i = 0; i < polygon.size(); i++) {
             if (polygon[i].getLabel().empty())
-                polygon[i].setLabel(std::string(1, polygonLetter) + std::to_string(currentLabelNumber++));
-            if (isIntersection)
-                currentLabelNumber--;
-            currentLabelNumber++;
+                for (size_t j = 0; j < polygon.size(); j++) {
+                    if (labelChoices[j] != -1){
+                        polygon[i].setLabel(std::string(1, polygonLetter) + std::to_string(labelChoices[j]));
+                        labelChoices[j] = -1;
+                        break;
+                    }            
+            }
         }
     }
 

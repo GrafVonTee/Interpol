@@ -121,6 +121,7 @@ namespace Geometry {
         void emplaceBack(const Point& point, bool sort = true, bool check = true);
         void emplaceBack(Point&& point, bool sort = true, bool check = true);
         void popBack();
+        void popAt(Point point);
 
         // Operators
         friend std::ostream &operator<<(std::ostream &out, const Polygon &polygon);

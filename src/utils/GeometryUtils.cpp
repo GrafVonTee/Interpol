@@ -335,5 +335,13 @@ namespace Geometry {
             throw std::underflow_error("Polygon is empty!");
         m_pointList.pop_back();
         m_state = PolygonState(this->size() - 1);
-    }    
+    }   
+
+    void Polygon::popAt(Point point) {
+        if ( std::find(m_pointList.begin(), m_pointList.end(), point) != m_pointList.end() ){
+            m_pointList.erase(std::find(m_pointList.begin(), m_pointList.end(), point));
+            m_state = PolygonState(this->size() - 1);
+        }
+    }   
+
 }

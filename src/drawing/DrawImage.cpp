@@ -230,37 +230,114 @@ namespace DrawOutput {
             bool muted)
     {
         std::vector<Geometry::Point> &points1 = polygon.getPointsRef();
-        // ??? copy-paste?
-        if (muted) points1 = polygon.getPointsRef();
         ImGui::Text("%s", title.c_str());
 
         bool anyPointChanged = false;
-        for (Geometry::Point& point : points1)
+        for (Geometry::Point& point : points1){
             if (DisplayPoint(point, muted))
                 anyPointChanged = true;
-
+            if (!muted) {
+                ImGui::SameLine();
+                DisplayDeleteButton(polygon, point, figname);
+            }
+        }
         polygon.sortPoints();
         if (anyPointChanged)
             Manipulator::StatesLibrary::getInstance().updateStateWith(polygon, figname);
 
         if (!muted) {
             DisplayAddButton(polygon, figname);
-            ImGui::SameLine();
+            // ImGui::SameLine();
             // if (polygon.size() >= 3)
-            DisplayDeleteButton(polygon, figname);
         }
     }
 
-    void DisplayRevertButton() {
+    void HelpMarker(const char* desc)
+    {
+        ImGui::TextDisabled("(?)");
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort) && ImGui::BeginTooltip())
+        {
+            ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+            ImGui::TextUnformatted(desc);
+            ImGui::PopTextWrapPos();
+            ImGui::EndTooltip();
+        }
+    }
+
+    void DisplayRevertButton() 
+    {
         Manipulator::StatesLibrary &library = Manipulator::StatesLibrary::getInstance();
         ImGui::BeginDisabled(library.getSize() <= 1);
             if (ImGui::Button("Revert last change")) {
                 library.popState();
             }
         ImGui::EndDisabled();
+        ImGui::SameLine();
+        HelpMarker(
+            "It is recommended to revert any changes that create concave polygons as they aren't implemented properly yet and will cause issues.");
     }
 
     void DisplayAddButton(Geometry::Polygon& polygon, States::FigureName figname) {
+
+        char x_buffer[DrawConst::BUFFER_SIZE];
+        char y_buffer[DrawConst::BUFFER_SIZE];
+
+        ImGui::Text("Add new point with coordinates:");
+        
+        // Name the button in the format "Add point PointName"        
+        std::string labelNumber = std::to_string(polygon.size() + 1);
+        size_t *labelChoices = DrawUtils::checkAvailableLabels(polygon);        
+        // labeling with regard to possible missing numbers in point labels
+        for (size_t j = 0; j < polygon.size(); j++) {
+            if (labelChoices[j] != -1){
+                labelNumber = std::to_string(labelChoices[j]);
+                break;
+            }            
+        }
+        char labelLetter = polygon.getPointsRef().front().getLabel().front();
+        std::string label = labelLetter + labelNumber;
+        std::string name = "Add " + label;
+        
+        Geometry::Point front = polygon.getPointsRef().front();
+        Geometry::Point back = polygon.getPointsRef().back();
+        // offset the new point from the middle of section 
+        auto offset = (float)pow((pow(front.getX() - back.getX(), 2) + pow(front.getX() - back.getX(), 2)), 0.5);
+        Geometry::Point newPoint = Geometry::Point((front.getX() + back.getX())/2 + offset/5, (front.getY() + back.getY())/2);
+        // DrawPoint();
+        std::stringstream stream1;
+        std::stringstream stream2;
+        stream1 << std::fixed << std::setprecision(2) << newPoint.getX();
+        stream2 << std::fixed << std::setprecision(2) << newPoint.getY();
+        std::string s1 = stream1.str();
+        std::string s2 = stream2.str();
+        
+        strcpy(x_buffer, s1.c_str());
+        strcpy(y_buffer, s2.c_str());
+
+        // Muted point coords name their points with " #"
+        std::string fieldName = " " + label + ".x";
+        
+        // Width is in screen pixels
+        ImGui::PushItemWidth(150);
+
+        bool modified = false;
+        bool changed = false;
+
+        modified = ImGui::InputText(fieldName.c_str(), x_buffer, DrawConst::BUFFER_SIZE,
+                            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue);
+
+        if (modified){ 
+            newPoint.setX(atof(x_buffer));
+        }
+
+        ImGui::SameLine();
+        fieldName = " " +  label + ".y";
+        modified = ImGui::InputText(fieldName.c_str(), y_buffer, DrawConst::BUFFER_SIZE,
+                            ImGuiInputTextFlags_CharsDecimal | ImGuiInputTextFlags_EnterReturnsTrue);
+
+        if (modified){
+            newPoint.setY(atof(y_buffer));
+        }
         // HSV stands for Hue/Saturation/Value
         ImGui::PushStyleColor(ImGuiCol_Button,
                               (ImVec4)ImColor::HSV(DrawConst::HSVGreenDefault.Hue,
@@ -281,23 +358,16 @@ namespace DrawOutput {
                                                    )
                               );
         
-        // Name the button in the format "Add point for PolygonName"
-        char labelNumber = polygon.getPointsRef().front().getLabel().front();
-        std::string name = std::string("Add point for ") + labelNumber;
-
+        ImGui::SameLine();
         if (ImGui::Button(name.c_str())) {
-            Geometry::Point front = polygon.getPointsRef().front();
-            Geometry::Point back = polygon.getPointsRef().back();
-            // offset the new point from the middle of section 
-            auto offset = (float)pow((pow(front.getX() - back.getX(), 2) + pow(front.getX() - back.getX(), 2)), 0.5);
-            Geometry::Point newPoint = Geometry::Point((front.getX() + back.getX())/2 + offset/5, (front.getY() + back.getY())/2);
             polygon.emplaceBack(newPoint);
             Manipulator::StatesLibrary::getInstance().updateStateWith(polygon, figname);
         }
+
         ImGui::PopStyleColor(3);
     }
 
-    void DisplayDeleteButton(Geometry::Polygon& polygon, States::FigureName figname) {
+    void DisplayDeleteButton(Geometry::Polygon& polygon, Geometry::Point& point, States::FigureName figname) {
         // HSV stands for Hue/Saturation/Value        
         ImGui::PushStyleColor(ImGuiCol_Button,
                               (ImVec4)ImColor::HSV(DrawConst::HSVRedDefault.Hue,
@@ -319,12 +389,11 @@ namespace DrawOutput {
                              );
         
         ImGui::BeginDisabled((polygon.size() < 3));
-            std::string label = polygon.getPointsRef().front().getLabel();
-            label.pop_back();
-            std::string name = "Delete point from " + label;
+            std::string label = point.getLabel();
 
+            std::string name = "Delete " + label;
             if (ImGui::Button(name.c_str())){
-                polygon.popBack();
+                polygon.popAt(point);
                 Manipulator::StatesLibrary::getInstance().updateStateWith(polygon, figname);
             }       
         ImGui::EndDisabled();
@@ -365,7 +434,7 @@ namespace DrawOutput {
 
         if (!muted && modified){ 
             point.setX(atof(x_buffer));
-            Manipulator::StatesLibrary::getInstance().updateState();
+            // Manipulator::StatesLibrary::getInstance().updateState();
             changed = true;
         }
 
@@ -376,9 +445,11 @@ namespace DrawOutput {
 
         if (!muted && modified){
             point.setY(atof(y_buffer));
-            Manipulator::StatesLibrary::getInstance().updateState();
+            // Manipulator::StatesLibrary::getInstance().updateState();
             changed = true;
         }
+
+        
 
         return changed;
     }

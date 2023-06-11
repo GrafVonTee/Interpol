@@ -31,7 +31,13 @@ namespace DrawUtils {
                                         const scalingParameters& parameters);
 
     Geometry::Point scaleAndTranslatePoint(const Geometry::Point &point, 
-                                        const scalingParameters& parameters);                                       
+                                        const scalingParameters& parameters);
+
+    size_t *checkAvailableLabels(Geometry::Polygon &polygon);
+
+    void setActualLabels(Geometry::Polygon &polygon, 
+                         char polygonLetter = 0,
+                         bool isIntersection = false);                             
 
     void setActualPointsLabels(Geometry::Polygon &polygon1,
                                Geometry::Polygon &polygon2,
