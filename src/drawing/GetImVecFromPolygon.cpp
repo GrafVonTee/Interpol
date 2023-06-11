@@ -81,8 +81,8 @@ namespace DrawUtils {
     }
 
     size_t *checkAvailableLabels(Geometry::Polygon &polygon){
-        size_t *labelChoices = new size_t[polygon.size()]; 
-        for (size_t i = 0; i < polygon.size(); i++){
+        size_t *labelChoices = new size_t[polygon.size() + 1]; 
+        for (size_t i = 0; i < polygon.size() + 1; i++){
             labelChoices[i] = i + 1; 
         }
         for (size_t i = 0; i < polygon.size(); i++) {
@@ -90,7 +90,8 @@ namespace DrawUtils {
                 std::string label = polygon[i].getLabel();
                 label.erase(label.begin());
                 size_t labelNumber = stoi(label);
-                labelChoices[labelNumber - 1] = -1; // -1 stands for taken label number
+                if (labelNumber < polygon.size())
+                    labelChoices[labelNumber - 1] = -1; // -1 stands for taken label number
             }
         }
         return labelChoices;
@@ -107,7 +108,7 @@ namespace DrawUtils {
         // labeling with regard to possible missing numbers in point labels
         for (size_t i = 0; i < polygon.size(); i++) {
             if (polygon[i].getLabel().empty())
-                for (size_t j = 0; j < polygon.size(); j++) {
+                for (size_t j = 0; j < polygon.size() + 1; j++) {
                     if (labelChoices[j] != -1){
                         polygon[i].setLabel(std::string(1, polygonLetter) + std::to_string(labelChoices[j]));
                         labelChoices[j] = -1;
