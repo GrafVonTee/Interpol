@@ -36,8 +36,7 @@ namespace DrawUtils {
     size_t *checkAvailableLabels(Geometry::Polygon &polygon);
 
     void setActualLabels(Geometry::Polygon &polygon, 
-                         char polygonLetter = 0,
-                         bool isIntersection = false);                             
+                         char polygonLetter = 0);
 
     void setActualPointsLabels(Geometry::Polygon &polygon1,
                                Geometry::Polygon &polygon2,

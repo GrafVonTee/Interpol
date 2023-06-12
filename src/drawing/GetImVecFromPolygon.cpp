@@ -73,20 +73,21 @@ namespace DrawUtils {
             for (const Geometry::Point &comparisonPoint: allPoints)
                 if (std::pow(intersectionPoint.getX() - comparisonPoint.getX(), 2) +
                     std::pow(intersectionPoint.getY() - comparisonPoint.getY(), 2)
-                    <= std::numeric_limits<coord_t>::epsilon())
+                    < std::numeric_limits<coord_t>::epsilon())
                 {
                     intersectionPoint.setLabel(comparisonPoint.getLabel());
                     break;
                 }
     }
 
-    size_t *checkAvailableLabels(Geometry::Polygon &polygon){
-        size_t *labelChoices = new size_t[polygon.size() + 1]; 
-        for (size_t i = 0; i < polygon.size() + 1; i++){
-            labelChoices[i] = i + 1; 
-        }
+    size_t *checkAvailableLabels(Geometry::Polygon &polygon) {
+        size_t *labelChoices = new size_t[polygon.size() + 1];
+
+        for (size_t i = 0; i < polygon.size() + 1; i++)
+            labelChoices[i] = i + 1;
+
         for (size_t i = 0; i < polygon.size(); i++) {
-            if (!polygon[i].getLabel().empty()){
+            if (!polygon[i].getLabel().empty()) {
                 std::string label = polygon[i].getLabel();
                 label.erase(label.begin());
                 size_t labelNumber = stoi(label);
@@ -97,7 +98,7 @@ namespace DrawUtils {
         return labelChoices;
     }
 
-    void setActualLabels(Geometry::Polygon &polygon, char polygonLetter, bool isIntersection) {
+    void setActualLabels(Geometry::Polygon &polygon, char polygonLetter) {
         if (polygon.size() == 0)
             return;
 
@@ -125,6 +126,6 @@ namespace DrawUtils {
         setActualLabels(polygon1);
         setActualLabels(polygon2);
         setDuplicatesFromIntersectionSameLetter(polygon1, polygon2, intersection.polygon);
-        setActualLabels(intersection.polygon, 'C', true);
+        setActualLabels(intersection.polygon, 'C');
     }
 }

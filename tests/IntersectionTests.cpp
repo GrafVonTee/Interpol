@@ -13,10 +13,8 @@ namespace IntersectionTests {
         std::vector<Point> p2;
 
         TestInput(std::vector<Point>&& _p1, std::vector<Point>&& _p2) {
-            p1 = _p1;
-            _p1.clear();
-            p2 = _p2;
-            _p2.clear();
+            p1 = std::move(_p1);
+            p2 = std::move(_p2);
         }
     };
 
