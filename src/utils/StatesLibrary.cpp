@@ -16,8 +16,8 @@ namespace Manipulator {
 
         try {
             return m_states.at(stateIndex);
-        } catch (const std::range_error &err) {
-            throw std::range_error("Invalid index of state!");
+        } catch (const std::out_of_range &err) {
+            throw std::out_of_range("Invalid index of state!");
         }
     }
 
@@ -30,8 +30,8 @@ namespace Manipulator {
 
         try {
             return m_states.at(stateIndex);
-        } catch (const std::range_error &err) {
-            throw std::range_error("Invalid index of state!");
+        } catch (const std::out_of_range &err) {
+            throw std::out_of_range("Invalid index of state!");
         }
     }
 
@@ -44,8 +44,8 @@ namespace Manipulator {
             
         try {
             return m_states.at(stateIndex);
-        } catch (const std::range_error &err) {
-            throw std::range_error("Invalid index of state!");
+        } catch (const std::out_of_range &err) {
+            throw std::out_of_range("Invalid index of state!");
         }
     }
 

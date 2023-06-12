@@ -60,7 +60,7 @@ namespace StateLibTest {
     }
 
     TEST_F(StatesLibTestInterface, GetStateViewTest) {
-        for (int index : {0, 1, -10, -20, 29})
+        for (size_t index : {0, 1, -10, -20, 29})
         EXPECT_THROW({
          try {
              FiguresState figuresState = statesLib.getStateView(index);
@@ -73,7 +73,7 @@ namespace StateLibTest {
              EXPECT_STREQ("Invalid index of state!", e.what());
              throw;
          }
-        }, std::range_error);
+        }, std::out_of_range);
     }
 
 
