@@ -90,7 +90,7 @@ namespace DrawUtils {
                 std::string label = polygon[i].getLabel();
                 label.erase(label.begin());
                 size_t labelNumber = stoi(label);
-                if (labelNumber < polygon.size())
+                if (labelNumber < polygon.size() + 1)
                     labelChoices[labelNumber - 1] = -1; // -1 stands for taken label number
             }
         }

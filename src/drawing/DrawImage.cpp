@@ -288,7 +288,7 @@ namespace DrawOutput {
         std::string labelNumber = std::to_string(polygon.size() + 1);
         size_t *labelChoices = DrawUtils::checkAvailableLabels(polygon);        
         // labeling with regard to possible missing numbers in point labels
-        for (size_t j = 0; j < polygon.size(); j++) {
+        for (size_t j = 0; j < polygon.size() + 1; j++) {
             if (labelChoices[j] != -1){
                 labelNumber = std::to_string(labelChoices[j]);
                 break;
