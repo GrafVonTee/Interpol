@@ -62,22 +62,6 @@ namespace Manipulator {
         m_states.emplace_back(state);
     }
 
-    void StatesLibrary::addState(const Geometry::Polygon &poly1,
-                            const Geometry::Polygon &poly2,
-                            const Geometry::Intersection &inter) {
-        m_states.push_back(FiguresState{poly1, poly2, inter});
-    }
-
-    void StatesLibrary::emplaceState(Geometry::Polygon &poly1,
-                                Geometry::Polygon &poly2,
-                                Geometry::Intersection &inter) {
-        m_states.emplace_back(FiguresState{
-                std::move(poly1),
-                std::move(poly2),
-                std::move(inter),
-        });
-    }
-
     void StatesLibrary::popState() {
         if (isEmpty())
             throw std::underflow_error("Library is empty! Nothing to pop.");

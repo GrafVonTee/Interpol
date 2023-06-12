@@ -38,9 +38,6 @@ namespace Manipulator {
         void emplaceState(FiguresState &&state);
         void emplaceState(FiguresState &state);
 
-        void addState(const Geometry::Polygon &, const Geometry::Polygon &, const Geometry::Intersection &);
-        void emplaceState(Geometry::Polygon &, Geometry::Polygon &, Geometry::Intersection &);
-
         void updateState();
         void updateStateWith(const Geometry::Polygon &, States::FigureName);
 
