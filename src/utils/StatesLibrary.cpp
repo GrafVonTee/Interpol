@@ -85,24 +85,6 @@ namespace Manipulator {
         m_states.pop_back();
     }
 
-    void StatesLibrary::addInputState(const Geometry::Polygon &polygon1, const Geometry::Polygon &polygon2) {
-        auto poly1 = polygon1;
-        auto poly2 = polygon2;
-        auto intersection = Math::findPolygonsInter(poly1, poly2);
-        DrawUtils::setActualPointsLabels(poly1,
-                                         poly2,
-                                         intersection);
-        StatesLibrary::getInstance().addState(poly1, poly2, intersection);
-    }
-
-    void StatesLibrary::emplaceInputState(Geometry::Polygon &poly1, Geometry::Polygon &poly2) {
-        auto intersection = Math::findPolygonsInter(poly1, poly2);
-        DrawUtils::setActualPointsLabels(poly1,
-                                         poly2,
-                                         intersection);
-        StatesLibrary::getInstance().emplaceState(poly1, poly2, intersection);
-    }
-
     void StatesLibrary::updateState() {
         auto &manipulator = StatesLibrary::getInstance();
         if (manipulator.isEmpty())

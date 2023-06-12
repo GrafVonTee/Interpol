@@ -6,12 +6,9 @@ namespace StateLibTest {
     using namespace Manipulator;
     using namespace Geometry;
 
-    using test_cases_t = FiguresState;
-
-    class StatesLibTestInterface : public testing::TestWithParam<test_cases_t> {
+    class StatesLibTestInterface : public testing::Test {
     protected:
         StatesLibrary& statesLib = StatesLibrary::getInstance();
-        size_t size = 0;
     };
 
     TEST_F(StatesLibTestInterface, StartStateLibTest) {
@@ -20,39 +17,81 @@ namespace StateLibTest {
 
         EXPECT_THROW({
              try {
-                 FiguresState temp = statesLib.getState();
+                 FiguresState temp = statesLib.getStateCopy();
              }
              catch (const std::exception &e) {
-                 EXPECT_STREQ("Library is empty!", e.what());
+                 EXPECT_STREQ("Library is empty! Nothing to get.", e.what());
                  throw;
              }
-       }, std::range_error);
+       }, std::underflow_error);
     }
 
-    TEST_P(StatesLibTestInterface, addState) {
-        auto input = GetParam();
-
-        statesLib.addState(input);
-        size += 1;
-        SCOPED_TRACE("Test");
-        ASSERT_EQ(statesLib.getSize(), size);
-
-        FiguresState addedFigure = statesLib.getState();
-        ASSERT_EQ(addedFigure.polygon1, input.polygon1);
-        ASSERT_EQ(addedFigure.polygon2, input.polygon2);
-        ASSERT_EQ(addedFigure.intersection.polygon, input.intersection.polygon);
-        ASSERT_EQ(addedFigure.intersection.state, input.intersection.state);
+    TEST_F(StatesLibTestInterface, StateLibInsntance) {
+        StatesLibrary& tempLib = StatesLibrary::getInstance();
+        EXPECT_EQ(&tempLib, &statesLib);
     }
 
-    INSTANTIATE_TEST_SUITE_P(
-            TestCases,
-            StatesLibTestInterface,
-            ::testing::Values(
-                    FiguresState{Polygon(),
-                                 Polygon(),
-                                 {States::IntersectionState::NoIntersection, Polygon()}
-                    }
-            )
-    );
+    TEST_F(StatesLibTestInterface, AddStateTest) {
+        FiguresState figuresState = FiguresState{};
+        for (int i = 1; i <= 10; ++i) {
+            figuresState.polygon1 = Polygon({Point(1, i)});
+            statesLib.addState(figuresState);
+            ASSERT_EQ(statesLib.getSize(), i);
+            ASSERT_EQ(statesLib.getStateCopy().polygon1, figuresState.polygon1);
+        }
+    }
 
+    TEST_F(StatesLibTestInterface, EmplaceStateRefTest) {
+        FiguresState figuresState = FiguresState{};
+        for (int i = 1; i <= 10; ++i) {
+            figuresState.polygon1 = Polygon({Point(1, 10+i)});
+            statesLib.emplaceState(figuresState);
+            ASSERT_EQ(statesLib.getSize(), 10+i);
+            ASSERT_EQ(statesLib.getStateCopy().polygon1, Polygon({Point(1, 10+i)}));
+        }
+    }
+
+    TEST_F(StatesLibTestInterface, EmplaceStateMoveTest) {
+        for (int i = 1; i <= 10; ++i) {
+            statesLib.emplaceState(FiguresState{Polygon({Point(1, 20+i)})});
+            ASSERT_EQ(statesLib.getSize(), 20+i);
+            ASSERT_EQ(statesLib.getStateCopy().polygon1, Polygon({Point(1, 20+i)}));
+        }
+    }
+
+    TEST_F(StatesLibTestInterface, GetStateViewTest) {
+        for (int index : {0, 1, -10, -20, 29})
+        EXPECT_THROW({
+         try {
+             FiguresState figuresState = statesLib.getStateView(index);
+             ASSERT_EQ(figuresState.polygon1, Polygon({Point(1, index+1)}));
+             ASSERT_EQ(figuresState.polygon2, Polygon());
+             ASSERT_EQ(figuresState.intersection.polygon, Polygon());
+             ASSERT_EQ(figuresState.intersection.state, States::IntersectionState::NoIntersection);
+         }
+         catch (const std::exception &e) {
+             EXPECT_STREQ("Invalid index of state!", e.what());
+             throw;
+         }
+        }, std::range_error);
+    }
+
+
+    TEST_F(StatesLibTestInterface, PopStateTest) {
+        size_t size = statesLib.getSize();
+        for (int i = 1; i <= 30; ++i) {
+            statesLib.popState();
+            ASSERT_EQ(statesLib.getSize(), size-i);
+        }
+
+        EXPECT_THROW({
+         try {
+             statesLib.popState();
+         }
+         catch (const std::exception &e) {
+             EXPECT_STREQ("Library is empty! Nothing to pop.", e.what());
+             throw;
+         }
+        }, std::underflow_error);
+    }
 }
