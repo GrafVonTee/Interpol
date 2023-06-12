@@ -16,8 +16,8 @@ namespace Manipulator {
 
         try {
             return m_states.at(stateIndex);
-        } catch (const std::range_error &err) {
-            throw std::range_error("Invalid index of state!");
+        } catch (const std::out_of_range &err) {
+            throw std::out_of_range("Invalid index of state!");
         }
     }
 
@@ -30,8 +30,8 @@ namespace Manipulator {
 
         try {
             return m_states.at(stateIndex);
-        } catch (const std::range_error &err) {
-            throw std::range_error("Invalid index of state!");
+        } catch (const std::out_of_range &err) {
+            throw std::out_of_range("Invalid index of state!");
         }
     }
 
@@ -44,8 +44,8 @@ namespace Manipulator {
             
         try {
             return m_states.at(stateIndex);
-        } catch (const std::range_error &err) {
-            throw std::range_error("Invalid index of state!");
+        } catch (const std::out_of_range &err) {
+            throw std::out_of_range("Invalid index of state!");
         }
     }
 
@@ -62,45 +62,11 @@ namespace Manipulator {
         m_states.emplace_back(state);
     }
 
-    void StatesLibrary::addState(const Geometry::Polygon &poly1,
-                            const Geometry::Polygon &poly2,
-                            const Geometry::Intersection &inter) {
-        m_states.push_back(FiguresState{poly1, poly2, inter});
-    }
-
-    void StatesLibrary::emplaceState(Geometry::Polygon &poly1,
-                                Geometry::Polygon &poly2,
-                                Geometry::Intersection &inter) {
-        m_states.emplace_back(FiguresState{
-                std::move(poly1),
-                std::move(poly2),
-                std::move(inter),
-        });
-    }
-
     void StatesLibrary::popState() {
         if (isEmpty())
             throw std::underflow_error("Library is empty! Nothing to pop.");
 
         m_states.pop_back();
-    }
-
-    void StatesLibrary::addInputState(const Geometry::Polygon &polygon1, const Geometry::Polygon &polygon2) {
-        auto poly1 = polygon1;
-        auto poly2 = polygon2;
-        auto intersection = Math::findPolygonsInter(poly1, poly2);
-        DrawUtils::setActualPointsLabels(poly1,
-                                         poly2,
-                                         intersection);
-        StatesLibrary::getInstance().addState(poly1, poly2, intersection);
-    }
-
-    void StatesLibrary::emplaceInputState(Geometry::Polygon &poly1, Geometry::Polygon &poly2) {
-        auto intersection = Math::findPolygonsInter(poly1, poly2);
-        DrawUtils::setActualPointsLabels(poly1,
-                                         poly2,
-                                         intersection);
-        StatesLibrary::getInstance().emplaceState(poly1, poly2, intersection);
     }
 
     void StatesLibrary::updateState() {
