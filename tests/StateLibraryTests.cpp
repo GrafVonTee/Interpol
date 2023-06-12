@@ -61,21 +61,25 @@ namespace StateLibTest {
 
     TEST_F(StatesLibTestInterface, GetStateViewTest) {
         for (size_t index : {0, 1, -10, -20, 29})
-        EXPECT_THROW({
-         try {
-             FiguresState figuresState = statesLib.getStateView(index);
-             ASSERT_EQ(figuresState.polygon1, Polygon({Point(1, index+1)}));
-             ASSERT_EQ(figuresState.polygon2, Polygon());
-             ASSERT_EQ(figuresState.intersection.polygon, Polygon());
-             ASSERT_EQ(figuresState.intersection.state, States::IntersectionState::NoIntersection);
-         }
+            try {
+                FiguresState figuresState = statesLib.getStateView(index);
+                ASSERT_EQ(figuresState.polygon1, Polygon({Point(1, index + 1)}));
+                ASSERT_EQ(figuresState.polygon2, Polygon());
+                ASSERT_EQ(figuresState.intersection.polygon, Polygon());
+                ASSERT_EQ(figuresState.intersection.state, States::IntersectionState::NoIntersection);
+            }
          catch (const std::exception &e) {
              EXPECT_STREQ("Invalid index of state!", e.what());
-             throw;
          }
-        }, std::out_of_range);
-    }
 
+         // Standard Index = -1
+        FiguresState figuresState = statesLib.getStateView();
+
+        ASSERT_EQ(figuresState.polygon1, Polygon({Point(1, 30)}));
+        ASSERT_EQ(figuresState.polygon2, Polygon());
+        ASSERT_EQ(figuresState.intersection.polygon, Polygon());
+        ASSERT_EQ(figuresState.intersection.state, States::IntersectionState::NoIntersection);
+    }
 
     TEST_F(StatesLibTestInterface, PopStateTest) {
         size_t size = statesLib.getSize();
@@ -93,5 +97,36 @@ namespace StateLibTest {
              throw;
          }
         }, std::underflow_error);
+    }
+
+    TEST_F(StatesLibTestInterface, GetStateViewAndRefEmptyTest) {
+        EXPECT_THROW({
+         try {
+             FiguresState figuresState = statesLib.getStateView();
+         }
+         catch (const std::exception &e) {
+             EXPECT_STREQ("Library is empty! Nothing to get.", e.what());
+             throw;
+         }}, std::underflow_error);
+
+        EXPECT_THROW({
+         try {
+             FiguresState figuresState = statesLib.getStateRef();
+         }
+         catch (const std::exception &e) {
+             EXPECT_STREQ("Library is empty! Nothing to get.", e.what());
+             throw;
+         }}, std::underflow_error);
+    }
+
+    TEST_F(StatesLibTestInterface, UpdateStateEmptyTest) {
+        EXPECT_THROW({
+         try {
+             statesLib.updateStateWith(Polygon(), States::FigureName::Polygon1);
+         }
+         catch (const std::exception &e) {
+             EXPECT_STREQ("Library is empty! Nothing to update.", e.what());
+             throw;
+         }}, std::underflow_error);
     }
 }
