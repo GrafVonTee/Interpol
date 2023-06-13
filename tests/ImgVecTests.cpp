@@ -6,8 +6,8 @@
 
 namespace DrawUtils {
     void setDuplicatesFromIntersectionSameLetter(const Geometry::Polygon &polygon1,
-                                             const Geometry::Polygon &polygon2,
-                                             Geometry::Polygon &intersectionPolygon);
+                                                 const Geometry::Polygon &polygon2,
+                                                       Geometry::Polygon &intersectionPolygon);
 }
 
 

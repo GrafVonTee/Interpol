@@ -63,7 +63,7 @@ namespace DrawUtils {
     {
         std::vector<Geometry::Point> polygonPoints1 = polygon1.getPointsCopy();
         std::vector<Geometry::Point> polygonPoints2 = polygon2.getPointsCopy();
-        std::vector<Geometry::Point> intersectionPointsVector = intersectionPolygon.getPointsRef();
+        std::vector<Geometry::Point> &intersectionPointsVector = intersectionPolygon.getPointsRef();
 
         std::vector<Geometry::Point> allPoints;
         allPoints.insert(allPoints.end(), polygonPoints1.begin(), polygonPoints1.end());
@@ -71,8 +71,8 @@ namespace DrawUtils {
 
         for (Geometry::Point &intersectionPoint: intersectionPointsVector)
             for (const Geometry::Point &comparisonPoint: allPoints)
-                if (std::pow(intersectionPoint.getX() - comparisonPoint.getX(), 2) +
-                    std::pow(intersectionPoint.getY() - comparisonPoint.getY(), 2)
+                if (std::abs(intersectionPoint.getX() - comparisonPoint.getX()) +
+                    std::abs(intersectionPoint.getY() - comparisonPoint.getY())
                     < std::numeric_limits<coord_t>::epsilon())
                 {
                     intersectionPoint.setLabel(comparisonPoint.getLabel());
