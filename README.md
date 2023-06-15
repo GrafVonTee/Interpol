@@ -2,7 +2,7 @@
 [![CI](https://github.com/GrafVonTee/triangle_intersections/actions/workflows/main.yml/badge.svg)](https://github.com/GrafVonTee/triangle_intersections/actions/workflows/main.yml)
 
 
-## Interpol - desktop UI application that calculating and ploting intersection between polygons based on user input if it's exist.
+## Interpol - desktop UI application that calculating and ploting intersection between polygons based on user input.
 The project uses `ImGUI` and `OpenGL` libraries and is a student project for the C++ Programming course.
 
 ## Contributors
