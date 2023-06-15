@@ -69,7 +69,6 @@ Point B3 = (0, 500)
 Point B4 = (100, 800)
 Point B5 = (400, 900)
 Point B6 = (700, 900)
-
 ```
 
 ### Custom run:
