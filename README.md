@@ -29,7 +29,7 @@ The project uses the `CMake` / `ninja` build system and supports `MinGW`, `CLang
 
 To run the project, you must compile and run the executable. Follow the steps below:
 
-Need python 3.* and PyCocoa lib
+Need `python 3.*` and `PyCocoa lib`.
 ```
 git clone https://github.com/GrafVonTee/triangle_intersections.git
 cd triangle_intersections
