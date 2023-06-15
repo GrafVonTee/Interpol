@@ -36,7 +36,6 @@ namespace GetImVecTests {
                 return false;
 
             for (size_t i = 0; i < p1.size(); ++i) {
-                // std::cout << p1[i].getLabel() << " " << p2[i].getLabel() << std::endl;
                 if (p1[i].getLabel() != p2[i].getLabel())
                     return false;
             }
@@ -68,9 +67,7 @@ namespace GetImVecTests {
         expectedLabels[2] = 3;
         EXPECT_TRUE(areLabelsEqual(labels, expectedLabels, 3));
         delete[] expectedLabels;
-        expectedLabels = nullptr;
         delete[] labels;
-        labels = nullptr;
 
         polygon = Polygon({Point(1, 2, "A2"),
                                  Point(2, 40, "A3"),
