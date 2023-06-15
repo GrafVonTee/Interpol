@@ -19,7 +19,7 @@ The project is tested using `GTEST`, a C++ testing framework.
 
 ## Platforms
 
-The project has been tested and works on `GNU/Linux`, `Windows 10`, and `MacOS Ventura`.
+The project has been tested and works on `GNU/Linux`, `Windows 10` and `MacOS Ventura`.
 
 ## Build System
 
