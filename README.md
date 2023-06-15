@@ -1,9 +1,9 @@
-# Finding Triangle Intersections
-
+# Interpol ♾️
 [![CI](https://github.com/GrafVonTee/triangle_intersections/actions/workflows/main.yml/badge.svg)](https://github.com/GrafVonTee/triangle_intersections/actions/workflows/main.yml)
 
 
-Triangle Intersections is a C++20 project that finds intersection (or nonintersection) between two triangles based on their coordinates. The project uses ImGUI and OpenGL libraries and is a student project for the C++ Programming course.
+## Interpol - desktop UI application that calculating and ploting intersection between polygons based on user input.
+The project uses `ImGUI` and `OpenGL` libraries and is a student project for the C++ Programming course.
 
 ## Contributors
 
@@ -15,21 +15,21 @@ Triangle Intersections is a C++20 project that finds intersection (or noninterse
 
 ## Testing
 
-The project is tested using GTEST, a C++ testing framework.
+The project is tested using `GTEST`, a C++ testing framework.
 
 ## Platforms
 
-The project has been tested and works on Linux, Windows, and MacOS.
+The project has been tested and works on `GNU/Linux`, `Windows 10` and `MacOS Ventura`.
 
 ## Build System
 
-The project uses the CMake build system and the Clang compiler.
+The project uses the `CMake` / `ninja` build system and supports `MinGW`, `CLang` and `gcc`.
 
 ## Usage
 
 To run the project, you must compile and run the executable. Follow the steps below:
 
-For MacOS: need python 3.* and PyCocoa lib
+Need `python 3.*` and `PyCocoa lib`.
 ```
 git clone https://github.com/GrafVonTee/triangle_intersections.git
 cd triangle_intersections
@@ -42,27 +42,78 @@ make
 
 ## Example
 ### Demo run:
-For testing project you can use as input name: ```Demo``` or ```demo```
+For testing project you can use as input name: ```Demo```/```demo```/```DEMO```
 #### Console Input:
-<img width="583" alt="Снимок экрана 2023-05-23 в 21 29 04" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/26834d0f-4adf-4fca-b0b3-5b4d7f60ad9c">
+```
+>>>
+Please, enter your name if you wish (otherwise just press Enter): DEMO
 
-#### UI output:
-<img width="1440" alt="Снимок экрана 2023-05-23 в 21 29 28" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/ec9b2f05-fd9f-46a4-9cf8-1450eeb6c226">
+Greetings, *DEMO*!
+This program will immerse you in the wonderful world of
+        Polygon Intersections!
+All you need is entering the values of your two polygons...
+...and take resulted intersection!
+
+Your polygon is a hexagon A5,A6,A1,A2,A3,A4 with points:
+Point A5 = (500, 0)
+Point A6 = (100, 100)
+Point A1 = (0, 900)
+Point A2 = (800, 800)
+Point A3 = (900, 400)
+Point A4 = (800, 100)
+
+Your polygon is a hexagon B1,B2,B3,B4,B5,B6 with points:
+Point B1 = (900, 0)
+Point B2 = (0, 200)
+Point B3 = (0, 500)
+Point B4 = (100, 800)
+Point B5 = (400, 900)
+Point B6 = (700, 900)
+```
 
 ### Custom run:
 Write your name (or just press Enter for default name ```Travaler```) and then follow the print instruction
 
 #### Console Input:
-<img width="584" alt="Снимок экрана 2023-05-23 в 21 27 40" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/056d089b-65b0-4ef0-ac11-7c3954a3f2be">
+```
+>>>
+Please, enter your name if you wish (otherwise just press Enter): Kitsu
+
+Greetings, Kitsu!
+This program will immerse you in the wonderful world of
+        Polygon Intersections!
+All you need is entering the values of your two polygons...
+...and take resulted intersection!
+
+The first thing you need is to define your two polygons (1 and 2)!
+
+Enter the number of points for the polygon A: 6
+Please, enter new point A1 in '(x, y)' format: (500, 0)
+Please, enter new point A2 in '(x, y)' format: (100, 100)
+Please, enter new point A3 in '(x, y)' format: (0, 900)
+Please, enter new point A4 in '(x, y)' format: (800, 800)
+Please, enter new point A5 in '(x, y)' format: (900, 400)
+Please, enter new point A6 in '(x, y)' format: (800, 100)
+
+Enter the number of points for the polygon B: 6
+Please, enter new point B1 in '(x, y)' format: (900, 0)
+Please, enter new point B2 in '(x, y)' format: (0, 200)
+Please, enter new point B3 in '(x, y)' format: (0, 500)
+Please, enter new point B4 in '(x, y)' format: (100, 800)
+Please, enter new point B5 in '(x, y)' format: (400, 900)
+Please, enter new point B6 in '(x, y)' format: (700, 900)
+```
 
 #### UI output:
-<img width="1439" alt="Снимок экрана 2023-05-23 в 21 28 17" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/af89ba71-c683-4c16-ab07-e389eef88018">
+<img width="1440" alt="Снимок экрана 2023-06-16 в 01 49 02" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/cdb42dc9-0d6a-4787-a3c4-10d16a30103d">
 
 
-## New Feature:
-You can change triangles' coordinates in "Properties" window and new intersection will be automatically ploted.
-<img width="531" alt="Снимок экрана 2023-05-23 в 21 27 09" src="https://github.com/GrafVonTee/triangle_intersections/assets/100523204/58745e49-62db-47b5-bdad-db16b9342aa2">
-
+## Features
+- You can change polygon coordinates in "Properties" window and new intersection will be automatically ploted.
+- Navigation buttons:
+  - `Add Point` - Add default point;
+  - `Delete Point` - Delete current point;
+  - `Revert` - Revert changes for 1 step back;
 
 ## Issues and Contributions
 
