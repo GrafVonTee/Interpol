@@ -50,31 +50,82 @@ namespace DrawUtils {
         return newPolygon;
     }
 
-    void setAllDuplicatesSameLetter(std::vector<Geometry::Point*> &points) {
-        for (size_t i = 0; i < points.size(); ++i)
-            for (size_t j = i + 1; j < points.size(); ++j)
-                if (std::pow(points[i]->getX() - points[j]->getX(), 2) +
-                    std::pow(points[i]->getY() - points[j]->getY(), 2)
-                    <= std::numeric_limits<coord_t>::epsilon())
-
-                    points[j]->setLabel(points[i]->getLabel());
+    Geometry::Point scaleAndTranslatePoint(const Geometry::Point &point, const scalingParameters& parameters) {
+        Geometry::Point newPoint = point;
+        newPoint.setX((point.getX() - parameters.min_x) * parameters.scale_x + parameters.delta_x);
+        newPoint.setY((point.getY() - parameters.min_y) * parameters.scale_y + parameters.delta_y);
+        return newPoint;
     }
 
-    void setActualPointsLabels(Geometry::Polygon &triangle1,
-                               Geometry::Polygon &triangle2,
-                               Geometry::Intersection &intersection)
+    void setDuplicatesFromIntersectionSameLetter(const Geometry::Polygon &polygon1,
+                                                 const Geometry::Polygon &polygon2,
+                                                       Geometry::Polygon &intersectionPolygon)
     {
-        std::vector<Geometry::Point*> allPoints;
-        size_t letterIndex = 1;
-        for (Geometry::Polygon* figurePtr: {&triangle1, &triangle2, &intersection.polygon}) {
-            for (Geometry::Point &point: figurePtr->getPointsRef()) {
-                if (point.getLabel().empty()) {
-                    point.setLabel("C" + std::to_string(letterIndex));
-                    letterIndex++;
+        std::vector<Geometry::Point> polygonPoints1 = polygon1.getPointsCopy();
+        std::vector<Geometry::Point> polygonPoints2 = polygon2.getPointsCopy();
+        std::vector<Geometry::Point> &intersectionPointsVector = intersectionPolygon.getPointsRef();
+
+        std::vector<Geometry::Point> allPoints;
+        allPoints.insert(allPoints.end(), polygonPoints1.begin(), polygonPoints1.end());
+        allPoints.insert(allPoints.end(), polygonPoints2.begin(), polygonPoints2.end());
+
+        for (Geometry::Point &intersectionPoint: intersectionPointsVector)
+            for (const Geometry::Point &comparisonPoint: allPoints)
+                if (std::abs(intersectionPoint.getX() - comparisonPoint.getX()) +
+                    std::abs(intersectionPoint.getY() - comparisonPoint.getY())
+                    < std::numeric_limits<coord_t>::epsilon())
+                {
+                    intersectionPoint.setLabel(comparisonPoint.getLabel());
+                    break;
                 }
-                allPoints.push_back(&point);
+    }
+
+    size_t *checkAvailableLabels(Geometry::Polygon &polygon) {
+        size_t *labelChoices = new size_t[polygon.size() + 1];
+
+        for (size_t i = 0; i < polygon.size() + 1; i++)
+            labelChoices[i] = i + 1;
+
+        for (size_t i = 0; i < polygon.size(); i++) {
+            if (!polygon[i].getLabel().empty()) {
+                std::string label = polygon[i].getLabel();
+                label.erase(label.begin());
+                size_t labelNumber = stoi(label);
+                if (labelNumber < polygon.size() + 1)
+                    labelChoices[labelNumber - 1] = -1; // -1 stands for taken label number
             }
         }
-        setAllDuplicatesSameLetter(allPoints);
+        return labelChoices;
+    }
+
+    void setActualLabels(Geometry::Polygon &polygon, char polygonLetter) {
+        if (polygon.size() == 0)
+            return;
+
+        if (polygonLetter == 0)
+            polygonLetter = polygon.getPointsRef().front().getLabel()[0];
+
+        size_t *labelChoices = checkAvailableLabels(polygon);        
+        // labeling with regard to possible missing numbers in point labels
+        for (size_t i = 0; i < polygon.size(); i++) {
+            if (polygon[i].getLabel().empty())
+                for (size_t j = 0; j < polygon.size() + 1; j++) {
+                    if (labelChoices[j] != -1){
+                        polygon[i].setLabel(std::string(1, polygonLetter) + std::to_string(labelChoices[j]));
+                        labelChoices[j] = -1;
+                        break;
+                    }            
+            }
+        }
+    }
+
+    void setActualPointsLabels(Geometry::Polygon &polygon1,
+                               Geometry::Polygon &polygon2,
+                               Geometry::Intersection &intersection)
+    {
+        setActualLabels(polygon1);
+        setActualLabels(polygon2);
+        setDuplicatesFromIntersectionSameLetter(polygon1, polygon2, intersection.polygon);
+        setActualLabels(intersection.polygon, 'C');
     }
 }

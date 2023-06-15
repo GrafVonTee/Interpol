@@ -5,6 +5,8 @@
 #include <utility>
 #include "GeometryUtils.h"
 
+using namespace States;
+
 namespace Geometry {
     Point::Point(const coord_t &x, const coord_t &y)
             : m_x(x), m_y(y) {}
@@ -111,26 +113,24 @@ namespace Geometry {
     // Polygon Implementation
     Polygon::Polygon(const std::vector<Point> &points) {
 
-        if (points.size() > 1 && !(points.size() == 2 && points[0] != points[1]))
-            checkPolygon(points);
-
+        checkPolygon(points);
         m_pointList = points;
-        if (!points.empty())
-            sortPoints();
+        sortPoints();
 
-        m_state = States::PolygonState(
-                (points.size() < (size_t)States::PolygonState::AllStates)
-                ? points.size() : (size_t)States::PolygonState::OtherPolygon);
+        m_state = PolygonState(
+                (points.size() < (size_t)PolygonState::AllStates)
+                ? points.size() : (size_t)PolygonState::OtherPolygon
+        );
     }
 
     Polygon::Polygon(Polygon &&other) noexcept {
         m_state = other.m_state;
         m_pointList = std::move(other.m_pointList);
-        other.m_state = States::PolygonState::NotPolygon;
+        other.m_state = PolygonState::NotPolygon;
         other.m_pointList.clear();
     }
 
-    States::PolygonState Polygon::getState() const {
+    PolygonState Polygon::getState() const {
         return m_state;
     }
 
@@ -183,7 +183,7 @@ namespace Geometry {
         if (this != &other) {
             m_pointList = std::move(other.m_pointList);
             m_state = other.m_state;
-            other.m_state = States::PolygonState::NotPolygon;
+            other.m_state = PolygonState::NotPolygon;
         }
         return *this;
     }
@@ -217,6 +217,9 @@ namespace Geometry {
     }
 
     void Polygon::checkPolygon(const std::vector<Point>& points) {
+        if (!(points.size() > 1 && !(points.size() == 2 && points[0] != points[1])))
+            return;
+
         for (size_t i = 0; i < points.size(); ++i)
             for (size_t j = i + 1; j < points.size(); ++j)
                 if (points[i] == points[j])
@@ -265,6 +268,9 @@ namespace Geometry {
     // (We believe that it is possible to create a convex polygon with these points as vertex of this polygon.)
     void Polygon::sortPoints() {
 
+        if (m_pointList.empty())
+            return;
+
         // At the beginning, we choose the starting point as a minimal point.
 
         auto iterator = std::min_element(m_pointList.begin(),m_pointList.end(), isMinPoint);
@@ -280,22 +286,62 @@ namespace Geometry {
         m_pointList.insert(m_pointList.begin(), center);
     }
 
-    void Polygon::emplaceBack(const Point &point, bool sort=true, bool check=true) {
-        m_pointList.emplace_back(point);
-        if (check) this->checkPolygon(m_pointList);
+    void Polygon::emplaceBack(const Point &point, bool sort, bool check) {
+        if (check) {
+            try {
+                std::vector<Point> vectorChecker = m_pointList;
+                vectorChecker.emplace_back(point);
+                this->checkPolygon(vectorChecker);
+                m_pointList = vectorChecker;
+                vectorChecker.clear();
+            }
+            catch (const std::exception& e) {
+                throw;  // std::logic_error("Points: NAME_1 and NAME_2 are equal!")
+            }
+        }
+        else {
+            m_pointList.emplace_back(point);
+            this->checkPolygon(m_pointList);
+        }
+
         if (sort) this->sortPoints();
-        m_state = States::PolygonState(this->size());
+        m_state = PolygonState(this->size());
     }
 
-    void Polygon::emplaceBack(Point &&point, bool sort=true, bool check=true) noexcept {
-        m_pointList.emplace_back(point);
-        if (check) this->checkPolygon(m_pointList);
+    void Polygon::emplaceBack(Point &&point, bool sort, bool check) {
+        if (check) {
+            try {
+                std::vector<Point> vectorChecker = m_pointList;
+                vectorChecker.emplace_back(point);
+                this->checkPolygon(vectorChecker);
+                m_pointList = vectorChecker;
+                vectorChecker.clear();
+            }
+            catch (const std::exception& e) {
+                throw; // std::logic_error("Points: NAME_1 and NAME_2 are equal!")
+            }
+        }
+        else {
+            m_pointList.emplace_back(point);
+            this->checkPolygon(m_pointList);
+        }
+
         if (sort) this->sortPoints();
-        m_state = States::PolygonState(this->size());
+        m_state = PolygonState(this->size());
     }
 
     void Polygon::popBack() {
+        if (size() == 0)
+            throw std::underflow_error("Polygon is empty!");
         m_pointList.pop_back();
-        m_state = States::PolygonState(this->size() - 1);
-    }
+        m_state = PolygonState(this->size() - 1);
+    }   
+
+    void Polygon::popAt(Point point) {
+        if ( std::find(m_pointList.begin(), m_pointList.end(), point) != m_pointList.end() ){
+            m_pointList.erase(std::find(m_pointList.begin(), m_pointList.end(), point));
+            m_state = PolygonState(this->size() - 1);
+        }
+    }   
+
 }

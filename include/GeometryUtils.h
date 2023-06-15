@@ -59,6 +59,18 @@ namespace Geometry {
         bool operator==(Point&& other) const noexcept;
         bool operator!=(Point&& other) const noexcept;
 
+        struct HashFunction
+        {
+            size_t operator()(const Point& point) const
+            {
+                size_t xHash = std::hash<coord_t>()(point.getX());
+                size_t yHash = std::hash<coord_t>()(point.getY()) << 1;
+                return xHash ^ yHash;
+            }
+        };
+
+
+
         Point& operator=(const Point &other);
         Point& operator=(Point &&other) noexcept;
 
@@ -106,9 +118,10 @@ namespace Geometry {
         // Methods
         [[nodiscard]] size_t size() const;
         void sortPoints();
-        void emplaceBack(const Point& point, bool sort, bool check);
-        void emplaceBack(Point&& point, bool sort, bool check) noexcept;
+        void emplaceBack(const Point& point, bool sort = true, bool check = true);
+        void emplaceBack(Point&& point, bool sort = true, bool check = true);
         void popBack();
+        void popAt(Point point);
 
         // Operators
         friend std::ostream &operator<<(std::ostream &out, const Polygon &polygon);
@@ -139,6 +152,7 @@ namespace Geometry {
         States::IntersectionState state = States::IntersectionState::NoIntersection;
         Polygon polygon;
     };
+
 }
 
 #endif //TRIANGLE_INTERSECTIONS_GEOMETRYUTILS_H

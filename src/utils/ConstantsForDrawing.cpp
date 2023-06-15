@@ -1,6 +1,15 @@
 #include "ConstantsForDrawing.h"
 
 namespace DrawConst {
+
+    const scalingParameters HSVGreenDefault = {2 / 7.0f, 0.6f, 0.6f};;
+    const scalingParameters HSVGreenHovered = {2 / 7.0f, 0.7f, 0.7f};
+    const scalingParameters HSVGreenActive = {2 / 7.0f, 0.8f, 0.8f};
+
+    const scalingParameters HSVRedDefault = {0 / 7.0f, 0.6f, 0.6f};;
+    const scalingParameters HSVRedHovered = {0 / 7.0f, 0.7f, 0.7f};;
+    const scalingParameters HSVRedActive = {0 / 7.0f, 0.8f, 0.8f};;
+
     const float LETTER_FONT_SIZE = 23.f;
     const float LINE_THICKNESS = 10.f;
     const float INTERSECTION_POINT_SIZE = 10.f;
@@ -12,5 +21,12 @@ namespace DrawConst {
     const float DISPLAY_SCALE = 2;
 
     const float SQUARE_SIDE_SIZE = 800;
-    const float INDENT_SIZE = 0;
+
+    constinit int BUFFER_SIZE = 32;
+
+    const ImU32& RED_COLOR = IM_COL32(186, 36,  66, 255);
+    const ImU32& GREEN_COLOR = IM_COL32(40,  156, 80, 255);
+    const ImU32& YELLOW_COLOR = IM_COL32(204, 189, 12, 255);
+    const ImU32& WHITE_COLOR = IM_COL32(255, 255, 255, 255);
+
 }

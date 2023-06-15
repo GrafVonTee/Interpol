@@ -24,8 +24,8 @@ namespace Math {
         // Only if we had and left, and right intersection with any edge, we had the situation, that point located into polygon.
 
         bool left = false, right = false;
-        coord_t k;
-        coord_t X0, dY, interX;
+        coord_t k = 0;
+        coord_t X0 = 0, dY = 0, interX = 0;
 
         for (size_t numP = 0; numP < figure.size(); numP++) {
 
@@ -42,7 +42,7 @@ namespace Math {
                     // In another case, we return true, because the point not belongs to the edge.
 
                     return (figure[numP].getX() - point.getX()) *
-                           (figure[(numP + 1) % figure.size()].getX() - point.getX()) == (-1);
+                           (figure[(numP + 1) % figure.size()].getX() - point.getX()) <= 0;
                 else {
 
                     // In this block, we find the point of horizontal line and one of the edge intersections.
@@ -89,8 +89,8 @@ namespace Math {
     }
 
 
-    LineIntersection findLinesInter(Point &firstStart, Point &firstEnd,
-                                    Point &secondStart, Point &secondEnd) {
+    LineIntersection findLinesInter(const Point &firstStart,  const Point &firstEnd,
+                                    const Point &secondStart, const Point &secondEnd) {
 
         // We define a lot of variables, that are used a linear algebra's part of code (we solve the system linear equations).
 
@@ -107,9 +107,8 @@ namespace Math {
         coord_t interX, interY;
 
         // The case, when the determinant is zero, doesn't interest us
-        if (determinant == 0) {
+        if (determinant == 0)
             return LineIntersection{Point{0, 0}, false};
-        }
         else {
 
             // If determinant doesn't equal zero, the lines intersect.
@@ -118,17 +117,14 @@ namespace Math {
             interX = (tSecondY * b1 - tSecondX * b2) / determinant;
             interY = (tFirstX * b2 - tFirstY * b1) / determinant;
 
-            if (interX >= 0 && interX <= 1 && interY >= 0 && interY <= 1) {
+            if (interX >= 0 && interX <= 1 && interY >= 0 && interY <= 1)
                 return LineIntersection{Point{tFirstX * interX + firstStart.getX(), tFirstY * interX + firstStart.getY()}, true};
-            }
-            else {
+            else
                 return LineIntersection{Point{0, 0}, false};
-            }
         }
     }
 
-    bool arePolygonsMatched(const Polygon &first, const Polygon &second,
-                              const std::vector<Point> &listOfInterPoints)
+    bool arePolygonsMatched(const Polygon &first, const Polygon &second)
     {
         for (size_t pointNumber = 0; pointNumber < first.size(); pointNumber++) {
             bool match = false;
@@ -149,7 +145,7 @@ namespace Math {
         return true;
     }
 
-    Intersection findPolygonsInter(Polygon &first, Polygon &second) {
+    Intersection findPolygonsInter(const Polygon &first, const Polygon &second) {
 
         // In this function we find all points, which are the vertexes of intersection polygon, and add their into <listOfInterPoints> vector.
         // We add the point only if this point is new in vector (we must avoid the duplication of intersection polygon vertexes).
@@ -165,21 +161,47 @@ namespace Math {
 
         std::vector<Point> listOfInterPoints;
 
+        if (first.size() == 1 && second.size() == 1) {
+
+            if (first == second)
+                return Intersection{States::IntersectionState::Matched, first};
+            else
+                return Intersection{States::IntersectionState::NoIntersection, Polygon()};
+
+        }
+
+        if (first.size()==1) {
+
+            if (isPointInside(first[0],second))
+                return Intersection{States::IntersectionState::Nested,first};
+            else
+                return Intersection{States::IntersectionState::NoIntersection, Polygon()};
+
+        }
+
+        if (second.size()==1) {
+
+            if (isPointInside(second[0],first))
+                return Intersection{States::IntersectionState::Nested,second};
+            else
+                return Intersection{States::IntersectionState::NoIntersection, Polygon()};
+
+        }
+
+
         addInsideVertex(listOfInterPoints, first, second);
 
         // Checking the case, when polygons are matching.
         if (listOfInterPoints.size() == first.size()) {
-            if (arePolygonsMatched(first, second, listOfInterPoints))
+            if (first.size()==second.size() && arePolygonsMatched(first, second))
                 return Intersection{States::IntersectionState::Matched, second};
             else
                 return Intersection{States::IntersectionState::Nested, Polygon(listOfInterPoints)};
         }
 
-        bool nestedFlag = listOfInterPoints.empty();
-
         addInsideVertex(listOfInterPoints, second, first);
 
-        if (nestedFlag && listOfInterPoints.size() == second.size())
+        if (listOfInterPoints.size() == second.size() && arePolygonsMatched(Polygon(listOfInterPoints), second))
             return Intersection{States::IntersectionState::Nested, Polygon(listOfInterPoints)};
 
         // Find all point of edges intersections
@@ -191,9 +213,8 @@ namespace Math {
                 inter = findLinesInter(first[firstEdge], first[(firstEdge + 1) % first.size()],
                                        second[secondEdge],second[(secondEdge + 1) % second.size()]);
 
-                if (inter.isImportantCase) {
+                if (inter.isImportantCase)
                     pushBackUnique(listOfInterPoints, inter.point);
-                }
             }
         }
 
