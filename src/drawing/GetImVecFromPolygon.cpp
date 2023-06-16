@@ -27,16 +27,16 @@ namespace DrawUtils {
         }
 
         scalingParameters result;
-        result.min_x = (float) *std::min_element(arrayX.begin(), arrayX.end());
+        result.minX = (float) *std::min_element(arrayX.begin(), arrayX.end());
         float max_x = (float) *std::max_element(arrayX.begin(), arrayX.end());
-        result.min_y = (float) *std::min_element(arrayY.begin(), arrayY.end());
+        result.minY = (float) *std::min_element(arrayY.begin(), arrayY.end());
         float max_y = (float) *std::max_element(arrayY.begin(), arrayY.end());
 
-        result.scale_x = (float) squareSideSize / (max_x - result.min_x);
-        result.scale_y = (float) squareSideSize / (max_y - result.min_y);
+        result.scaleX = (float) squareSideSize / (max_x - result.minX);
+        result.scaleY = (float) squareSideSize / (max_y - result.minY);
 
-        result.delta_x = (float) (squareSideSize - (max_x - result.min_x) * result.scale_x) / 2;
-        result.delta_y = (float) (squareSideSize - (max_y - result.min_y) * result.scale_y) / 2;
+        result.deltaX = (float) (squareSideSize - (max_x - result.minX) * result.scaleX) / 2;
+        result.deltaY = (float) (squareSideSize - (max_y - result.minY) * result.scaleY) / 2;
 
         return result;
     }
@@ -44,16 +44,16 @@ namespace DrawUtils {
     Geometry::Polygon scaleAndTranslate(const Geometry::Polygon &polygon, const scalingParameters& parameters) {
         Geometry::Polygon newPolygon = polygon;
         for (Geometry::Point &point: newPolygon.getPointsRef()) {
-            point.setX((point.getX() - parameters.min_x) * parameters.scale_x + parameters.delta_x);
-            point.setY((point.getY() - parameters.min_y) * parameters.scale_y + parameters.delta_y);
+            point.setX((point.getX() - parameters.minX) * parameters.scaleX + parameters.deltaX);
+            point.setY((point.getY() - parameters.minY) * parameters.scaleY + parameters.deltaY);
         }
         return newPolygon;
     }
 
     Geometry::Point scaleAndTranslatePoint(const Geometry::Point &point, const scalingParameters& parameters) {
         Geometry::Point newPoint = point;
-        newPoint.setX((point.getX() - parameters.min_x) * parameters.scale_x + parameters.delta_x);
-        newPoint.setY((point.getY() - parameters.min_y) * parameters.scale_y + parameters.delta_y);
+        newPoint.setX((point.getX() - parameters.minX) * parameters.scaleX + parameters.deltaX);
+        newPoint.setY((point.getY() - parameters.minY) * parameters.scaleY + parameters.deltaY);
         return newPoint;
     }
 
