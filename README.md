@@ -31,13 +31,13 @@ To run the project, you must compile and run the executable. Follow the steps be
 
 Need `python 3.*` and `PyCocoa lib`.
 ```
-git clone https://github.com/GrafVonTee/triangle_intersections.git
-cd triangle_intersections
+git clone https://github.com/GrafVonTee/Interpol.git
+cd Interpol
 mkdir build
 cd build
 cmake ..
 make
-./triangle_intersection
+./Interpol
 ```
 
 ## Example
