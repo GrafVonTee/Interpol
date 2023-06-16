@@ -74,6 +74,10 @@ namespace DrawOutput {
         auto& statesLib = Manipulator::StatesLibrary::getInstance();
         figures_state_t figures = statesLib.getStateRef();
 
+        bool showError = false;
+
+        std::string errorMessage;
+
         while (!glfwWindowShouldClose(window)) {
 
             glfwPollEvents();                   
@@ -93,7 +97,26 @@ namespace DrawOutput {
             ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Once);
             ImGui::SetNextWindowSize(ImVec2(DrawConst::WINDOW_WIDTH / 3, DrawConst::WINDOWS_HEIGHT), ImGuiCond_Once);
             
-            DrawProperties();
+            try
+            {                
+                DrawProperties();
+            }
+            catch(const std::exception& e)
+            {       
+                ImGui::End();
+                showError = true;
+                errorMessage = e.what();
+            }
+            
+            if (showError){
+                ImGui::Begin("Properties", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+                    if (ErrorMarker(errorMessage.c_str())){
+                        showError = false;
+                        ImGui::End();
+                    }
+                ImGui::End();
+            }
+            // DrawProperties();
 
             // Rendering
             ImGui::Render();
@@ -263,6 +286,23 @@ namespace DrawOutput {
             ImGui::EndTooltip();
         }
     }
+    
+    bool ErrorMarker(const char* desc)
+    {
+        ImGui::TextDisabled("(!)");
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayShort) && ImGui::BeginTooltip())
+        {
+            if (ImGui::IsMouseDown(ImGuiMouseButton_Left)){
+                return true;
+            }
+            ImGui::PushTextWrapPos(ImGui::GetFontSize() * 35.0f);
+            ImGui::TextUnformatted(desc);
+            ImGui::PopTextWrapPos();
+            ImGui::EndTooltip();
+        }
+        return false;
+        
+    }
 
     void DisplayRevertButton() 
     {
@@ -360,6 +400,7 @@ namespace DrawOutput {
         
         ImGui::SameLine();
         if (ImGui::Button(name.c_str())) {
+
             polygon.emplaceBack(newPoint);
             Manipulator::StatesLibrary::getInstance().updateStateWith(polygon, figname);
         }

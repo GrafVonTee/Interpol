@@ -232,7 +232,7 @@ namespace Geometry {
                     throw std::logic_error(errorType);
                 }
 
-        for (size_t i = 0; i < points.size() - 3; ++i)
+        for (size_t i = 0; i < points.size() - 2; ++i)
             checkPointsForPolygon(points[i], points[i+1], points[i+2]);
 
         checkPointsForPolygon(points[points.size() - 1], points[0], points[1]); // ZAB
