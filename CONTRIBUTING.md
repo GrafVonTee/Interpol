@@ -34,7 +34,7 @@ We may have additional questions and will communicate through the GitHub issue, 
 ### How to submit Pull Requests
 
 1. Fork this repo
-2. Clone your fork and create a new branch: `git clone https://github.com/GrafVonTee/triangle_intersections.git -b name_for_new_branch`.
+2. Clone your fork and create a new branch: `git clone https://github.com/GrafVonTee/Interpol.git -b name_for_new_branch`.
 3. Make changes and test
 4. Publish the changes to your fork
 5. Submit a Pull Request with comprehensive description of changes
