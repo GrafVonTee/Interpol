@@ -1,6 +1,6 @@
 # Contribution Guidelines
 
-Help wanted! We'd love your contributions to `triangle_intersection`. Please review the following guidelines before contributing. Also, feel free to propose changes to these guidelines by updating this file and submitting a pull request.
+Help wanted! We'd love your contributions to `Interpol`. Please review the following guidelines before contributing. Also, feel free to propose changes to these guidelines by updating this file and submitting a pull request.
 
 ## Have a question?
 
@@ -9,6 +9,8 @@ You can check our tg (@grafvontee and @kr1stt) and ask us!
 ## Found a bug?
                             
 You can use [issues](../../issues) to report bugs. Provide all the requested information, otherwise your issue could be closed. Please also feel free to submit a Pull Request with a fix for the bug! For sensitive security-related issues, please report via telegram!
+
+Consider checking [Bug Template](.github/ISSUE_TEMPLATE/bug_report.md) before reporting.
 
 ## Have a Feature Request?
 
