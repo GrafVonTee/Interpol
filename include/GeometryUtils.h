@@ -98,8 +98,6 @@ namespace Geometry {
         std::vector<Point> m_pointList{};
         States::PolygonState m_state = States::PolygonState::NotPolygon;
 
-        // Validator for vector of points in Polygon
-        static void checkPolygon(const std::vector<Point> &points);
 
         // Subfunction for checkPolygon(const std::vector<Point> &points)
         static void checkPointsForPolygon(const Point &p1, const Point &p2, const Point &p3);
@@ -116,6 +114,10 @@ namespace Geometry {
         [[nodiscard]] std::vector<Point> getPointsCopy() const;
 
         // Methods
+        
+        // Validator for vector of points in Polygon
+        static void checkPolygon(const std::vector<Point> &points);
+        
         [[nodiscard]] size_t size() const;
         void sortPoints();
         void emplaceBack(const Point& point, bool sort = true, bool check = true);

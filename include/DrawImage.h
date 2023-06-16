@@ -38,6 +38,7 @@ namespace DrawOutput {
     void DisplayAddButton(Geometry::Polygon &polygon, States::FigureName figname);
     void DisplayDeleteButton(Geometry::Polygon& polygon, Geometry::Point& point, States::FigureName figname);
     void HelpMarker(const char* desc);
+    bool ErrorMarker(const char* desc);
     void DisplayRevertButton();
     inline void DrawCanvas();
     inline void DrawProperties();
