@@ -195,30 +195,6 @@ namespace Interaction {
         return polygonTypes[(unsigned int)state];
     }
 
-
-    void askSorting(Geometry::Polygon& polygon, std::ostream& out = std::cout, std::istream& in = std::cin) {
-        // Ask the user if they want to sort the points by traversal
-        out << "Do you want to sort the points by traversal? (yes/no): ";
-        std::string answer;
-        std::getline(in, answer);
-
-        if ((answer == "yes") || (answer == "y") || (answer == "Y") || (answer == "YES")) {
-            // Determine the starting letter based on the polygon's label
-            char startingLetter = polygon[0].getLabel()[0];
-
-            // Update the point labels based on traversal order
-            for (std::size_t i = 0; i < polygon.size(); ++i) {
-                std::string pointLabel = std::string(1, startingLetter) + std::to_string(i + 1);
-
-                // Update the point label if it doesn't start with the correct letter
-                if (polygon[i].getLabel()[0] != startingLetter)
-                    polygon[i].setLabel(pointLabel);
-            }
-        }
-        // Print the polygon
-        printPolygon(polygon);
-    }
-
     void printStateFromLibrary(size_t indexState) {
         Manipulator::FiguresState figState;
         if (indexState == -1)

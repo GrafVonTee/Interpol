@@ -39,9 +39,9 @@ namespace Geometry {
         Point(Point &&other) noexcept;
 
         // Getters
-        [[nodiscard]] coord_t getX() const;
-        [[nodiscard]] coord_t getY() const;
-        [[nodiscard]] std::string getLabel() const;
+        coord_t getX() const;
+        coord_t getY() const;
+        std::string getLabel() const;
 
         // Setters
         void setX(const coord_t &x);
@@ -70,7 +70,6 @@ namespace Geometry {
         };
 
 
-
         Point& operator=(const Point &other);
         Point& operator=(Point &&other) noexcept;
 
@@ -89,6 +88,7 @@ namespace Geometry {
      @type m_state: PolygonState
 
      Methods:
+     static checkPolygon: check polygon's points for valid input
      size(): return size of a vector
      sortPoints(): sort vector using atan2 function
      emplaceBack(const Point& | Point&&): emplace point in Polygon, auto-validator and auto-sort
@@ -97,7 +97,6 @@ namespace Geometry {
     private:
         std::vector<Point> m_pointList{};
         States::PolygonState m_state = States::PolygonState::NotPolygon;
-
 
         // Subfunction for checkPolygon(const std::vector<Point> &points)
         static void checkPointsForPolygon(const Point &p1, const Point &p2, const Point &p3);
@@ -109,16 +108,13 @@ namespace Geometry {
         Polygon(Polygon &&other) noexcept;
 
         // Getters
-        [[nodiscard]] States::PolygonState getState() const;
-        [[nodiscard]] std::vector<Point> &getPointsRef();
-        [[nodiscard]] std::vector<Point> getPointsCopy() const;
+        States::PolygonState getState() const;
+        std::vector<Point> &getPointsRef();
+        std::vector<Point> getPointsCopy() const;
 
         // Methods
-        
-        // Validator for vector of points in Polygon
         static void checkPolygon(const std::vector<Point> &points);
-        
-        [[nodiscard]] size_t size() const;
+        size_t size() const;
         void sortPoints();
         void emplaceBack(const Point& point, bool sort = true, bool check = true);
         void emplaceBack(Point&& point, bool sort = true, bool check = true);

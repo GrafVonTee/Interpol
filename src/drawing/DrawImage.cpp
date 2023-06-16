@@ -7,11 +7,8 @@
 #include "CalculateIntersections.h"
 #include "StatesLibrary.h"
 
-// // Enable for imgui demo window
-// #include "imgui_demo.cpp"
 
 using figures_state_t = Manipulator::FiguresState;
-
 
 namespace DrawOutput {
     void drawPolygonsAndIntersection() {
@@ -380,21 +377,21 @@ namespace DrawOutput {
         }
         // HSV stands for Hue/Saturation/Value
         ImGui::PushStyleColor(ImGuiCol_Button,
-                              (ImVec4)ImColor::HSV(DrawConst::HSVGreenDefault.Hue,
-                                                   DrawConst::HSVGreenDefault.Saturation,
-                                                   DrawConst::HSVGreenDefault.Value
+                              (ImVec4)ImColor::HSV(DrawConst::HSV_GREEN_DEFAULT.Hue,
+                                                   DrawConst::HSV_GREEN_DEFAULT.Saturation,
+                                                   DrawConst::HSV_GREEN_DEFAULT.Value
                                                    )
                              );
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
-                              (ImVec4)ImColor::HSV(DrawConst::HSVGreenHovered.Hue,
-                                                   DrawConst::HSVGreenHovered.Saturation,
-                                                   DrawConst::HSVGreenHovered.Value
+                              (ImVec4)ImColor::HSV(DrawConst::HSV_GREEN_HOVERED.Hue,
+                                                   DrawConst::HSV_GREEN_HOVERED.Saturation,
+                                                   DrawConst::HSV_GREEN_HOVERED.Value
                                                    )
                              );
         ImGui::PushStyleColor(ImGuiCol_ButtonActive,
-                              (ImVec4)ImColor::HSV(DrawConst::HSVGreenActive.Hue,
-                                                   DrawConst::HSVGreenActive.Saturation,
-                                                   DrawConst::HSVGreenActive.Value
+                              (ImVec4)ImColor::HSV(DrawConst::HSV_GREEN_ACTIVE.Hue,
+                                                   DrawConst::HSV_GREEN_ACTIVE.Saturation,
+                                                   DrawConst::HSV_GREEN_ACTIVE.Value
                                                    )
                               );
         
@@ -411,21 +408,21 @@ namespace DrawOutput {
     void DisplayDeleteButton(Geometry::Polygon& polygon, Geometry::Point& point, States::FigureName figname) {
         // HSV stands for Hue/Saturation/Value        
         ImGui::PushStyleColor(ImGuiCol_Button,
-                              (ImVec4)ImColor::HSV(DrawConst::HSVRedDefault.Hue,
-                                                   DrawConst::HSVRedDefault.Saturation,
-                                                   DrawConst::HSVRedDefault.Value
+                              (ImVec4)ImColor::HSV(DrawConst::HSV_RED_DEFAULT.Hue,
+                                                   DrawConst::HSV_RED_DEFAULT.Saturation,
+                                                   DrawConst::HSV_RED_DEFAULT.Value
                                                    )
                              );
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered,
-                              (ImVec4)ImColor::HSV(DrawConst::HSVRedHovered.Hue,
-                                                   DrawConst::HSVRedHovered.Saturation,
-                                                   DrawConst::HSVRedHovered.Value
+                              (ImVec4)ImColor::HSV(DrawConst::HSV_RED_HOVERED.Hue,
+                                                   DrawConst::HSV_RED_HOVERED.Saturation,
+                                                   DrawConst::HSV_RED_HOVERED.Value
                                                    )
                               );
         ImGui::PushStyleColor(ImGuiCol_ButtonActive,
-                              (ImVec4)ImColor::HSV(DrawConst::HSVRedActive.Hue,
-                                                   DrawConst::HSVRedActive.Saturation,
-                                                   DrawConst::HSVRedActive.Value
+                              (ImVec4)ImColor::HSV(DrawConst::HSV_RED_ACTIVE.Hue,
+                                                   DrawConst::HSV_RED_ACTIVE.Saturation,
+                                                   DrawConst::HSV_RED_ACTIVE.Value
                                                    )
                              );
         

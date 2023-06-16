@@ -1,23 +1,24 @@
 #ifndef TRIANGLE_INTERSECTIONS_CONSTANTSFORDRAWING_H
 #define TRIANGLE_INTERSECTIONS_CONSTANTSFORDRAWING_H
 
+#include <string>
 #include "imgui.h"
 
 namespace DrawConst {
 
-    struct scalingParameters {
+    struct ColorParameters {
         float Hue;
         float Saturation;
         float Value;
     };
 
-    extern const scalingParameters HSVGreenDefault;
-    extern const scalingParameters HSVGreenHovered;
-    extern const scalingParameters HSVGreenActive;
+    extern const ColorParameters HSV_GREEN_DEFAULT;
+    extern const ColorParameters HSV_GREEN_HOVERED;
+    extern const ColorParameters HSV_GREEN_ACTIVE;
 
-    extern const scalingParameters HSVRedDefault;
-    extern const scalingParameters HSVRedHovered;
-    extern const scalingParameters HSVRedActive;
+    extern const ColorParameters HSV_RED_DEFAULT;
+    extern const ColorParameters HSV_RED_HOVERED;
+    extern const ColorParameters HSV_RED_ACTIVE;
 
     extern const float LETTER_FONT_SIZE;
     extern const float LINE_THICKNESS;
@@ -36,5 +37,8 @@ namespace DrawConst {
     extern const ImU32& GREEN_COLOR;
     extern const ImU32& YELLOW_COLOR;
     extern const ImU32& WHITE_COLOR;
+
+    extern const std::string HEX_AND_HEX_DEMO_INPUT;
+    extern const std::string TRIANGLE_AND_TRIANGLE_DEMO_INPUT;
 }
 #endif //TRIANGLE_INTERSECTIONS_CONSTANTSFORDRAWING_H

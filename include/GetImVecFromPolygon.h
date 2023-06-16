@@ -10,12 +10,12 @@
 namespace DrawUtils {
 
     struct scalingParameters {
-        float scale_x = 0;
-        float scale_y = 0;
-        float delta_x = 0;
-        float delta_y = 0;
-        float min_x = 0;
-        float min_y = 0;
+        float scaleX = 0;
+        float scaleY = 0;
+        float deltaX = 0;
+        float deltaY = 0;
+        float minX = 0;
+        float minY = 0;
     };
 
     std::vector<ImVec2> getVectorOfPointsFromPolygon(const Geometry::Polygon& polygon,
