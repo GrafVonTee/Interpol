@@ -142,7 +142,7 @@ target_link_libraries(
 
 # triangle_intersection configuration
 add_executable(
-        triangle_intersection
+        Interpol
         src/main.cpp
 
         ${SOURCES_MATH}
@@ -151,13 +151,13 @@ add_executable(
         ${SOURCES_UTILS}
 )
 
-target_include_directories(triangle_intersection PUBLIC include)
-target_include_directories(triangle_intersection PUBLIC imgui)
-target_include_directories(triangle_intersection PUBLIC glad)
-target_include_directories(triangle_intersection PUBLIC glfw)
+target_include_directories(Interpol PUBLIC include)
+target_include_directories(Interpol PUBLIC imgui)
+target_include_directories(Interpol PUBLIC glad)
+target_include_directories(Interpol PUBLIC glfw)
 
 target_link_libraries(
-    triangle_intersection
+    Interpol
     imgui
     glfw
     glad

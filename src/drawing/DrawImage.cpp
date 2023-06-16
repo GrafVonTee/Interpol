@@ -36,7 +36,7 @@ namespace DrawOutput {
 
         // Create a GLFW window
         GLFWwindow *window = glfwCreateWindow((int) DrawConst::WINDOW_WIDTH, (int) DrawConst::WINDOWS_HEIGHT,
-                                              "Polygon Intersection",
+                                              "Interpol",
                                               nullptr, nullptr);
 
         // Make the OpenGL context current
