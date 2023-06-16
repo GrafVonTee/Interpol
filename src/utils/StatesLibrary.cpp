@@ -84,6 +84,8 @@ namespace Manipulator {
     void StatesLibrary::updateStateWith(const Geometry::Polygon &polygon, States::FigureName figname) {
         using namespace States;
 
+        polygon.checkPolygon(polygon.getPointsCopy());
+        
         auto &manipulator = StatesLibrary::getInstance();
         if (manipulator.isEmpty())
             throw std::underflow_error("Library is empty! Nothing to update.");
@@ -103,4 +105,5 @@ namespace Manipulator {
         manipulator.emplaceState(figures);
         manipulator.updateState();
     }
+
 }
