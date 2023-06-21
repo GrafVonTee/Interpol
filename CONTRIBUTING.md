@@ -1,6 +1,6 @@
 # Contribution Guidelines
 
-Help wanted! We'd love your contributions to `triangle_intersection`. Please review the following guidelines before contributing. Also, feel free to propose changes to these guidelines by updating this file and submitting a pull request.
+Help wanted! We'd love your contributions to `Interpol`. Please review the following guidelines before contributing. Also, feel free to propose changes to these guidelines by updating this file and submitting a pull request.
 
 ## Have a question?
 
@@ -9,6 +9,8 @@ You can check our tg (@grafvontee and @kr1stt) and ask us!
 ## Found a bug?
                             
 You can use [issues](../../issues) to report bugs. Provide all the requested information, otherwise your issue could be closed. Please also feel free to submit a Pull Request with a fix for the bug! For sensitive security-related issues, please report via telegram!
+
+Consider checking [Bug Template](.github/ISSUE_TEMPLATE/bug_report.md) before reporting.
 
 ## Have a Feature Request?
 
@@ -32,7 +34,7 @@ We may have additional questions and will communicate through the GitHub issue, 
 ### How to submit Pull Requests
 
 1. Fork this repo
-2. Clone your fork and create a new branch: `git clone https://github.com/GrafVonTee/triangle_intersections.git -b name_for_new_branch`.
+2. Clone your fork and create a new branch: `git clone https://github.com/GrafVonTee/Interpol.git -b name_for_new_branch`.
 3. Make changes and test
 4. Publish the changes to your fork
 5. Submit a Pull Request with comprehensive description of changes

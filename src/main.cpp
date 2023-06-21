@@ -1,35 +1,30 @@
 #include <sstream>
 #include "DrawImage.h"
-#include "CalculateIntersections.h"
 #include "Parsing.h"
 #include "ConsoleInteraction.h"
-#include "GetImVecFromPolygon.h"
+#include "StatesLibrary.h"
+#include "ConstantsForDrawing.h"
 
 int main() {
     std::string userName = Interaction::getUserName();
     Interaction::greeting(userName);
-    std::istringstream demoPoints("(200.0, 900.0)\n(200.0, 200.0)\n(900.0, 100.0)\n(100.0, 800.0)\n(500.0, 300.0)\n(700.0, 500.0)\n");
+    std::istringstream demoPoints(DrawConst::HEX_AND_HEX_DEMO_INPUT);
     std::ostringstream empty;
 
     std::istream *input = &std::cin;
     std::ostream *output = &std::cout;
 
-    if ((userName == "Demo")||(userName == "demo")){
+    if ((userName == "Demo") || (userName == "demo") || (userName == "DEMO")) {
         input = &demoPoints;
         output = &empty;
     }
 
-    auto [tr1, tr2] = Interaction::getBothTriangles(*input, *output);
-    auto intersection = Math::findTriangleInter(tr1, tr2);
-    DrawUtils::setActualPointsLabels(tr1, tr2, intersection);
-
-    Interaction::printTriangle(tr1);
-    Interaction::printTriangle(tr2);
-    Interaction::printIntersection(intersection);
-
+    auto& statesLib = Manipulator::StatesLibrary::getInstance();
+    statesLib.emplaceState(Interaction::getFiguresStateFromInput(*input, *output));
+    Interaction::printStateFromLibrary();
 
     Interaction::welcomeToGui();
-    DrawOutput::draw_triangles_and_intersection(tr1, tr2, intersection);
+    DrawOutput::drawPolygonsAndIntersection();
 
     Interaction::goodbye(userName);
     system("pause");

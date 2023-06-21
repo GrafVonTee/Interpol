@@ -11,5 +11,4 @@ namespace Parsing {
     States::InputState checkStringIsEmpty(const std::string &input);
     input_result_t parsePoint(std::string &input);
 }
-
 #endif //TRIANGLE_INTERSECTIONS_PARSING_H

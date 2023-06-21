@@ -1,24 +1,26 @@
 #include <iostream>
 #include <sstream>
+#include <limits>
 #include "GeometryUtils.h"
 #include "ConsoleInteraction.h"
 #include "Parsing.h"
+#include "StatesLibrary.h"
+#include "CalculateIntersections.h"
+#include "GetImVecFromPolygon.h"
 
 using std::cout, std::cin, std::endl, std::cerr;
 
 namespace Interaction {
     void greeting(const std::string &userName) {
         cout << "Greetings, " << (userName.empty() ? "Traveller" : userName) << "!" << endl;
-        cout << "This program will immerse you in the wonderful world of\n\tTriangle Intersections!" << endl;
-        cout << "All you need is entering the values of your two triangles..." << endl;
-        cout << "...and take resulted polygon!" << endl;
+        cout << "This program will immerse you in the wonderful world of\n\tPolygon Intersections!" << endl;
+        cout << "All you need is entering the values of your two polygons..." << endl;
+        cout << "...and take resulted intersection!" << endl;
         cout << endl;
     }
 
     void welcomeToGui() {
-        cout << "Well, let's take a look on your triangles and intersection between them!" << endl;
-        cout << "Another window has opened now, just click on the blue angle, hold and pull it to down-right side" << endl;
-        cout << "You will see what you wrote" << endl;
+        cout << "Well, let's take a look on your figures and intersection between them!" << endl;
         cout << endl;
     }
 
@@ -38,41 +40,59 @@ namespace Interaction {
         return userName;
     }
 
-    triangle_result_t getTriangle(const std::string &letter,
-                                  std::istream& inputStream,
-                                  std::ostream& outputStream) {
+    polygon_result_t getPolygon(const std::string& letter, std::istream& inputStream, std::ostream& outputStream) {
+        int numPoints;
 
-        // Get points until both of them become correct
-        outputStream << "Let\'s enter your triangle!" << endl;
-        std::vector<Geometry::Point> points;
-        constexpr short numberOfPoints = 3;
-        for (auto i = 0; i < numberOfPoints; i++) {
-            Geometry::Point point;
-            States::InputState state;
-            std::string pointLetter = letter + std::to_string(i+1);
-            do {
-                auto [tuple_point, tuple_state] = getPoint(
-                        pointLetter,
-                        inputStream, outputStream);
-                point = tuple_point;
-                state = tuple_state;
-            } while (state != States::InputState::Correct);
-            points.push_back(point);
+        while (true) {
+            outputStream << "Enter the number of points for the polygon " << letter << ": ";
+            inputStream >> numPoints;
+
+            if (!inputStream) {
+                outputStream << "Invalid input. Please enter a number.\n";
+                inputStream.clear();
+                inputStream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                continue;
+            }
+
+            inputStream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+            if (numPoints <= 0)
+                outputStream << "Invalid number of points. Please enter a positive integer.\n";
+            else
+                break;
         }
 
-        // Check entered points can actually form triangle
+        std::vector<Geometry::Point> points;
+        points.reserve(numPoints);
+
+        for (int i = 1; i <= numPoints; ++i) {
+            std::string pointLetter = letter + std::to_string(i);
+            Geometry::Point point;
+            States::InputState state;
+
+            do {
+                auto [tuplePoint, tupleState] = getPoint(pointLetter, inputStream, outputStream);
+                point = tuplePoint;
+                state = tupleState;
+            } while (state != States::InputState::Correct);
+
+            points.emplace_back(point);
+        }
+
         Geometry::Polygon polygon;
         States::InputState state = States::InputState::Correct;
+
         try {
             polygon = Geometry::Polygon(points);
         } catch (const std::logic_error& e) {
-            cerr << e.what() << endl;
+            outputStream << e.what() << std::endl;
             polygon = Geometry::Polygon();
             state = States::InputState::IncorrectInput;
         }
 
         return std::make_tuple(polygon, state);
     }
+
 
     point_result_t getPoint(const std::string &letter,
                             std::istream &inputStream,
@@ -81,7 +101,6 @@ namespace Interaction {
         outputStream << "Please, enter new point " << letter << " in \'(x, y)\' format: ";
         std::string inputStr;
         std::getline(inputStream, inputStr);
-        // cin.ignore();
 
         auto [resulted, state] = Parsing::parsePoint(inputStr);
 
@@ -100,44 +119,28 @@ namespace Interaction {
         }
     }
 
-    triangle_pair_t getBothTriangles(std::istream &inputStream,
-                                     std::ostream& outputStream) {
-        // Get triangles until both of them become correct
-
-        outputStream << "The first thing you need is defining your two triangles (1 and 2)!" << endl;
-        Geometry::Polygon triangle1, triangle2;
+    polygon_pair_t getBothPolygons(std::istream& inputStream, std::ostream& outputStream) {
+        outputStream << "The first thing you need is to define your two polygons (1 and 2)!" << std::endl;
+        Geometry::Polygon polygon1, polygon2;
         States::InputState state;
         for (int i = 1; i <= 2; ++i) {
             do {
-                outputStream << endl;
-                std::string letterTriangle = (i == 1) ? "A" : "B";
-                auto [tuple_triangle, tuple_state] = getTriangle(letterTriangle, inputStream, outputStream);
+                outputStream << std::endl;
+                std::string letterPolygon = (i == 1) ? "A" : "B";
+                auto [tuplePolygon, tupleState] = getPolygon(letterPolygon, inputStream, outputStream);
                 if (i == 1)
-                    triangle1 = tuple_triangle;
+                    polygon1 = tuplePolygon;
                 else
-                    triangle2 = tuple_triangle;
-                state = tuple_state;
+                    polygon2 = tuplePolygon;
+                state = tupleState;
             } while (state != States::InputState::Correct);
         }
 
-        return std::make_tuple(triangle1, triangle2);
+        return std::make_tuple(polygon1, polygon2);
     }
 
     void printPoint(const Geometry::Point &point) {
         cout << "Point " << point.getLabel() << " = " << point << endl;
-    }
-
-    void printTriangle(const Geometry::Polygon &triangle) {
-        std::string nameOfTriangle;
-        for (size_t i = 0; i < triangle.size() - 1; ++i)
-            nameOfTriangle += triangle[i].getLabel() + ",";
-        nameOfTriangle += triangle[2].getLabel();
-
-        cout << "Triangle " << nameOfTriangle
-             << " with points:" << endl;
-        for (auto i = 0; i < triangle.size(); ++i)
-            printPoint(triangle[i]);
-        cout << endl;
     }
 
     void printIntersection(const Geometry::Intersection &intersection) {
@@ -145,13 +148,13 @@ namespace Interaction {
         using IState = States::IntersectionState;
         switch (intersection.state) {
             case IState::NoIntersection:
-                cout << "There is no intersection between your triangles!" << endl;
+                cout << "There is no intersection between your figures!" << endl;
                 break;
             case IState::Matched:
-                cout << "Your triangles match!" << endl;
+                cout << "Your figures match!" << endl;
                 break;
             case IState::Nested:
-                cout << "One of your triangles is nested inside another!" << endl;
+                cout << "One of your figure is nested inside another!" << endl;
                 break;
             case IState::Polygon:
                 cout << "Your intersection is a polygon!" << endl;
@@ -175,18 +178,44 @@ namespace Interaction {
         cout << "Your polygon is a " << polygonType << " " << polygonName << " with points:" << endl;
         for (auto i = 0; i < polygon.size(); ++i)
             printPoint(polygon[i]);
+        cout << endl;
     }
 
     std::string getTypeNameOfPolygon(const States::PolygonState &state) {
         std::string polygonTypes[] {
-            "not a polygon",
-            "point",
-            "edge",
-            "triangle",
-            "quadrilateral",
-            "pentagon",
-            "hexagon",
+                "not a polygon",
+                "point",
+                "edge",
+                "triangle",
+                "quadrilateral",
+                "pentagon",
+                "hexagon",
+                "polygon",
         };
         return polygonTypes[(unsigned int)state];
+    }
+
+    void printStateFromLibrary(size_t indexState) {
+        Manipulator::FiguresState figState;
+        if (indexState == -1)
+            figState = Manipulator::StatesLibrary::getInstance().getStateView();
+        else
+            figState = Manipulator::StatesLibrary::getInstance().getStateView(indexState);
+
+        printPolygon(figState.polygon1);
+        printPolygon(figState.polygon2);
+        printIntersection(figState.intersection);
+    }
+
+    Manipulator::FiguresState getFiguresStateFromInput(std::istream& inputStream,
+                                                       std::ostream& outputStream)
+    {
+        auto [p1, p2] = Interaction::getBothPolygons(inputStream, outputStream);
+        auto intersection = Math::findPolygonsInter(p1, p2);
+        DrawUtils::setActualPointsLabels(p1,
+                                         p2,
+                                         intersection);
+
+        return Manipulator::FiguresState{p1, p2, intersection};
     }
 }

@@ -1,5 +1,5 @@
-#ifndef TRIANGLE_INTERSECTIONS_CALCULATEINTERSECTIONS_H
-#define TRIANGLE_INTERSECTIONS_CALCULATEINTERSECTIONS_H
+#ifndef POLYGON_INTERSECTIONS_CALCULATEINTERSECTIONS_H
+#define POLYGON_INTERSECTIONS_CALCULATEINTERSECTIONS_H
 
 #include <vector>
 #include <algorithm>
@@ -9,7 +9,8 @@
 
 namespace Math {
 
-    // Important case - it is when 2 lines not parallel and sections have intersection. If case is important, we get coords of intersection point, else we get (0,0) point
+// Important case - it is when 2 lines not parallel and sections have intersection.
+// If case is important, we get coords of intersection point, else we get (0,0) point
     struct LineIntersection{
         Geometry::Point point;
         bool isImportantCase;
@@ -27,11 +28,13 @@ namespace Math {
     // Adding into vector all vertex of "internal" polygon which is locating into "external polygon"
     void addInsideVertex(std::vector<Geometry::Point>& list, const Geometry::Polygon& internal, const Geometry::Polygon& external);
 
-    // Important case - it is when 2 lines not parallel and sections have intersection. If case is important, we get coords of intersection point, else we get (0,0) point
-    LineIntersection findLinesInter(Geometry::Point& firstStart, Geometry::Point& firstEnd,
-        Geometry::Point& secondStart,Geometry::Point& secondEnd);
+    // Important case - it is when 2 lines not parallel and sections have intersection.
+    // If case is important, we get coords of intersection point, else we get (0,0) point
+    LineIntersection findLinesInter(const Geometry::Point &firstStart,  const Geometry::Point &firstEnd,
+                                    const Geometry::Point &secondStart, const Geometry::Point &secondEnd);
 
     // Main function of math module, find intersection area
-    Geometry::Intersection findTriangleInter(Geometry::Polygon& first, Geometry::Polygon& second);
+    Geometry::Intersection findPolygonsInter(const Geometry::Polygon &first, const Geometry::Polygon &second);
+
 }
-#endif //TRIANGLE_INTERSECTIONS_CALCULATEINTERSECTIONS_H
+#endif //POLYGON_INTERSECTIONS_CALCULATEINTERSECTIONS_H

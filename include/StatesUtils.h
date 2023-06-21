@@ -5,7 +5,6 @@ namespace States {
     enum class InputState {
         IncorrectInput,
         EmptyString,
-        EqualPoints,
         Correct
     };
 
@@ -17,7 +16,8 @@ namespace States {
         Quadrilateral = 4,
         Pentagon = 5,
         Hexagon = 6,
-        OtherPolygon
+        OtherPolygon,
+        AllStates,
     };
 
     enum class IntersectionState {
@@ -25,6 +25,12 @@ namespace States {
         Nested,
         Matched,
         Polygon
+    };
+
+    enum class FigureName {
+        Polygon1,
+        Polygon2,
+        Intersection,
     };
 }
 #endif // TRIANGLE_INTERSECTIONS_STATESUTILS_H
