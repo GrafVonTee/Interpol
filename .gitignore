@@ -2,6 +2,9 @@
 /build
 /.vscode
 
+# github settings
+./github
+
 # Prerequisites
 *.d
 
